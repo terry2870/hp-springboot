@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>hp.springboot</groupId>
+	<artifactId>hp-springboot</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<hp.springboot.version>1.0.0-SNAPSHOT</hp.springboot.version>
+		<spring.boot.version>2.4.1</spring.boot.version>
+		<commons.collections4.version>4.4</commons.collections4.version>
+		<druid.spring.boot.starter.version>1.2.4</druid.spring.boot.starter.version>
+		<guava.version>30.1-jre</guava.version>
+	</properties>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring.boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>hp.springboot</groupId>
+				<artifactId>hp-springboot-common</artifactId>
+				<version>${hp.springboot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>hp.springboot</groupId>
+				<artifactId>hp-springboot-freemarker</artifactId>
+				<version>${hp.springboot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>hp.springboot</groupId>
+				<artifactId>hp-springboot-database</artifactId>
+				<version>${hp.springboot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>hp.springboot</groupId>
+				<artifactId>hp-springboot-threadprofile</artifactId>
+				<version>${hp.springboot.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-collections4</artifactId>
+				<version>${commons.collections4.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid-spring-boot-starter</artifactId>
+				<version>${druid.spring.boot.starter.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<modules>
+		<module>hp-springboot-common</module>
+		<module>hp-springboot-freemarker</module>
+		<module>hp-springboot-database</module>
+		<module>hp-springboot-threadprofile</module>
+	</modules>
+</project>

@@ -9,7 +9,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 /**
  * 强制到主库的拦截器
@@ -17,12 +16,11 @@ import org.springframework.stereotype.Component;
  * Jan 17, 2020
  */
 @Aspect
-@Component
 public class ForceMasterInterceptor {
 
 	private static Logger log = LoggerFactory.getLogger(ForceMasterInterceptor.class);
 	
-	private static final ThreadLocal<Boolean> forceMaster = new InheritableThreadLocal<Boolean>();
+	private static final ThreadLocal<Boolean> forceMaster = new InheritableThreadLocal<>();
 	
 	/**
 	 * 设置强制走主库

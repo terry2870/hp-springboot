@@ -21,7 +21,7 @@ public class FreemarkerConfiguration {
 	* @Description: 生成freemarker的bean
 	* @return
 	 */
-	@Bean
+	@Bean("local_freeMarkerConfigurer")
 	public FreeMarkerConfigurer getFreeMarkerConfigurer() {
 		FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
 		freeMarkerConfigurer.setTemplateLoaderPath("classpath:/templates");

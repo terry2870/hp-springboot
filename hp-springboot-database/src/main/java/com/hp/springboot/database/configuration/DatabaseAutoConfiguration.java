@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.ImportResource;
 
 import com.hp.springboot.database.bean.DatabaseConfigProperties;
 import com.hp.springboot.database.datasource.DynamicDatasource;
+import com.hp.springboot.database.interceptor.ForceMasterInterceptor;
+import com.hp.springboot.database.interceptor.UseDatabaseInterceptor;
 
 
 /**
@@ -28,10 +31,30 @@ public class DatabaseAutoConfiguration {
 	* @Description: 生成动态数据源
 	* @return
 	 */
-	@Bean
+	@Bean("dynamicDatasource")
+	@DependsOn("SpringContextUtil")
 	public DynamicDatasource dynamicDatasource() {
 		DynamicDatasource dynamicDatasource = new DynamicDatasource(databaseConfigProperties);
-		dynamicDatasource.init();
 		return dynamicDatasource;
+	}
+	
+	/**
+	* @Title: forceMasterInterceptor  
+	* @Description: 设置强制走主库
+	* @return
+	 */
+	@Bean
+	public ForceMasterInterceptor forceMasterInterceptor() {
+		return new ForceMasterInterceptor();
+	}
+	
+	/**
+	* @Title: useDatabaseInterceptor  
+	* @Description: 强制走哪个数据库
+	* @return
+	 */
+	@Bean
+	public UseDatabaseInterceptor useDatabaseInterceptor() {
+		return new UseDatabaseInterceptor();
 	}
 }

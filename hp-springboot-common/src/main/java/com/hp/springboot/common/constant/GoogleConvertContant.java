@@ -21,4 +21,16 @@ public class GoogleConvertContant {
 	 * LowerCamel - lower_camel
 	 */
 	public static final Converter<String, String> UPPER_CAMEL_TO_LOWER_UNDERSCORE_CONVERTER = CaseFormat.UPPER_CAMEL.converterTo(CaseFormat.LOWER_UNDERSCORE);
+	
+	/**
+	 * 小写的下划线转首字母大写驼峰
+	 * lower_camel - LowerCamel
+	 */
+	public static final Converter<String, String> LOWER_UNDERSCORE_TO_UPPER_CAMEL_CONVERTER = CaseFormat.LOWER_UNDERSCORE.converterTo(CaseFormat.UPPER_CAMEL);
+	
+	/**
+	 * 小写的下划线转首字母小写驼峰
+	 * lower_camel - LowerCamel
+	 */
+	public static final Converter<String, String> LOWER_UNDERSCORE_TO_LOWER_CAMEL_CONVERTER = CaseFormat.LOWER_UNDERSCORE.converterTo(CaseFormat.LOWER_CAMEL);
 }

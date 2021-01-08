@@ -21,11 +21,11 @@
 	http://www.springframework.org/schema/tx
 	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 	">
-	
+		
 	<aop:config>
-		<aop:pointcut id="daoMethodPoint" expression="${dbInterceptorExpression:}" />
+		<aop:pointcut id="daoMethodPoint" expression="${hp.springboot.database.expression:}"/>
 		<aop:advisor pointcut-ref="daoMethodPoint" advice-ref="DAOMethodInterceptorHandle" />
 	</aop:config>
-
+	
 </beans>
 

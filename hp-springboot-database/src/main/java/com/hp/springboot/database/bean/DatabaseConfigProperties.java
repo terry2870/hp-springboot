@@ -16,14 +16,14 @@ import com.hp.springboot.database.enums.DatabaseTypeEnum;
  * 时间：2020-12-26
  */
 @Configuration
-@ConfigurationProperties
+@ConfigurationProperties(prefix = "hp.springboot.database")
 @PropertySource(value = "classpath:databases.yml", factory = YmlPropertySourceFactory.class)
 public class DatabaseConfigProperties {
 
 	/**
 	 * 需要拦截的操作数据列的dao的包
 	 */
-	private String dbInterceptorExpression;
+	private String expression;
 	
 	private List<DatabaseConfig> databaseConfigList;
 	
@@ -327,11 +327,11 @@ public class DatabaseConfigProperties {
 		this.databaseConfigList = databaseConfigList;
 	}
 
-	public String getDbInterceptorExpression() {
-		return dbInterceptorExpression;
+	public String getExpression() {
+		return expression;
 	}
 
-	public void setDbInterceptorExpression(String dbInterceptorExpression) {
-		this.dbInterceptorExpression = dbInterceptorExpression;
+	public void setExpression(String expression) {
+		this.expression = expression;
 	}
 }

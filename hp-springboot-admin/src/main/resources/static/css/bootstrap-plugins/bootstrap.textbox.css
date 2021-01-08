@@ -1,0 +1,28 @@
+.textbox {
+	position: relative;
+	float : left;
+	margin-right: 10px;
+}
+.textbox div {
+	top : 0px;
+	right : 15px;
+	position: absolute;
+	display: flex;
+	box-sizing : border-box;
+	height : 100%;
+}
+
+.textbox .textbox-addon {
+	width: 20px;
+	height: 100%;
+	cursor : pointer;
+	opacity: 0.7;
+}
+
+.textbox .textbox-addon:hover {
+	opacity: 1;
+}
+
+.textbox input {
+	padding-right : 40px;
+}

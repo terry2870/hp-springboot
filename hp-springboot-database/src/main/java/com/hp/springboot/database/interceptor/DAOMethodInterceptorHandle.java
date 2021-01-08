@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.hp.springboot.database.interceptor;
 
 import org.aopalliance.intercept.MethodInterceptor;
@@ -13,16 +10,25 @@ import com.hp.springboot.database.bean.DAOInterfaceInfoBean.DBDelayInfo;
 import com.hp.springboot.threadprofile.profile.ThreadProfile;
 
 /**
- * @author huangping 2018年4月11日
+ * 
+ * 描述：执行数据库操作之前拦截请求，记录当前线程信息
+ * 之所以用抽象类，是因为可以扩展选择持久层框架。可以选择mybatis或jdbcTemplate，又或者hibernate
+ * 作者：黄平
+ * 时间：2018年4月11日
  */
 public abstract class DAOMethodInterceptorHandle implements MethodInterceptor {
 
 	private static Logger log = LoggerFactory.getLogger(DAOMethodInterceptorHandle.class);
 	
+	/**
+	 * 存放当前执行线程的一些信息
+	 */
 	private static ThreadLocal<DAOInterfaceInfoBean> routeKey = new ThreadLocal<>();
 	
-	//最大数据库查询时间（超过这个时间，就会打印一个告警日志）
-	private static final long MAX_DB_DELAY_TIME = 10;
+	/**
+	 * 最大数据库查询时间（超过这个时间，就会打印一个告警日志）
+	 */
+	private static final long MAX_DB_DELAY_TIME = 10L;
 	
 	/**
 	 * 获取dao操作的对象，方法等
@@ -40,10 +46,10 @@ public abstract class DAOMethodInterceptorHandle implements MethodInterceptor {
 	
 	@Override
 	public Object invoke(MethodInvocation invocation) throws Throwable {
-		//获取dao的操作方法，参数等信息
+		//获取dao的操作方法，参数等信息，并设置到线程变量里
 		this.setRouteDAOInfo(getDAOInterfaceInfoBean(invocation));
 		
-		//设置进入查询
+		//设置进入查询，记录线程执行时长
 		entry();
 		Object obj = null;
 		try {
@@ -56,7 +62,7 @@ public abstract class DAOMethodInterceptorHandle implements MethodInterceptor {
 			//退出查询
 			exit();
 			
-			//释放当前线程的数据
+			//避免内存溢出，释放当前线程的数据
 			this.removeRouteDAOInfo();
 		}
 	}
@@ -66,6 +72,7 @@ public abstract class DAOMethodInterceptorHandle implements MethodInterceptor {
 	 */
 	private void entry() {
 		DAOInterfaceInfoBean bean = getRouteDAOInfo();
+		//加入到我们的线程调用堆栈里面，可以统计线程调用时间
 		ThreadProfile.enter(bean.getMapperNamespace(), bean.getStatementId());
 		DBDelayInfo delay = bean.new DBDelayInfo();
 		delay.setBeginTime(System.currentTimeMillis());
@@ -80,7 +87,7 @@ public abstract class DAOMethodInterceptorHandle implements MethodInterceptor {
 		DBDelayInfo delay = bean.getDelay();
 		delay.setEndTime(System.currentTimeMillis());
 		ThreadProfile.exit();
-		//输入调用数据库的时间
+		//输出查询数据库的时间
 		if (delay.getEndTime() - delay.getBeginTime() >= MAX_DB_DELAY_TIME) {
 			log.warn("execute db expire time. {}", delay);
 		}

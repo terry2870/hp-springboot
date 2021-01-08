@@ -12,7 +12,10 @@
 		<spring.boot.version>2.4.1</spring.boot.version>
 		<commons.collections4.version>4.4</commons.collections4.version>
 		<druid.spring.boot.starter.version>1.2.4</druid.spring.boot.starter.version>
+		<mybatis.spring.boot.starter.version>2.1.4</mybatis.spring.boot.starter.version>
 		<guava.version>30.1-jre</guava.version>
+		<commons.beanutils.version>1.9.4</commons.beanutils.version>
+		<commons.io.version>2.8.0</commons.io.version>
 	</properties>
 	
 	<dependencyManagement>
@@ -45,6 +48,17 @@
 				<artifactId>hp-springboot-threadprofile</artifactId>
 				<version>${hp.springboot.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>hp.springboot</groupId>
+				<artifactId>hp-springboot-mybatis</artifactId>
+				<version>${hp.springboot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>hp.springboot</groupId>
+				<artifactId>hp-springboot-admin</artifactId>
+				<version>${hp.springboot.version}</version>
+			</dependency>
+			
 			
 			<dependency>
 				<groupId>org.apache.commons</groupId>
@@ -57,9 +71,24 @@
 				<version>${druid.spring.boot.starter.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.mybatis.spring.boot</groupId>
+				<artifactId>mybatis-spring-boot-starter</artifactId>
+				<version>${mybatis.spring.boot.starter.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>${guava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>${commons.beanutils.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${commons.io.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -68,5 +97,7 @@
 		<module>hp-springboot-freemarker</module>
 		<module>hp-springboot-database</module>
 		<module>hp-springboot-threadprofile</module>
+		<module>hp-springboot-mybatis</module>
+		<module>hp-springboot-admin</module>
 	</modules>
 </project>

@@ -23,7 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.hp.springboot.common.constant.GoogleConvertContant;
+import com.hp.springboot.common.constant.GoogleContant;
 import com.hp.springboot.database.bean.DAOInterfaceInfoBean;
 import com.hp.springboot.database.bean.DynamicColumnBean;
 import com.hp.springboot.database.bean.DynamicEntityBean;
@@ -181,7 +181,7 @@ public class BaseSQLAOPFactory {
 			tableName = table.name();
 		} else {
 			//否则表名使用驼峰转下划线
-			tableName = GoogleConvertContant.UPPER_CAMEL_TO_LOWER_UNDERSCORE_CONVERTER.convert(targetClass.getSimpleName());
+			tableName = GoogleContant.UPPER_CAMEL_TO_LOWER_UNDERSCORE_CONVERTER.convert(targetClass.getSimpleName());
 		}
 		
 		entity.setTableName(tableName);
@@ -239,7 +239,7 @@ public class BaseSQLAOPFactory {
 	private void setColumn(Field field, DynamicColumnBean bean) {
 		Column column = field.getAnnotation(Column.class);
 		//默认字段名为，驼峰转下划线
-		String columnName = GoogleConvertContant.LOWER_CAMEL_TO_LOWER_UNDERSCORE_CONVERTER.convert(field.getName());
+		String columnName = GoogleContant.LOWER_CAMEL_TO_LOWER_UNDERSCORE_CONVERTER.convert(field.getName());
 		boolean uniqueKey = false, nullable = true, insertable = true, updatable = true;
 		int length = 0;
 		//字段名

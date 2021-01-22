@@ -6,7 +6,7 @@ package ${package};
  * ${.now?string["yyyy-MM-dd"]}
  */
 import ${baseMapperPackage};
-import ${dalModelPackage}.${modelName};
+import ${daoModelPackage}.${modelName};
 
 public interface I${modelName}DAO extends BaseMapper<${modelName}, Integer> {
 

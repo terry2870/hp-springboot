@@ -82,14 +82,14 @@ public interface IBaseSelectDAO<MODEL, PK> {
 	 * @param primaryKeyIdList
 	 * @return
 	 */
-	public List<MODEL> selectByPrimaryKeys(Collection<PK> primaryKeyIdList);
+	public List<MODEL> selectByPrimaryKeys(List<PK> primaryKeyIdList);
 	
 	/**
 	 * 根据主键，批量查询（并且按照list里面id顺序排序）
 	 * @param primaryKeyIdList
 	 * @return
 	 */
-	public List<MODEL> selectByPrimaryKeysWithInSort(Collection<PK> primaryKeyIdList);
+	public List<MODEL> selectByPrimaryKeysWithInSort(List<PK> primaryKeyIdList);
 	
 	/**
 	 * 查询列表

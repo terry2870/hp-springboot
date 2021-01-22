@@ -13,6 +13,11 @@ import com.hp.springboot.common.util.SpringContextUtil;
 @Configuration
 public class CommonAutoConfiguration {
 
+	/**
+	 * @Title: getSpringContextUtil
+	 * @Description: 加载全局获取spring bean 对象的方法
+	 * @return
+	 */
 	@Bean("SpringContextUtil")
 	public SpringContextUtil getSpringContextUtil() {
 		return new SpringContextUtil();

@@ -63,56 +63,56 @@ public class DateUtil {
 	}
 	
 	/**
-	* @Title: getCurrentDateTime  
-	* @Description: 获取当前日期
-	* @return
+	 * @Title: getCurrentDateTime
+	 * @Description: 获取当前日期
+	 * @return
 	 */
 	public static Date getCurrentDateTime() {
 		return new Date();
 	}
 	
 	/**
-	* @Title: getCurrentDateString  
-	* @Description: 获取当前日期的String格式
-	* @return
+	 * @Title: getCurrentDateString
+	 * @Description: 获取当前日期的String格式
+	 * @return
 	 */
 	public static String getCurrentDateString() {
 		return getCurrentString(DATE_FORMAT);
 	}
 	
 	/**
-	* @Title: getCurrentDateTimeString  
-	* @Description: 获取当前日期时间的String格式
-	* @return
+	 * @Title: getCurrentDateTimeString
+	 * @Description: 获取当前日期时间的String格式
+	 * @return
 	 */
 	public static String getCurrentDateTimeString() {
 		return getCurrentString(DATE_TIME_FORMAT);
 	}
 	
 	/**
-	* @Title: getCurrentTimeString  
-	* @Description: 获取当前时间的String格式
-	* @return
+	 * @Title: getCurrentTimeString
+	 * @Description: 获取当前时间的String格式
+	 * @return
 	 */
 	public static String getCurrentTimeString() {
 		return getCurrentString(TIME_FORMAT);
 	}
 	
 	/**
-	* @Title: getCurrentString  
-	* @Description: 取当前时间的任意格式
-	* @param format
-	* @return
+	 * @Title: getCurrentString
+	 * @Description: 取当前时间的任意格式
+	 * @param format
+	 * @return
 	 */
 	public static String getCurrentString(String... format) {
 		return intToString(getCurrentTimeSeconds(), getDateFormatter(format));
 	}
 	
 	/**
-	* @Title: intToDate  
-	* @Description: int类型，转为Date类型  
-	* @param time
-	* @return
+	 * @Title: intToDate
+	 * @Description: int类型，转为Date类型
+	 * @param time
+	 * @return
 	 */
 	public static Date intToDate(Integer time) {
 		if (NumberUtil.isEmpty(time)) {
@@ -122,11 +122,11 @@ public class DateUtil {
 	}
 	
 	/**
-	* @Title: intToString  
-	* @Description: Integer格式的时间，转为string格式
-	* @param time
-	* @param format
-	* @return
+	 * @Title: intToString
+	 * @Description: Integer格式的时间，转为string格式
+	 * @param time
+	 * @param format
+	 * @return
 	 */
 	public static String intToString(Integer time, String...format) {
 		if (NumberUtil.isEmpty(time)) {
@@ -136,11 +136,11 @@ public class DateUtil {
 	}
 	
 	/**
-	* @Title: longToString  
-	* @Description: long格式的时间，转为string格式
-	* @param time
-	* @param format
-	* @return
+	 * @Title: longToString
+	 * @Description: long格式的时间，转为string格式
+	 * @param time
+	 * @param format
+	 * @return
 	 */
 	public static String longToString(Long time, String...format) {
 		if (NumberUtil.isEmpty(time)) {
@@ -152,11 +152,11 @@ public class DateUtil {
 	}
 	
 	/**
-	* @Title: dateToString  
-	* @Description: Date格式的时间，转为string格式
-	* @param date
-	* @param format
-	* @return
+	 * @Title: dateToString
+	 * @Description: Date格式的时间，转为string格式
+	 * @param date
+	 * @param format
+	 * @return
 	 */
 	public static String dateToString(Date date, String... format) {
 		if (date == null) {
@@ -167,12 +167,12 @@ public class DateUtil {
 	}
 	
 	/**
-	* @Title: addYear  
-	* @Description: 年加减操作
-	* @param time
-	* @param offset
-	* @param format
-	* @return
+	 * @Title: addYear
+	 * @Description: 年加减操作
+	 * @param time
+	 * @param offset
+	 * @param format
+	 * @return
 	 */
 	public static String addYear(String time, int offset, String... format) {
 		if (StringUtils.isEmpty(time)) {
@@ -184,12 +184,12 @@ public class DateUtil {
 	}
 	
 	/**
-	* @Title: addMonths  
-	* @Description: 月份加减操作
-	* @param time
-	* @param offset
-	* @param format
-	* @return
+	 * @Title: addMonths
+	 * @Description: 月份加减操作
+	 * @param time
+	 * @param offset
+	 * @param format
+	 * @return
 	 */
 	public static String addMonths(String time, int offset, String... format) {
 		if (StringUtils.isEmpty(time)) {
@@ -201,12 +201,12 @@ public class DateUtil {
 	}
 	
 	/**
-	* @Title: addWeeks  
-	* @Description: 星期加减操作
-	* @param time
-	* @param offset
-	* @param format
-	* @return
+	 * @Title: addWeeks
+	 * @Description: 星期加减操作
+	 * @param time
+	 * @param offset
+	 * @param format
+	 * @return
 	 */
 	public static String addWeeks(String time, int offset, String... format) {
 		if (StringUtils.isEmpty(time)) {
@@ -218,12 +218,12 @@ public class DateUtil {
 	}
 	
 	/**
-	* @Title: addDays  
-	* @Description: 天加减操作
-	* @param time
-	* @param offset
-	* @param format
-	* @return
+	 * @Title: addDays
+	 * @Description: 天加减操作
+	 * @param time
+	 * @param offset
+	 * @param format
+	 * @return
 	 */
 	public static String addDays(String time, int offset, String... format) {
 		if (StringUtils.isEmpty(time)) {
@@ -235,12 +235,12 @@ public class DateUtil {
 	}
 	
 	/**
-	* @Title: addHours  
-	* @Description: 小时加减操作
-	* @param time
-	* @param offset
-	* @param format
-	* @return
+	 * @Title: addHours
+	 * @Description: 小时加减操作
+	 * @param time
+	 * @param offset
+	 * @param format
+	 * @return
 	 */
 	public static String addHours(String time, int offset, String... format) {
 		if (StringUtils.isEmpty(time)) {
@@ -252,12 +252,12 @@ public class DateUtil {
 	}
 	
 	/**
-	* @Title: addMinutes  
-	* @Description: 分钟加减操作
-	* @param time
-	* @param offset
-	* @param format
-	* @return
+	 * @Title: addMinutes
+	 * @Description: 分钟加减操作
+	 * @param time
+	 * @param offset
+	 * @param format
+	 * @return
 	 */
 	public static String addMinutes(String time, int offset, String... format) {
 		if (StringUtils.isEmpty(time)) {
@@ -269,12 +269,12 @@ public class DateUtil {
 	}
 	
 	/**
-	* @Title: addSeconds  
-	* @Description: 秒加减操作
-	* @param time
-	* @param offset
-	* @param format
-	* @return
+	 * @Title: addSeconds
+	 * @Description: 秒加减操作
+	 * @param time
+	 * @param offset
+	 * @param format
+	 * @return
 	 */
 	public static String addSeconds(String time, int offset, String... format) {
 		if (StringUtils.isEmpty(time)) {
@@ -286,12 +286,12 @@ public class DateUtil {
 	}
 	
 	/**
-	* @Title: addMilliseconds  
-	* @Description: 毫秒加减操作
-	* @param time
-	* @param offset
-	* @param format
-	* @return
+	 * @Title: addMilliseconds
+	 * @Description: 毫秒加减操作
+	 * @param time
+	 * @param offset
+	 * @param format
+	 * @return
 	 */
 	public static String addMilliseconds(String time, int offset, String... format) {
 		if (StringUtils.isEmpty(time)) {
@@ -303,11 +303,11 @@ public class DateUtil {
 	}
 	
 	/**
-	* @Title: stringToDate  
-	* @Description: 字符串格式的转为Date类型
-	* @param time
-	* @param format
-	* @return
+	 * @Title: stringToDate
+	 * @Description: 字符串格式的转为Date类型
+	 * @param time
+	 * @param format
+	 * @return
 	 */
 	public static Date stringToDate(String time, String... format) {
 		if (StringUtils.isEmpty(time) || "0000-00-00".equals(time)) {
@@ -325,10 +325,10 @@ public class DateUtil {
 	}
 	
 	/**
-	* @Title: getDateFormatter  
-	* @Description: 获取时间格式化格式
-	* @param format
-	* @return
+	 * @Title: getDateFormatter
+	 * @Description: 获取时间格式化格式
+	 * @param format
+	 * @return
 	 */
 	private static String getDateFormatter(String... format) {
 		return ArrayUtils.isEmpty(format) ? DATE_TIME_FORMAT : format[0];

@@ -4,6 +4,7 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.hp.springboot.database.bean.DAOInterfaceInfoBean;
 import com.hp.springboot.database.bean.DAOInterfaceInfoBean.DBDelayInfo;
@@ -28,7 +29,8 @@ public abstract class DAOMethodInterceptorHandle implements MethodInterceptor {
 	/**
 	 * 最大数据库查询时间（超过这个时间，就会打印一个告警日志）
 	 */
-	private static final long MAX_DB_DELAY_TIME = 10L;
+	@Value("${hp.springboot.database.maxDbDelayTime:150}")
+	private long MAX_DB_DELAY_TIME;
 	
 	/**
 	 * 获取dao操作的对象，方法等

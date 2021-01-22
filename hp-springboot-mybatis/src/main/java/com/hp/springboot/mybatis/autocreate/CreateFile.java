@@ -13,11 +13,12 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 import com.hp.springboot.common.util.SpringContextUtil;
 import com.hp.springboot.database.datasource.DynamicDatasource;
 import com.hp.springboot.mybatis.autocreate.helper.AutoCreateBean;
@@ -48,12 +49,12 @@ public class CreateFile {
 	public static String WEB_MAVEN_MODULE_NAME;
 	public static String SERVICE_MAVEN_MODULE;
 	public static String CONTROLLER_MAVEN_MODULE;
-	public static String DAL_MAVEN_MODULE;
+	public static String DAO_MAVEN_MODULE;
 	public static String COMMON_MAVEN_MODULE;
 	public static String MODEL_MAVEN_MODULE;
 	
 	// 项目中，各个模块对应的包名称
-	public static String DAL_PACKAGE_NAME;
+	public static String DAO_PACKAGE_NAME;
 	public static String COMMON_PACKAGE_NAME;
 	public static String MODEL_PACKAGE_NAME;
 	public static String SERVICE_PACKAGE_NAME;
@@ -76,7 +77,7 @@ public class CreateFile {
 	public static final String SQL_WHERE_BUILDER_PACKAGE = BASE_PACKAGE_PARENT + "database.bean.SQLWhere.SQLWhereBuilder";
 	public static final String SQLBUILDERS_PACKAGE = BASE_PACKAGE_PARENT + "database.bean.SQLBuilders";
 	
-	public static final String DAL_MODEL_PACKAGE_NAME = "model";
+	public static final String DAO_MODEL_PACKAGE_NAME = "model";
 	public static final String SERVICE_PACKAGE = "service";
 	public static final String CONTROLLER_PACKAGE = "controller";
 	
@@ -101,11 +102,11 @@ public class CreateFile {
 		CONTROLLER_MAVEN_MODULE = bean.getControllerMavenModule();
 		MAPPING_DIR = bean.getMappingDir();
 		WEB_MAVEN_MODULE_NAME = bean.getWebMavenModuleName();
-		DAL_MAVEN_MODULE = bean.getDalMavenModule();
+		DAO_MAVEN_MODULE = bean.getDaoMavenModule();
 		COMMON_MAVEN_MODULE = bean.getCommonMavenModule();
 		MODEL_MAVEN_MODULE = bean.getModelMavenModule();
 		
-		DAL_PACKAGE_NAME = bean.getDalPackageName();
+		DAO_PACKAGE_NAME = bean.getDaoPackageName();
 		COMMON_PACKAGE_NAME = bean.getCommonPackageName();
 		MODEL_PACKAGE_NAME = bean.getModelPackageName();
 		SERVICE_PACKAGE_NAME = bean.getServicePackageName();
@@ -121,7 +122,7 @@ public class CreateFile {
 								
 				map = getParamsMap(table);
 				//生成model
-				CreateDalModel.create(table, map);
+				CreateDaoModel.create(table, map);
 				
 				//生成dao
 				CreateDAO.create(table, map);
@@ -175,7 +176,8 @@ public class CreateFile {
 			if (!pathFile.exists()) {
 				pathFile.mkdirs();
 			}
-			FileUtils.writeStringToFile(new File(fileName), data, "UTF-8");
+			Files.asCharSink(new File(fileName), Charsets.UTF_8).write(data);
+			//FileUtils.writeStringToFile(new File(fileName), data, "UTF-8");
 			log.info("createFile with fileName={}", fileName);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -190,9 +192,9 @@ public class CreateFile {
 	 */
 	private static Map<String, Object> getParamsMap(TableBean table) {
 		Map<String, Object> map = new HashMap<>();
-		String dalPackage = CreateFile.PROJECT_PACKAGE + "." + CreateFile.DAL_PACKAGE_NAME;
-		map.put("dalPackage", dalPackage);
-		map.put("dalModelPackage", dalPackage + "." + CreateFile.DAL_MODEL_PACKAGE_NAME);
+		String daoPackage = CreateFile.PROJECT_PACKAGE + "." + CreateFile.DAO_PACKAGE_NAME;
+		map.put("daoPackage", daoPackage);
+		map.put("daoModelPackage", daoPackage + "." + CreateFile.DAO_MODEL_PACKAGE_NAME);
 		map.put("modelName", table.getModelName());
 		map.put("modelNameFirstLow", table.getModelNameFirstLow());
 		map.put("author", AUTHER_NAME);

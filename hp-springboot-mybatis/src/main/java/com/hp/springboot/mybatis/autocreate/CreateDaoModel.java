@@ -13,7 +13,7 @@ import java.util.Map;
 import com.hp.springboot.freemarker.util.FreeMarkerUtil;
 import com.hp.springboot.mybatis.autocreate.helper.TableBean;
 
-public class CreateDalModel {
+public class CreateDaoModel {
 
 	/**
 	* @Title: create  
@@ -22,9 +22,9 @@ public class CreateDalModel {
 	* @param map
 	 */
 	public static void create(TableBean table, Map<String, Object> map) {
-		String packageUrl = CreateFile.PROJECT_PACKAGE + "." + CreateFile.DAL_PACKAGE_NAME + "." + CreateFile.DAL_MODEL_PACKAGE_NAME;
-		String fileName = CreateFile.MAIN_PATH_DIR + "/" + CreateFile.DAL_MAVEN_MODULE + "/" +CreateFile.JAVA_DIR + "/" + packageUrl.replace(".", "/") + "/"+ table.getModelName() +".java";
+		String packageUrl = CreateFile.PROJECT_PACKAGE + "." + CreateFile.DAO_PACKAGE_NAME + "." + CreateFile.DAO_MODEL_PACKAGE_NAME;
+		String fileName = CreateFile.MAIN_PATH_DIR + "/" + CreateFile.DAO_MAVEN_MODULE + "/" +CreateFile.JAVA_DIR + "/" + packageUrl.replace(".", "/") + "/"+ table.getModelName() +".java";
 		map.put("package", packageUrl);
-		FreeMarkerUtil.createFile("autocreate/dalmodel.ftl", fileName, map);
+		FreeMarkerUtil.createFile("autocreate/daomodel.ftl", fileName, map);
 	}
 }

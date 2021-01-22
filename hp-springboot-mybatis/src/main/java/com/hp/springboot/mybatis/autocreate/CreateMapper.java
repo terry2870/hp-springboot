@@ -21,7 +21,7 @@ public class CreateMapper {
 	* @param map
 	 */
 	public static void create(TableBean table, Map<String, Object> map) {
-		String fileName = CreateFile.MAIN_PATH_DIR + "/"+ CreateFile.DAL_MAVEN_MODULE +"/" + CreateFile.MAPPING_DIR + "/"+ table.getModelName() +"Mapper.xml";
+		String fileName = CreateFile.MAIN_PATH_DIR + "/"+ CreateFile.DAO_MAVEN_MODULE +"/" + CreateFile.MAPPING_DIR + "/"+ table.getModelName() +"Mapper.xml";
 		FreeMarkerUtil.createFile("autocreate/mapper.ftl", fileName, map);
 	}
 }

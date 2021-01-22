@@ -20,9 +20,9 @@ public class CreateDAO {
 	* @param table
 	 */
 	public static void create(TableBean table, Map<String, Object> map) {
-		String packageUrl = CreateFile.PROJECT_PACKAGE + "." + CreateFile.DAL_PACKAGE_NAME;
-		String fileName = CreateFile.MAIN_PATH_DIR + "/"+ CreateFile.DAL_MAVEN_MODULE +"/" +CreateFile.JAVA_DIR + "/" + packageUrl.replace(".", "/") + "/I"+ table.getModelName() +"DAO.java";
+		String packageUrl = CreateFile.PROJECT_PACKAGE + "." + CreateFile.DAO_PACKAGE_NAME;
+		String fileName = CreateFile.MAIN_PATH_DIR + "/"+ CreateFile.DAO_MAVEN_MODULE +"/" +CreateFile.JAVA_DIR + "/" + packageUrl.replace(".", "/") + "/I"+ table.getModelName() +"DAO.java";
 		map.put("package", packageUrl);
-		FreeMarkerUtil.createFile("autocreate/dal.ftl", fileName, map);
+		FreeMarkerUtil.createFile("autocreate/dao.ftl", fileName, map);
 	}
 }

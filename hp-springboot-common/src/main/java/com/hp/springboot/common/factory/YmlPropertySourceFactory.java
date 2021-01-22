@@ -8,7 +8,9 @@ import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertySourceFactory;
 
 /**
- * 描述： 作者：20025894 时间：2020-12-21
+ * 描述：YML的解析
+ * 作者：黄平
+ * 时间：2021年1月11日
  */
 public class YmlPropertySourceFactory implements PropertySourceFactory {
 

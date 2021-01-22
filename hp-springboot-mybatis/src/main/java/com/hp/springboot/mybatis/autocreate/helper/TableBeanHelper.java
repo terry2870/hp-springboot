@@ -17,7 +17,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.hp.springboot.common.constant.GoogleConvertContant;
+import com.hp.springboot.common.constant.GoogleContant;
 import com.hp.springboot.database.datasource.db.AbstDatabase;
 import com.hp.springboot.database.enums.DatabaseTypeEnum;
 
@@ -35,8 +35,8 @@ public class TableBeanHelper {
 	public static TableBean getTableInfoByTableName(Connection conn, String tableName) {
 		TableBean table = new TableBean();
 		table.setTableName(tableName);
-		table.setModelName(GoogleConvertContant.LOWER_UNDERSCORE_TO_UPPER_CAMEL_CONVERTER.convert(tableName));
-		table.setModelNameFirstLow(GoogleConvertContant.LOWER_UNDERSCORE_TO_LOWER_CAMEL_CONVERTER.convert(tableName));
+		table.setModelName(GoogleContant.LOWER_UNDERSCORE_TO_UPPER_CAMEL_CONVERTER.convert(tableName));
+		table.setModelNameFirstLow(GoogleContant.LOWER_UNDERSCORE_TO_LOWER_CAMEL_CONVERTER.convert(tableName));
 		
 		try {
 			AbstDatabase database = DatabaseTypeEnum.getDatabaseByDatabaseType(conn.getMetaData().getDatabaseProductName());
@@ -53,8 +53,8 @@ public class TableBeanHelper {
 			//获取主键信息
 			rs = dbmd.getPrimaryKeys(catalog, schema, tableName);
 			if (rs.next()) {
-				table.setPrimaryKey(GoogleConvertContant.LOWER_UNDERSCORE_TO_LOWER_CAMEL_CONVERTER.convert(rs.getString("COLUMN_NAME")));
-				table.setPrimaryKeyFirstUpper(GoogleConvertContant.LOWER_UNDERSCORE_TO_UPPER_CAMEL_CONVERTER.convert(rs.getString("COLUMN_NAME")));
+				table.setPrimaryKey(GoogleContant.LOWER_UNDERSCORE_TO_LOWER_CAMEL_CONVERTER.convert(rs.getString("COLUMN_NAME")));
+				table.setPrimaryKeyFirstUpper(GoogleContant.LOWER_UNDERSCORE_TO_UPPER_CAMEL_CONVERTER.convert(rs.getString("COLUMN_NAME")));
 			}
 			
 			List<ColumnBean> columnList = new ArrayList<>();
@@ -64,8 +64,8 @@ public class TableBeanHelper {
 			while (rs.next()) {
 				column = new ColumnBean();
 				column.setColumnName(rs.getString("COLUMN_NAME"));
-				column.setFieldName(GoogleConvertContant.LOWER_UNDERSCORE_TO_LOWER_CAMEL_CONVERTER.convert(column.getColumnName()));
-				column.setFieldNameFirstUpper(GoogleConvertContant.LOWER_UNDERSCORE_TO_UPPER_CAMEL_CONVERTER.convert(column.getColumnName()));
+				column.setFieldName(GoogleContant.LOWER_UNDERSCORE_TO_LOWER_CAMEL_CONVERTER.convert(column.getColumnName()));
+				column.setFieldNameFirstUpper(GoogleContant.LOWER_UNDERSCORE_TO_UPPER_CAMEL_CONVERTER.convert(column.getColumnName()));
 				column.setConstraintType("");
 				column.setJdbcType(rs.getString("TYPE_NAME"));
 				column.setColumnComment(rs.getString("REMARKS"));

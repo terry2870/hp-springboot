@@ -3,7 +3,7 @@ package com.hp.springboot.database.bean;
 import org.apache.commons.lang3.StringUtils;
 
 import com.hp.springboot.common.bean.AbstractBean;
-import com.hp.springboot.common.constant.GoogleConvertContant;
+import com.hp.springboot.common.constant.GoogleContant;
 
 /**
  * 统一的分页请求对象 描述：
@@ -88,7 +88,7 @@ public class PageRequest extends AbstractBean {
 	public void setSort(String sort) {
 		this.sort = sort;
 		if (StringUtils.isNotEmpty(sort)) {
-			this.sort = GoogleConvertContant.LOWER_CAMEL_TO_LOWER_UNDERSCORE_CONVERTER.convert(sort);
+			this.sort = GoogleContant.LOWER_CAMEL_TO_LOWER_UNDERSCORE_CONVERTER.convert(sort);
 		}
 	}
 

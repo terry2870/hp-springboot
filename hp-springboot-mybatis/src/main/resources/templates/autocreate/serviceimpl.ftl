@@ -3,15 +3,15 @@ package ${package};
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ${convertPackage}.${modelName}Convert;
-import ${dalPackage}.I${modelName}DAO;
-import ${dalModelPackage}.${modelName};
+import ${daoPackage}.I${modelName}DAO;
+import ${daoModelPackage}.${modelName};
 import ${requestModelPackage}.${modelName}RequestBO;
 import ${responseModelPackage}.${modelName}ResponseBO;
 import ${servicePackage}.I${modelName}Service;

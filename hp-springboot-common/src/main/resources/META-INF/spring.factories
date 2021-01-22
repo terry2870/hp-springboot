@@ -1,1 +1,3 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.hp.springboot.common.configuration.CommonAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.hp.springboot.common.configuration.CommonAutoConfiguration,\
+com.hp.springboot.common.configuration.CommonWebMvcConfigurer

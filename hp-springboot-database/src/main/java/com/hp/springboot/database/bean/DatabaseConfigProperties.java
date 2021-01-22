@@ -25,6 +25,11 @@ public class DatabaseConfigProperties {
 	 */
 	private String expression;
 	
+	/**
+	 * 数据库操作最大时长
+	 */
+	private long maxDbDelayTime;
+	
 	private List<DatabaseConfig> databaseConfigList;
 	
 	/**
@@ -333,5 +338,13 @@ public class DatabaseConfigProperties {
 
 	public void setExpression(String expression) {
 		this.expression = expression;
+	}
+
+	public long getMaxDbDelayTime() {
+		return maxDbDelayTime;
+	}
+
+	public void setMaxDbDelayTime(long maxDbDelayTime) {
+		this.maxDbDelayTime = maxDbDelayTime;
 	}
 }

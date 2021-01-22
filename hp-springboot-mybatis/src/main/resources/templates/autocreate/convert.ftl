@@ -2,7 +2,7 @@ package ${package};
 
 import org.springframework.beans.BeanUtils;
 
-import ${dalModelPackage}.${modelName};
+import ${daoModelPackage}.${modelName};
 import ${requestModelPackage}.${modelName}RequestBO;
 import ${responseModelPackage}.${modelName}ResponseBO;
 

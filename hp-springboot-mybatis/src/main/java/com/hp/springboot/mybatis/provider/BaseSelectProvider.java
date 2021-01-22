@@ -4,10 +4,11 @@
 package com.hp.springboot.mybatis.provider;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
@@ -15,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
+import com.hp.springboot.common.constant.GoogleContant;
 import com.hp.springboot.database.bean.DynamicEntityBean;
 import com.hp.springboot.database.bean.OrderBy;
 import com.hp.springboot.database.bean.PageModel;
@@ -53,7 +55,7 @@ public class BaseSelectProvider {
 	public static String selectCount(Map<String, Object> target) {
 		DynamicEntityBean entity = BaseSQLAOPFactory.getEntity();
 		@SuppressWarnings("unchecked")
-		List<SQLWhere> whereList = (List<SQLWhere>) target.get(SQLProviderConstant.SQL_WHERE_ALIAS);
+		Collection<SQLWhere> whereList = (Collection<SQLWhere>) target.get(SQLProviderConstant.SQL_WHERE_ALIAS);
 		SQLBuilders builders = SQLBuilders.create()
 				.withSqlWherePrefix(SQLProviderConstant.SQL_WHERE_ALIAS)
 				.withSelect("COUNT(1)")
@@ -203,7 +205,7 @@ public class BaseSelectProvider {
 		DynamicEntityBean entity = BaseSQLAOPFactory.getEntity();
 		String sql = selectByPrimaryKeys(target);
 		List<?> list = (List<?>) target.get("list");
-		sql += " order by field ("+ entity.getPrimaryKeyColumnName() +", "+ StringUtils.join(list, ",") +")";
+		sql += " order by field ("+ entity.getPrimaryKeyColumnName() +", "+ GoogleContant.COMMA_JOINER.join(list) +")";
 		log.debug("selectByPrimaryKeysWithInSort get sql \r\nsql={} \r\nlist={}  \r\nentity={}", sql, list.size(), entity);
 		return sql;
 	}
@@ -228,7 +230,7 @@ public class BaseSelectProvider {
 		}
 		StringBuilder sql = new StringBuilder()
 				.append("select ")
-				.append(CollectionUtils.isEmpty(builders.getSelectList()) ? entity.getSelectColumns() : StringUtils.join(builders.getSelectList(), ", "))
+				.append(CollectionUtils.isEmpty(builders.getSelectList()) ? entity.getSelectColumns() : GoogleContant.COMMA_JOINER.join(builders.getSelectList()))
 				.append(" from ")
 				.append(entity.getTableName())
 				.append(" where 1=1 ");
@@ -241,7 +243,7 @@ public class BaseSelectProvider {
 		}
 		
 		//设置查询条件
-		if (CollectionUtils.isNotEmpty(builders.getWhereList())) {
+		if (!CollectionUtils.isEmpty(builders.getWhereList())) {
 			sql.append(MybatisSQLBuilderHelper.getSQLBySQLBuild(builders));
 		}
 		

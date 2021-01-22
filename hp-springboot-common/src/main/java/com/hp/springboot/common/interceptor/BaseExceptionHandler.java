@@ -24,22 +24,22 @@ public abstract class BaseExceptionHandler {
 	private static Logger log = LoggerFactory.getLogger(BaseExceptionHandler.class);
 	
 	/**
-	* @Title: handle  
-	* @Description: 子类需要额外处理的异常情况
-	* @param request
-	* @param response
-	* @param exception
-	* @return
+	 * @Title: handleException
+	 * @Description: 单独处理的异常信息
+	 * @param request
+	 * @param response
+	 * @param exception
+	 * @return
 	 */
 	public abstract Response<Object> handleException(HttpServletRequest request, HttpServletResponse response, Exception exception);
 	
 	/**
-	* @Title: resolveException  
-	* @Description: 拦截公共的异常
-	* @param request
-	* @param response
-	* @param exception
-	* @return
+	 * @Title: resolveException
+	 * @Description: 拦截公共的异常
+	 * @param request
+	 * @param response
+	 * @param exception
+	 * @return
 	 */
 	@ExceptionHandler(Exception.class)
 	@ResponseBody

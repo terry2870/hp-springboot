@@ -2,6 +2,7 @@ package com.hp.springboot.common.util;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -23,6 +24,7 @@ public class JacksonUtil {
 	 */
 	public static String toJSONString(Object obj, boolean pretty) {
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(Include.NON_NULL);
 		try {
 			if (pretty) {
 				return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);

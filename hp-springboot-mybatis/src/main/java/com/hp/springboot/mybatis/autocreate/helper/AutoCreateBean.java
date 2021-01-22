@@ -27,11 +27,11 @@ public class AutoCreateBean extends AbstractBean {
 	private String projectPackage = "com.yoho.none";//DAO生成的包地址
 	private String mappingDir = "src/main/resources/META-INF/mybatis";
 	private String webMavenModuleName = "start";//启动的项目名
-	private String dalMavenModule = "dal";//dal所在的子项目名称
+	private String daoMavenModule = "dao";//dao所在的子项目名称
 	private String commonMavenModule = "common";//common所在的子项目名称
 	private String modelMavenModule = "model";//model所在的子项目名称
 	
-	private String dalPackageName = "dal";
+	private String daoPackageName = "dao";
 	private String commonPackageName = "common";
 	private String modelPackageName = "model";
 	private String servicePackageName = "service";
@@ -108,11 +108,11 @@ public class AutoCreateBean extends AbstractBean {
 	public void setWebMavenModuleName(String webMavenModuleName) {
 		this.webMavenModuleName = webMavenModuleName;
 	}
-	public String getDalMavenModule() {
-		return dalMavenModule;
+	public String getDaoMavenModule() {
+		return daoMavenModule;
 	}
-	public void setDalMavenModule(String dalMavenModule) {
-		this.dalMavenModule = dalMavenModule;
+	public void setDaoMavenModule(String daoMavenModule) {
+		this.daoMavenModule = daoMavenModule;
 	}
 	public String getCommonMavenModule() {
 		return commonMavenModule;
@@ -126,11 +126,11 @@ public class AutoCreateBean extends AbstractBean {
 	public void setModelMavenModule(String modelMavenModule) {
 		this.modelMavenModule = modelMavenModule;
 	}
-	public String getDalPackageName() {
-		return dalPackageName;
+	public String getDaoPackageName() {
+		return daoPackageName;
 	}
-	public void setDalPackageName(String dalPackageName) {
-		this.dalPackageName = dalPackageName;
+	public void setDaoPackageName(String daoPackageName) {
+		this.daoPackageName = daoPackageName;
 	}
 	public String getCommonPackageName() {
 		return commonPackageName;

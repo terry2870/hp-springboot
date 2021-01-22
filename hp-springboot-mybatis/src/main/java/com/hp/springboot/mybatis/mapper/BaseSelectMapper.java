@@ -127,7 +127,7 @@ public interface BaseSelectMapper<MODEL, PK> extends IBaseSelectDAO<MODEL, PK> {
 	 * @return
 	 */
 	@SelectProvider(type = BaseSelectProvider.class, method = "selectByPrimaryKeys")
-	public List<MODEL> selectByPrimaryKeys(Collection<PK> primaryKeyIdList);
+	public List<MODEL> selectByPrimaryKeys(List<PK> primaryKeyIdList);
 	
 	/**
 	 * 根据主键，批量查询（并且按照list里面id顺序排序）
@@ -135,7 +135,7 @@ public interface BaseSelectMapper<MODEL, PK> extends IBaseSelectDAO<MODEL, PK> {
 	 * @return
 	 */
 	@SelectProvider(type = BaseSelectProvider.class, method = "selectByPrimaryKeysWithInSort")
-	public List<MODEL> selectByPrimaryKeysWithInSort(Collection<PK> primaryKeyIdList);
+	public List<MODEL> selectByPrimaryKeysWithInSort(List<PK> primaryKeyIdList);
 	
 	/**
 	 * 查询列表

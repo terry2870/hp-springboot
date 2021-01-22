@@ -14,11 +14,11 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Strings;
 import com.hp.springboot.database.bean.DynamicColumnBean;
 import com.hp.springboot.database.bean.DynamicEntityBean;
 import com.hp.springboot.database.bean.SQLBuilders;
@@ -118,7 +118,7 @@ public class BaseDeleteSQLProvider {
 		
 		String where = MybatisSQLBuilderHelper.getSQLBySQLBuild(builders);
 		
-		if (StringUtils.isEmpty(where)) {
+		if (Strings.isNullOrEmpty(where)) {
 			log.error("deleteByBuilder error. with where sql is empty. not allow. with \r\nparams={}, \r\nentity={}", target, entity);
 			throw new ProviderSQLException("deleteByBuilder error. with where sql is empty");
 		}

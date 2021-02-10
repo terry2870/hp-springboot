@@ -1,6 +1,10 @@
 package com.hp.springboot.admin.service;
 
-import org.apache.commons.collections4.MultiValuedMap;
+import java.util.List;
+
+import com.hp.springboot.admin.model.request.SysMenuRequestBO;
+import com.hp.springboot.admin.model.response.SysMenuResponseBO;
+import com.hp.springboot.common.enums.StatusEnum;
 
 /**
  * 描述：菜单的service
@@ -8,12 +12,26 @@ import org.apache.commons.collections4.MultiValuedMap;
  * 时间：2021年1月13日
  */
 public interface ISysMenuService {
-
+	
 	/**
-	 * @Title: queryAllRoleMenu
-	 * @Description: 查询所有菜单需要的角色权限，就是访问该菜单需要的角色
-	 * key=菜单url，value就是角色Id列表
+	 * @Title: queryUserSysMenu
+	 * @Description: 查询用户可以看到的菜单
+	 * @param status
 	 * @return
 	 */
-	MultiValuedMap<String, String> queryAllMenuRoles();
+	List<SysMenuResponseBO> queryUserSysMenu(StatusEnum status);
+	
+	/**
+	 * @Title: saveSysMenu
+	 * @Description: 保存系统菜单表
+	 * @param request
+	 */
+	void saveSysMenu(SysMenuRequestBO request);
+
+	/**
+	 * @Title: deleteSysMenu
+	 * @Description: 删除系统菜单表
+	 * @param id
+	 */
+	void deleteSysMenu(Integer id);
 }

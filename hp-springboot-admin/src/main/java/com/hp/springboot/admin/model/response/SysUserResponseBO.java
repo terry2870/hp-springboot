@@ -53,6 +53,11 @@ public class SysUserResponseBO extends BaseResponseBO implements UserDetails {
 	private String phoneNumber;
 	
 	/**
+	 * 用户头像
+	 */
+	private String headIcon;
+	
+	/**
 	 * 地址
 	 */
 	private String address;
@@ -211,6 +216,14 @@ public class SysUserResponseBO extends BaseResponseBO implements UserDetails {
 	
 	public void setAuthorities(Collection<GrantedAuthority> authorities) {
 		this.authorities = authorities;
+	}
+
+	public String getHeadIcon() {
+		return headIcon;
+	}
+
+	public void setHeadIcon(String headIcon) {
+		this.headIcon = headIcon;
 	}
 
 }

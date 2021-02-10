@@ -2,6 +2,7 @@ package com.hp.springboot.admin.model.request;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hp.springboot.common.bean.BaseRequestBO;
 
 /**
@@ -20,7 +21,7 @@ public class SysUserRequestBO extends BaseRequestBO {
 	/**
 	 * 用户名
 	 */
-	private String userName;
+	private String nickName;
 
 	/**
 	 * 登录名
@@ -30,6 +31,7 @@ public class SysUserRequestBO extends BaseRequestBO {
 	/**
 	 * 登录密码
 	 */
+	@JsonIgnore
 	private String loginPwd;
 
 	/**
@@ -41,6 +43,11 @@ public class SysUserRequestBO extends BaseRequestBO {
 	 * 固定电话
 	 */
 	private String phoneNumber;
+	
+	/**
+	 * 用户头像
+	 */
+	private String headIcon;
 
 	/**
 	 * 用户地址
@@ -92,14 +99,6 @@ public class SysUserRequestBO extends BaseRequestBO {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	public String getLoginName() {
@@ -212,6 +211,22 @@ public class SysUserRequestBO extends BaseRequestBO {
 
 	public void setRoleIdList(List<Integer> roleIdList) {
 		this.roleIdList = roleIdList;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
+	public String getHeadIcon() {
+		return headIcon;
+	}
+
+	public void setHeadIcon(String headIcon) {
+		this.headIcon = headIcon;
 	}
 
 }

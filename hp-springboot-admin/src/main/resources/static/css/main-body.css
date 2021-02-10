@@ -1,5 +1,3 @@
-.main-body {
-	padding: 10px 15px 10px 15px; 
+.search-div {
+	margin-top: 10px;
 }
-
-@import url("jquery.messager.css");

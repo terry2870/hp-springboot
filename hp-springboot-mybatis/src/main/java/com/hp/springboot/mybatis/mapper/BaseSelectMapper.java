@@ -45,7 +45,8 @@ public interface BaseSelectMapper<MODEL, PK> extends IBaseSelectDAO<MODEL, PK> {
 	public MODEL selectOneBySQL(@Param(SQLProviderConstant.SQL_ALIAS) SQL sql, @Param(SQLProviderConstant.PARAM_OBJECT_ALIAS) Object param);
 	
 	/**
-	 * 根据传入的sql，查询指定的对象
+	 * 根据传入的sql，查询指定的一个对象
+	 * 只能查询一列
 	 * @param <T>
 	 * @param sql
 	 * @param param
@@ -53,7 +54,20 @@ public interface BaseSelectMapper<MODEL, PK> extends IBaseSelectDAO<MODEL, PK> {
 	 * @return
 	 */
 	@SelectProvider(type = BaseSelectProvider.class, method = "selectBySQL")
-	public <T> T selectAnyBySQL(@Param(SQLProviderConstant.SQL_ALIAS) SQL sql, @Param(SQLProviderConstant.PARAM_OBJECT_ALIAS) Object param, Class<T> clazz);
+	public <T> T selectAnyOneBySQL(@Param(SQLProviderConstant.SQL_ALIAS) SQL sql, @Param(SQLProviderConstant.PARAM_OBJECT_ALIAS) Object param, Class<T> clazz);
+	
+	/**
+	 * @Title: selectAnyListBySQL
+	 * @Description: 根据传入的sql，查询指定的对象list
+	 * 只能查询一列
+	 * @param <T>
+	 * @param sql
+	 * @param param
+	 * @param clazz
+	 * @return
+	 */
+	@SelectProvider(type = BaseSelectProvider.class, method = "selectBySQL")
+	public <T> List<T> selectAnyListBySQL(@Param(SQLProviderConstant.SQL_ALIAS) SQL sql, @Param(SQLProviderConstant.PARAM_OBJECT_ALIAS) Object param, Class<T> clazz);
 	
 	/**
 	 * 查询总数
@@ -102,7 +116,7 @@ public interface BaseSelectMapper<MODEL, PK> extends IBaseSelectDAO<MODEL, PK> {
 	 * @return
 	 */
 	@SelectProvider(type = BaseSelectProvider.class, method = "selectListByRange")
-	public List<MODEL> selectListByRange(@Param(SQLProviderConstant.MIN_ID_ALIAS) PK minId, @Param(SQLProviderConstant.MAX_ID_ALIAS) PK maxId, @Param(SQLProviderConstant.SQL_BUILDS_ALIAS) SQLBuilders... sqlBuilders);
+	public List<MODEL> selectListByRange(@Param(SQLProviderConstant.MIN_ID_ALIAS) PK minId, @Param(SQLProviderConstant.MAX_ID_ALIAS) PK maxId, @Param(SQLProviderConstant.SQL_BUILDS_ALIAS) SQLBuilders sqlBuilders);
 	
 	/**
 	 * 根据条件，查询大于某一个id值的数据
@@ -111,7 +125,7 @@ public interface BaseSelectMapper<MODEL, PK> extends IBaseSelectDAO<MODEL, PK> {
 	 * @return
 	 */
 	@SelectProvider(type = BaseSelectProvider.class, method = "selectListByLargeThanId")
-	public List<MODEL> selectListByLargeThanId(@Param(SQLProviderConstant.LARGETHAN_ID_OBJECT_ALIAS) PK largeThanId, @Param(SQLProviderConstant.SQL_BUILDS_ALIAS) SQLBuilders... sqlBuilders);
+	public List<MODEL> selectListByLargeThanId(@Param(SQLProviderConstant.LARGETHAN_ID_OBJECT_ALIAS) PK largeThanId, @Param(SQLProviderConstant.SQL_BUILDS_ALIAS) SQLBuilders sqlBuilders);
 	
 	/**
 	 * 根据主键查询

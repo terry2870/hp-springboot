@@ -2,6 +2,8 @@ package com.hp.springboot.admin.util;
 
 import java.util.Collection;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -34,18 +36,17 @@ public class SecuritySessionUtil {
 	 * @return
 	 */
 	public static SysUserResponseBO getSessionData() {
+		Authentication authentication = getAuthentication();
+		if (authentication == null) {
+			return null;
+		}
 		if (isAnonymous()) {
 			// 匿名用户
 			return AdminConstants.ANONYMOUS_USER;
 		}
 		
-		if (isAdmin()) {
-			// admin用户
-			return AdminConstants.ADMIN_USER;
-		}
-		
-		// 普通用户
-		return (SysUserResponseBO) getAuthentication().getPrincipal();
+		// 登录用户
+		return (SysUserResponseBO) ServletUtil.getSession().getAttribute(AdminConstants.SESSION_USER_KEY);
 	}
 	
 	/**
@@ -71,6 +72,9 @@ public class SecuritySessionUtil {
 		}
 		
 		Authentication authentication = getAuthentication();
+		if (authentication == null) {
+			return false;
+		}
 		Collection<? extends GrantedAuthority>  authoritiesList = authentication.getAuthorities();
 		if (CollectionUtils.isEmpty(authoritiesList) || authoritiesList.size() != 1) {
 			// admin用户只有一个admin的角色
@@ -82,5 +86,15 @@ public class SecuritySessionUtil {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * @Title: isAjax
+	 * @Description: 判断是否为ajax
+	 * @param request
+	 * @return
+	 */
+	public static boolean isAjax(HttpServletRequest request) {
+		return StringUtils.equalsIgnoreCase(request.getHeader("X-Requested-With"), "XMLHttpRequest");
 	}
 }

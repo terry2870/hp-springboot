@@ -14,7 +14,7 @@ import com.hp.springboot.admin.interceptor.AdminExceptionHandler;
  * 时间：2021年1月11日
  */
 @Configuration
-@MapperScan("com.hp.springboot.admin.dao")
+@MapperScan("com.hp.springboot.admin.dal")
 @ComponentScan({"com.hp.springboot.admin.controller", "com.hp.springboot.admin.service"})
 @ImportResource(locations = {"classpath*:META-INF/spring/hp-springboot-admin.xml"})
 public class AdminAutoConfiguration {
@@ -29,4 +29,5 @@ public class AdminAutoConfiguration {
 	public AdminExceptionHandler exceptionHandler() {
 		return new AdminExceptionHandler();
 	}
+
 }

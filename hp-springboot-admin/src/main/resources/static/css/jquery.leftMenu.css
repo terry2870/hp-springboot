@@ -1,27 +1,39 @@
 @charset "utf-8";
 .top-banner {
 	background-color: #16213a;
-	height: 50px;
-	line-height: 50px;
-	font-size: 24px;
+	height: 40px;
+	line-height: 40px;
 	font-family: 'Microsoft Yahei', 'Times New Roman', Times, serif;
 	color: whitesmoke;
 }
 
-.top-banner .user {
-	text-align: right;
-}
-
 .top-banner .title {
 	width: 220px;
+	font-size: 24px;
 	max-width: 220px;
+}
+
+.top-banner .menu ul li {
+	cursor: pointer;
+}
+
+.top-banner .menu ul li>a {
+	padding: 0 12px;
+	color: rgba(255, 255, 255, 0.65);
+}
+
+.top-banner .menu ul li:hover {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+.top-banner .menu ul li:hover>a {
+	color: #fff;
 }
 
 .main {
 	width: 100%;
-	/* height: calc(100% - 50px); */
-	height: calc(100% - 50px);
-	max-height: calc(100% - 50px);
+	height: calc(100% - 40px);
+	max-height: calc(100% - 40px);
 	position: fixed;
 }
 
@@ -29,7 +41,7 @@
 	width: 220px;
 	height: 100%;
 	max-width: 220px;
-	background-color: #16213a;
+	background-color: #2a3651;
 	padding: 0px;
 	display: block;
 	font: 14px "微软雅黑","宋体","Arial Narrow",HELVETICA;
@@ -39,7 +51,7 @@
 
 .main .nav-main .nav-top {
 	width: 100%;
-	height: 61px;
+	height: 51px;
 }
 .nav-main .nav-top #mini {
 	border-bottom : 1px solid rgba(255,255,255,.1);
@@ -47,6 +59,8 @@
 .nav-main .nav-top #mini img {
 	cursor: pointer;
 	opacity: 0.8;
+	width: 50px;
+	height: 50px;
 }
 
 .nav-main .scroll-bar-warp {
@@ -70,10 +84,6 @@
 	opacity: 0.8;
 }
 
-.nav-main .nav-top #mini img:hover {
-	opacity: 1;
-}
-
 .nav-main a {
 	display: block;
 	overflow: hidden;
@@ -86,15 +96,20 @@
 }
 
 .nav-main a span {
-	margin-left: 30px;
+	margin-left: 10px;
 }
 
 .nav-main a span.sub-menu {
-	margin-left: 40px;
+	margin-left: 10px;
 }
 
 .nav-item {
 	position: relative;
+	background-color: #2a3051;
+}
+
+.nav-menu >li:nth-of-type(n+2) {
+	margin-top: 2px;
 }
 
 .nav-item.nav-show {
@@ -123,8 +138,14 @@
 
 .nav-main .nav-icon {
 	font-size: 20px;
-	position: absolute;
+	/* position: absolute; */
 	margin-left: -1px;
+}
+
+.nav-main .nav-sub-icon {
+	font-size: 20px;
+	/* position: absolute; */
+	margin-left: 30px;
 }
 
 /*---------------------*/

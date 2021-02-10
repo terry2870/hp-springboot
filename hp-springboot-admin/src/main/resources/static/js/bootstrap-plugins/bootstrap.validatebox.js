@@ -66,6 +66,9 @@
 			placement : opt.placement,
 			trigger : "manual"
 		});
+		jq.on("shown.bs.tooltip", function() {
+			
+		});
 		jq.tooltip("show");
 	}
 

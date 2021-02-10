@@ -43,7 +43,7 @@ public class MyBatisAutoConfiguration {
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(dynamicDatasource);
 		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-		sqlSessionFactoryBean.setMapperLocations(resolver.getResources("META-INF/mybatis/*.xml"));
+		sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:META-INF/mybatis/*.xml"));
 		sqlSessionFactoryBean.setConfigLocation(new ClassPathResource("META-INF/spring/mybatis-config.xml"));
 		return sqlSessionFactoryBean;
 	}

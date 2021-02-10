@@ -132,7 +132,7 @@ public class BaseSelectProvider {
 	public static String selectListByRange(Map<String, Object> target) {
 		DynamicEntityBean entity = BaseSQLAOPFactory.getEntity();
 		SQLBuilders builders = getSpecialSQLBuilders(target)
-				.withSqlWherePrefix(SQLProviderConstant.SQL_BUILDS_ALIAS + "[0]." + SQLProviderConstant.SQL_WHERE_ALIAS)
+				.withSqlWherePrefix(SQLProviderConstant.SQL_BUILDS_ALIAS + "." + SQLProviderConstant.SQL_WHERE_ALIAS)
 				;
 		
 		String sql = getSQL(builders, entity, entity.getPrimaryKeyColumnName() + " >= #{"+ SQLProviderConstant.MIN_ID_ALIAS +"}", entity.getPrimaryKeyColumnName() + " < #{"+ SQLProviderConstant.MAX_ID_ALIAS +"}");
@@ -312,7 +312,7 @@ public class BaseSelectProvider {
 	 * @return
 	 */
 	public static List<SQLWhere> getSpecialSQLWheres(Map<String, Object> target) {
-		SQLWhere[] wheres = (SQLWhere[])target.get(SQLProviderConstant.SQL_WHERE_ALIAS);
+		SQLWhere[] wheres = (SQLWhere[]) target.get(SQLProviderConstant.SQL_WHERE_ALIAS);
 		if (wheres == null || wheres.length == 0) {
 			return null;
 		} else {
@@ -320,12 +320,18 @@ public class BaseSelectProvider {
 		}
 	}
 	
+	/**
+	 * @Title: getSpecialSQLBuilders
+	 * @Description: 获取SQLBuilders
+	 * @param target
+	 * @return
+	 */
 	private static SQLBuilders getSpecialSQLBuilders(Map<String, Object> target) {
-		SQLBuilders[] builders = (SQLBuilders[])target.get(SQLProviderConstant.SQL_BUILDS_ALIAS);
-		if (builders == null || builders.length == 0) {
+		SQLBuilders builders = (SQLBuilders) target.get(SQLProviderConstant.SQL_BUILDS_ALIAS);
+		if (builders == null) {
 			return SQLBuilders.create();
 		} else {
-			return builders[0];
+			return builders;
 		}
 	}
 }

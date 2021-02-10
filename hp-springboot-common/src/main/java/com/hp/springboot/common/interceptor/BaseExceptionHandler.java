@@ -51,13 +51,12 @@ public abstract class BaseExceptionHandler {
 			return new Response<>(ex.getCode(), ex.getMessage());
 		}
 		
-		log.error("enter requestUrl={}. with exception is:", url, exception);
-		
 		Response<Object> resp = handleException(request, response, exception);
 		if (resp != null) {
 			return resp;
 		}
 		
+		log.error("enter requestUrl={}. with exception is:", url, exception);
 		response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		return Response.error(exception.getMessage());
 	}

@@ -172,14 +172,14 @@
 	 */
 	function _validate(jq) {
 		//获取该form下，所有的需要验证的表单
-		var allEl = jq.find("[validatebox='1']");
+		let allEl = jq.find("[validatebox='1']");
 		if (!allEl || allEl.length == 0) {
 			return true;
 		}
 		
 		//遍历所有的需要验证的控件
-		var result = null;
-		for (var i = 0; i < allEl.length; i++) {
+		let result = null;
+		for (let i = 0; i < allEl.length; i++) {
 			result = $(allEl[i]).validatebox("validate");
 			if (result === false) {
 				return false;
@@ -238,7 +238,7 @@
 		 * success : function(data) {}					//提交成功后的回调
 		 */
 		submit : function(submitParam) {
-			var jq = $(this);
+			let jq = $(this);
 			return jq.each(function() {
 				_submit(jq, submitParam);
 			});
@@ -253,13 +253,13 @@
 		 * 加载数据
 		 */
 		load : function(data) {
-			var jq = $(this);
+			let jq = $(this);
 			return jq.each(function() {
 				_setData(jq, data);
 			});
 		},
 		reset : function() {
-			var jq = $(this);
+			let jq = $(this);
 			return jq.each(function() {
 				_reset(jq);
 			});

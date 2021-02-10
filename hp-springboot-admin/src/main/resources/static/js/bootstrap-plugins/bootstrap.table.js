@@ -53,7 +53,7 @@
 		} : null;
 		jq.card($.extend({}, opt, {
 			width : opt.width ? opt.width : "100%",
-			height : opt.height ? opt.height : "100%",
+			height : opt.height ? opt.height : "auto",
 			top : opt.top ? opt.top : 0,
 			left : opt.left ? opt.left : 0,
 			header : header,
@@ -180,7 +180,7 @@
 		} else {
 			//从本地数据生成
 			_createTableFromData(jq, opt.data);
-			let totalData = _getTotalAndData(data);
+			let totalData = _getTotalAndData(opt.data);
 			_createPagination(jq, opt, totalData.total);
 			$.tools.markSuccess(jq, pluginName);
 		}
@@ -191,6 +191,12 @@
 	 * @param {*} data
 	 */
 	function _getTotalAndData(data) {
+		if (!data) {
+			return {
+				total : 0,
+				rows : []
+			};
+		}
 		let total = 0;
 		let rows = [];
 		if ($.type(data) === "object") {
@@ -588,6 +594,17 @@
 			return _getRow(this, index);
 		},
 		/**
+		 * 获取这一行数据
+		 * @param {*} index 
+		 */
+		getRowData : function(index) {
+			let row = _getRow(this, index);
+			if (!row) {
+				return {};
+			}
+			return $(row).data(ROW_DATA_NAME);
+		},
+		/**
 		 * 获取所有行的数据
 		 */
 		getAllData : function() {
@@ -637,9 +654,27 @@
 		 * @param {*} param 
 		 */
 		load : function(param) {
-			let self = this;
+			let jq = this;
 			return this.each(function() {
-				_load(self, param);
+				_load(jq, param);
+			});
+		},
+		/**
+		 * 全选
+		 */
+		checkAll : function() {
+			let jq = this;
+			return this.each(function() {
+				_checkAll(jq, true);
+			});
+		},
+		/**
+		 * 取消全选
+		 */
+		unCheckAll : function() {
+			let jq = this;
+			return this.each(function() {
+				_checkAll(jq, false);
 			});
 		}
 	};
@@ -700,7 +735,6 @@
 		sortName : "",					//排序字段
 		sortOrder : "ASC",				//排序方式(ASC，DESC)
 		data : null,					//如果不用url，则可以直接传入data
-		singleSelect : false,			//是否单选
 		idField : null,					//表示id值的字段
 		/**
 		 * 对行进行格式化

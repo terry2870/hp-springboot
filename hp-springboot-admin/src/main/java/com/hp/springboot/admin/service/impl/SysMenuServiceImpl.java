@@ -1,30 +1,29 @@
 package com.hp.springboot.admin.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.collections4.MultiValuedMap;
-import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hp.springboot.admin.constant.AdminConstants;
-import com.hp.springboot.admin.dao.ISysMenuDAO;
-import com.hp.springboot.admin.dao.ISysRoleMenuDAO;
-import com.hp.springboot.admin.dao.model.SysMenu;
-import com.hp.springboot.admin.dao.model.SysRoleMenu;
+import com.hp.springboot.admin.convert.BaseConvert;
+import com.hp.springboot.admin.convert.SysMenuConvert;
+import com.hp.springboot.admin.dal.ISysMenuDAO;
+import com.hp.springboot.admin.dal.model.SysMenu;
+import com.hp.springboot.admin.model.request.SysMenuRequestBO;
+import com.hp.springboot.admin.model.response.SysMenuResponseBO;
+import com.hp.springboot.admin.model.response.SysUserResponseBO;
 import com.hp.springboot.admin.service.ISysMenuService;
-import com.hp.springboot.common.constant.GoogleContant;
+import com.hp.springboot.admin.util.SecuritySessionUtil;
+import com.hp.springboot.common.enums.StatusEnum;
+import com.hp.springboot.common.util.DateUtil;
+import com.hp.springboot.common.util.NumberUtil;
+import com.hp.springboot.database.bean.OrderBy;
 import com.hp.springboot.database.bean.SQLBuilders;
+import com.hp.springboot.database.bean.SQLWhere;
 
 /**
  * 描述：菜单的service实现
@@ -37,68 +36,71 @@ public class SysMenuServiceImpl implements ISysMenuService {
 	private static Logger log = LoggerFactory.getLogger(SysMenuServiceImpl.class);
 	
 	@Autowired
-	private ISysRoleMenuDAO sysRoleMenuDAO;
-	@Autowired
 	private ISysMenuDAO sysMenuDAO;
-	
+
 	@Override
-	public synchronized MultiValuedMap<String, String> queryAllMenuRoles() {
-		log.info("start to queryAllMenuRoles.");
-		if (AdminConstants.MENU_ROLES_MAP != null) {
-			// 首先从缓存中获取
-			return AdminConstants.MENU_ROLES_MAP;
-		}
+	public List<SysMenuResponseBO> queryUserSysMenu(StatusEnum status) {
+		log.info("queryUserSysMenu start. with status={}", status);
 		
-		MultiValuedMap<String, String> resp = new ArrayListValuedHashMap<>();
-		
-		// 缓存没有，则查询数据库
-		List<SysRoleMenu> roleMenuList = sysRoleMenuDAO.selectList(SQLBuilders.create());
-		if (CollectionUtils.isNotEmpty(roleMenuList)) {
-			Set<Integer> menuIdSet = new HashSet<>();
-			// 遍历，获取所有menuId
-			for (SysRoleMenu sysRoleMenu : roleMenuList) {
-				menuIdSet.add(sysRoleMenu.getMenuId());
+		List<SysMenu> menuList = null;
+		//查询当前用户的菜单
+		if (SecuritySessionUtil.isAdmin()) {
+			// admin用户
+			menuList = sysMenuDAO.selectList(SQLBuilders.create()
+					.withWhere(SQLWhere.builder()
+							.eq("status", status == null ? null : status.getValue())
+							.build())
+					.withOrder(OrderBy.of("parent_menu_id"), OrderBy.of("sort_number"))
+					);
+		} else {
+			SysUserResponseBO user = SecuritySessionUtil.getSessionData();
+			// 其他用户
+			List<Integer> menuIdList = sysMenuDAO.selectByUserId(user.getId());
+			if (CollectionUtils.isEmpty(menuIdList)) {
+				return null;
 			}
 			
-			// 查询这些菜单详细信息
-			List<SysMenu> menuList = sysMenuDAO.selectByPrimaryKeys(new ArrayList<>(menuIdSet));
-			if (CollectionUtils.isNotEmpty(menuList)) {
-				// list转成map
-				Map<Integer, SysMenu> menuMap = new HashMap<>();
-				MapUtils.populateMap(menuMap, menuList, SysMenu::getId);
-				
-				// 遍历roleMenulList
-				SysMenu menu = null;
-				List<String> extraUrlList = null;
-				for (SysRoleMenu sysRoleMenu : roleMenuList) {
-					menu = menuMap.get(sysRoleMenu.getMenuId());
-					if (menu == null) {
-						continue;
-					}
-					// 以menuUrl为key，roleId为value
-					resp.put(menu.getMenuUrl(), sysRoleMenu.getRoleId().toString());
-					
-					// 再遍历extraUrl字段，也一起设置进去
-					if (StringUtils.isEmpty(menu.getExtraUrl())) {
-						continue;
-					}
-					
-					extraUrlList = GoogleContant.COMMA_SPLITTER.splitToList(menu.getExtraUrl());
-					if (CollectionUtils.isEmpty(extraUrlList)) {
-						continue;
-					}
-					
-					// 放入map
-					for (String str : extraUrlList) {
-						resp.put(str, sysRoleMenu.getRoleId().toString());
-					}
-				}
-			}
+			// 根据id，批量查询菜单信息
+			menuList = sysMenuDAO.selectByPrimaryKeys(menuIdList);
 		}
 		
-		// 写入缓存
-		AdminConstants.MENU_ROLES_MAP = resp;
-		return resp;
+		if (CollectionUtils.isEmpty(menuList)) {
+			return null;
+		}
+		
+		List<SysMenuResponseBO> respList = new ArrayList<>(menuList.size());
+		for (SysMenu menu : menuList) {
+			respList.add(SysMenuConvert.dal2BOResponse(menu));
+		}
+		return respList;
+	}
+	
+	@Override
+	public void saveSysMenu(SysMenuRequestBO request) {
+		log.info("saveSysMenu with request={}", request);
+		SysMenu dal = SysMenuConvert.boRequest2Dal(request);
+		if (NumberUtil.isEmpty(request.getId())) {
+			//新增
+			BaseConvert.convertModel(dal);
+			sysMenuDAO.insertSelective(dal);
+		} else {
+			//修改
+			dal.setUpdateTime(DateUtil.getCurrentTimeSeconds());
+			sysMenuDAO.updateByPrimaryKeySelective(dal);
+		}
+		log.info("saveSysMenu success with request={}", request);
+	}
+
+	@Override
+	public void deleteSysMenu(Integer id) {
+		log.info("deleteSysMenu with id={}", id);
+		// 使用逻辑删除
+		SysMenu menu = new SysMenu();
+		menu.setId(id);
+		menu.setStatus(StatusEnum.VALID.getValue());
+		menu.setUpdateTime(DateUtil.getCurrentTimeSeconds());
+		sysMenuDAO.updateByPrimaryKeySelective(menu);
+		log.info("deleteSysMenu success with id={}", id);
 	}
 
 }

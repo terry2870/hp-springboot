@@ -22,7 +22,7 @@
 	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 	">
 	<aop:config>
-		<aop:pointcut id="adminDaoMethodPoint" expression="execution(* com.hp.springboot.admin.dao.*.*(..))"/>
+		<aop:pointcut id="adminDaoMethodPoint" expression="execution(* com.hp.springboot.admin.dal.*.*(..))"/>
 		<aop:advisor pointcut-ref="adminDaoMethodPoint" advice-ref="DAOMethodInterceptorHandle" />
 	</aop:config>
 	

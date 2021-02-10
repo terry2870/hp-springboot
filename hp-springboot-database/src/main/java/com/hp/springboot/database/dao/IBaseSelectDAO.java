@@ -60,7 +60,7 @@ public interface IBaseSelectDAO<MODEL, PK> {
 	 * @param sqlBuilders
 	 * @return
 	 */
-	public List<MODEL> selectListByRange(PK minId, PK maxId, SQLBuilders... sqlBuilders);
+	public List<MODEL> selectListByRange(PK minId, PK maxId, SQLBuilders sqlBuilders);
 	
 	/**
 	 * 根据条件，查询大于某一个id值的数据
@@ -68,7 +68,7 @@ public interface IBaseSelectDAO<MODEL, PK> {
 	 * @param sqlBuilders
 	 * @return
 	 */
-	public List<MODEL> selectListByLargeThanId(PK largeThanId, SQLBuilders... sqlBuilders);
+	public List<MODEL> selectListByLargeThanId(PK largeThanId, SQLBuilders sqlBuilders);
 	
 	/**
 	 * 根据主键查询

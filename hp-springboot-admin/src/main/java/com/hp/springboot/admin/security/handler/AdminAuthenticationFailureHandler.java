@@ -47,7 +47,7 @@ public class AdminAuthenticationFailureHandler implements AuthenticationFailureH
 		} else if (exception instanceof DisabledException) {
 			message = "账户被禁用，请联系管理员!";
 		} else if (exception instanceof ValidateCodeException) {
-			message = "验证码输入错误，请重新输入！";
+			message = exception.getMessage();
 		} else if (exception instanceof InsufficientAuthenticationException) {
 			message = exception.getMessage();
 		} else {

@@ -63,7 +63,7 @@ function createSVG(tagName) {
  */
 function createSVGIcon(svgIcon, contextPath, property) {
 	if (!svgIcon) {
-		svgIcon = "gear";
+		return "";
 	}
 
 	let icon = createSVG("svg");

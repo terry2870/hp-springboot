@@ -16,6 +16,10 @@ public class ValidateCodeException extends AuthenticationException {
 
 	
 	public ValidateCodeException() {
-		super("validateCode is input error.");
+		super("验证码输入不正确！");
+	}
+	
+	public ValidateCodeException(String message) {
+		super(message);
 	}
 }

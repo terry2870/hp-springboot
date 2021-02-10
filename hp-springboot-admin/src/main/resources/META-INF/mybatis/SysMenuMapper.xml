@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.springboot.admin.dal.ISysMenuDAO">
+	<resultMap id="BaseResultMap" type="com.hp.springboot.admin.dal.model.SysMenu">
+	</resultMap>
+	
+	<!-- 查询该用户的菜单（非超级管理员） -->
+	<select id="selectByUserId" resultType="java.lang.Integer">
+		select DISTINCT t1.menu_id from sys_role_menu t1 where t1.role_id IN (SELECT t2.role_id FROM sys_user_role t2 WHERE t2.user_id=#{userId})
+		and exists (select 1 from sys_menu t3 where t1.menu_id=t3.id and t3.status=1)
+	</select>
+
+</mapper>

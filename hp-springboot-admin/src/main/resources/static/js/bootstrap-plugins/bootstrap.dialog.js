@@ -37,12 +37,24 @@
 			role : "dialog",
 			"aria-hidden" : true
 		}).css({
-			"z-index" : 9000
+			//"z-index" : 9000
 		});
 
 		let dialog = $("<div>").addClass("modal-dialog modal-dialog-scrollable").appendTo(jq);
 		if (opt.center === true) {
 			dialog.addClass("modal-dialog-centered");
+		}
+		if (opt.width) {
+			dialog.css({
+				"max-width" : opt.width,
+				"width" : opt.width
+			});
+		}
+		if (opt.height) {
+			dialog.css({
+				"max-height" : opt.height,
+				"height" : opt.height
+			});
 		}
 		let content = $("<div>").css({
 			//"min-height" : "250px"
@@ -116,12 +128,10 @@
 		let body = $("<div>").addClass("modal-body").appendTo(content);
 		if (opt.url) {
 			//从远端获取数据
-			$.post(opt.url, opt.queryParams, function(loadData) {
-				body.append(loadData);
+			body.load(opt.url, opt.queryParams, function(loadData) {
 				if (opt.onLoadSuccess) {
 					opt.onLoadSuccess.call(jq, loadData);
 				}
-			}).then(function() {
 				$.tools.markSuccess(jq, pluginName);
 			});
 		} else if (opt.content) {
@@ -179,12 +189,31 @@
 		if (opt.onBeforeClose) {
 			opt.onBeforeClose.call(jq);
 		}
+
+		//清理
+		_beforeClode(jq);
+		
 		jq.next(".modal-backdrop").remove();
 		jq.remove();
 		if (opt.onAfterClose) {
 			opt.onAfterClose.call(jq);
 		}
 		//jq.modal("dispose");
+	}
+
+	/**
+	 * 关闭之前执行
+	 * @param {*} jq 
+	 */
+	function _beforeClode(jq) {
+		//查询有没有tooltip，如果有，则关闭
+		let tooltips = _getBody(jq).find("[aria-describedby]");
+		if (tooltips && tooltips.length > 0) {
+			$(tooltips).each(function(index, item) {
+				let id = $(item).attr("aria-describedby");
+				$("#" + id).remove();
+			});
+		}
 	}
 
 	/**
@@ -298,6 +327,8 @@
 	
 	//属性
 	$.fn[pluginName].defaults = $.extend({}, $.fn[pluginName].events, {
+		width : null,
+		height : null,
 		size : null,			//对话框大小（xl；lg；sm）
 		style : null,			//对话框样式
 		closeAble : true,		//是否可以关闭

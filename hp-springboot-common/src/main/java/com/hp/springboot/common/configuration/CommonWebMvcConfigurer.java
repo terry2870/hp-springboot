@@ -25,20 +25,44 @@ import com.hp.springboot.common.util.SpringContextUtil;
 @DependsOn("SpringContextUtil")
 public class CommonWebMvcConfigurer implements WebMvcConfigurer {
 
-	private static final List<String> DEFAULT_STATIC_PATTERN = Lists.newArrayList("/error", "/static/**", "/html/**", "/js/**", "/css/**", "/images/**"
-			, "/image/**", "/favicon.ico", "*.html", "*.js", "*.css", "*.jpg", "*.png", "*.gif");
+	/**
+	 * 默认静态资源
+	 */
+	private static final List<String> DEFAULT_STATIC_PATTERN = Lists.newArrayList("/layui/**", "/html/**", "/js/**", "/css/**", "/images/**"
+			, "/image/**", "/favicon.ico");
+	
+	/**
+	 * 配置的静态资源文件
+	 */
+	@Value("#{'${hp.springboot.common.static.path.patterns:}'.split(',')}")
+	private List<String> staticPatternList;
+	
+	/**
+	 * 合并后的静态资源
+	 */
+	private volatile String[] mergeStaticPatternArray;
+	
+	/**
+	 * 默认的第一免过滤
+	 */
+	private static final List<String> DEFAULT_FIRST_NO_FILTER_LIST = Lists.newArrayList("/actuator", "/health", "/refeshCheckCode", "/error");
+	
+	/**
+	 * 一级免过滤列表（不管有没有session都可以访问）
+	 */
+	@Value("#{'${hp.springboot.common.first-no-filter-urls:}'.split(',')}")
+	private List<String> firstNoFilterList;
+	
+	/**
+	 * 合并后的第一免过滤列表
+	 */
+	private volatile String[] mergeFirstNoFilterArray;
 	
 	/**
 	 * 拦截器的beanname
 	 */
 	@Value("#{'${hp.springboot.common.interceptor.beannames:}'.split(',')}")
 	private List<String> interceptorBeanNameList;
-	
-	/**
-	 * 静态资源文件
-	 */
-	@Value("#{'${hp.springboot.common.static.path.patterns:}'.split(',')}")
-	private List<String> staticPatternList;
 	
 	/**
 	 * 默认的拦截url
@@ -63,25 +87,82 @@ public class CommonWebMvcConfigurer implements WebMvcConfigurer {
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		if (CollectionUtils.isEmpty(staticPatternList) || (staticPatternList.size() == 1 && StringUtils.isEmpty(staticPatternList.get(0)))) {
-			//如果没有配置静态资源，则使用默认
-			staticPatternList = DEFAULT_STATIC_PATTERN;
-		} else {
-			//如果配置了，则加上默认的几个
-			staticPatternList.addAll(DEFAULT_STATIC_PATTERN);
-		}
 		HandlerInterceptor interceptor = null;
 		if (CollectionUtils.isEmpty(interceptorBeanNameList) || interceptorBeanNameList.size() == 0 || StringUtils.isEmpty(interceptorBeanNameList.get(0))) {
+			// 没有配置拦截器
 			return;
 		}
 		
+		// 获取静态资源
+		String[] staticArray = getMergeStaticPatternArray();
+		
+		// 循环遍历，加入拦截器 
 		for (String beanName : interceptorBeanNameList) {
 			interceptor = SpringContextUtil.getBean(beanName, HandlerInterceptor.class);
-			registry.addInterceptor(interceptor).addPathPatterns(interceptorPathPatterns).excludePathPatterns(staticPatternList);
+			registry.addInterceptor(interceptor).addPathPatterns(interceptorPathPatterns).excludePathPatterns(staticArray);
 		}
 	}
 
-	public List<String> getStaticPatternList() {
-		return staticPatternList;
+	/**
+	 * @Title: getMergeStaticPatternList
+	 * @Description: 静态资源组合
+	 * @return
+	 */
+	public synchronized String[] getMergeStaticPatternArray() {
+		if (mergeStaticPatternArray != null) {
+			return mergeStaticPatternArray;
+		}
+		
+		// 首先放入默认静态资源
+		List<String> list = Lists.newArrayList(DEFAULT_STATIC_PATTERN);
+		
+		// 判断是否有配置文件里的静态资源
+		if (CollectionUtils.isNotEmpty(staticPatternList) && !(staticPatternList.size() == 1 && StringUtils.isEmpty(staticPatternList.get(0)))) {
+			list.addAll(staticPatternList);
+		}
+		mergeStaticPatternArray = list.toArray(new String[list.size()]);
+		return mergeStaticPatternArray;
+	}
+	
+	/**
+	 * d
+	 * @Title: getMergeStaticPatternList
+	 * @Description: 静态资源组合(返回list)
+	 * @return
+	 */
+	public List<String> getMergeStaticPatternList() {
+		String[] arr = getMergeStaticPatternArray();
+		return Lists.newArrayList(arr);
+	}
+	
+	/**
+	 * @Title: getMergeFirstNoFilterArray
+	 * @Description: 合并第一级免过滤列表
+	 * @return
+	 */
+	public synchronized String[] getMergeFirstNoFilterArray() {
+		if (mergeFirstNoFilterArray != null) {
+			return mergeFirstNoFilterArray;
+		}
+		
+		// 首先放入默认地址
+		List<String> list = Lists.newArrayList(DEFAULT_FIRST_NO_FILTER_LIST);
+		
+		// 判断是否有配置文件里的第一免过滤列表
+		if (CollectionUtils.isNotEmpty(firstNoFilterList) && !(firstNoFilterList.size() == 1 && StringUtils.isEmpty(firstNoFilterList.get(0)))) {
+			list.addAll(firstNoFilterList);
+		}
+		mergeFirstNoFilterArray = list.toArray(new String[list.size()]);
+		return mergeFirstNoFilterArray;
+	}
+	
+	/**
+	 * @Title: getMergeFirstNoFilterList
+	 * @Description: 合并第一级免过滤列表()返回list
+	 * @return
+	 */
+	public List<String> getMergeFirstNoFilterList() {
+		String[] arr = getMergeFirstNoFilterArray();
+		return Lists.newArrayList(arr);
 	}
 }

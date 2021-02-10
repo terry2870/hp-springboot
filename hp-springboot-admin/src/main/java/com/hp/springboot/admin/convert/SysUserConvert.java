@@ -2,9 +2,10 @@ package com.hp.springboot.admin.convert;
 
 import org.springframework.beans.BeanUtils;
 
-import com.hp.springboot.admin.dao.model.SysUser;
+import com.hp.springboot.admin.dal.model.SysUser;
 import com.hp.springboot.admin.model.request.SysUserRequestBO;
 import com.hp.springboot.admin.model.response.SysUserResponseBO;
+import com.hp.springboot.common.enums.StatusEnum;
 import com.hp.springboot.common.util.DateUtil;
 
 /**
@@ -41,6 +42,7 @@ public class SysUserConvert {
 		SysUserResponseBO bo = new SysUserResponseBO();
 		BeanUtils.copyProperties(dal, bo);
 		bo.setCreateTimeStr(DateUtil.intToString(dal.getCreateTime()));
+		bo.setStatusStr(StatusEnum.getTextByValue(dal.getStatus()));
 		return bo;
 	}
 }

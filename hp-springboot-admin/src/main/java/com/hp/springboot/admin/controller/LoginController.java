@@ -3,8 +3,6 @@ package com.hp.springboot.admin.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,8 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hp.springboot.admin.constant.AdminConstants;
-import com.hp.springboot.admin.model.response.SysUserResponseBO;
-import com.hp.springboot.admin.util.SecuritySessionUtil;
 
 /**
  * 描述：登录相关接口控制
@@ -36,22 +32,20 @@ public class LoginController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("loginProcessingUrl", AdminConstants.LOGIN_PROCESSING_URL);
 		map.put("indexUrl", AdminConstants.INDEX_URL);
-		return new ModelAndView("index/login", map);
+		return new ModelAndView("login", map);
 	}
-	
+
 	/**
-	 * @Title: index
-	 * @Description: 打开首页
-	 * @param session
+	 * @Title: accessDenied
+	 * @Description: 拒绝访问
+	 * @param redirectUrl
 	 * @return
 	 */
-	@RequestMapping(AdminConstants.INDEX_URL)
-	public ModelAndView index(HttpSession session) {
-		log.info("enter index with");
-		SysUserResponseBO user = SecuritySessionUtil.getSessionData();
+	@RequestMapping(AdminConstants.ACCESS_DENIED_URL)
+	public ModelAndView accessDenied(String redirectUrl) {
+		log.info("enter accessDenied with redirectUrl={}.", redirectUrl);
 		Map<String, Object> map = new HashMap<>();
-		map.put("showPage", "/index/index");
-		map.put("user", user);
-		return new ModelAndView("/default", map);
+		map.put("redirectUrl", redirectUrl);
+		return new ModelAndView("accessDenied", map);
 	}
 }

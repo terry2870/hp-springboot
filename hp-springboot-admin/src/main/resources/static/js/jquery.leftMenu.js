@@ -115,6 +115,7 @@
 			return null;
 		}
 
+		//第一层菜单
 		let childNode = _findChild(opt.dataList, pid, opt);
 		if (!childNode || childNode.length == 0) {
 			return null;
@@ -132,6 +133,7 @@
 				menuid : node[opt.idField],
 				pid : node[opt.pidField]
 			}).appendTo(ul);
+			li.data("menu-data", node);
 
 			let a = $("<a>").attr("href", "javascript:;").appendTo(li);
 			a.click(function() {
@@ -143,7 +145,7 @@
 				}
 			});
 			//菜单图标
-			let menuIcon = createSVGIcon(node[opt.iconField], opt.contextPath, {
+			let menuIcon = createSVGIcon(node[opt.iconField] || "gear", opt.contextPath, {
 				class : "nav-icon",
 				fill : "currentColor"
 			})
@@ -168,27 +170,33 @@
 			let subUl = $("<ul>").appendTo(li);
 			//生成子菜单
 			$(subChildNode).each(function(index, item) {
-				let subLi = $("<li>").appendTo(subUl);
+				let subLi = $("<li>").addClass("nav-sub-menu-item").appendTo(subUl);
 				subLi.attr("menuid", item[opt.idField]);
+				subLi.data("menu-sub-data", item);
 				let subA = $("<a>").attr("href", "javascript:;").appendTo(subLi);
+
+				//菜单图标
+				let subMenuIcon = createSVGIcon(item[opt.iconField] || "justify", opt.contextPath, {
+					class : "nav-sub-icon",
+					fill : "currentColor"
+				})
+				subA.append(subMenuIcon);
+
 				subA.append($("<span>").addClass("sub-menu").text(item[opt.textField]));
 
 				subA.click(function() {
-					jq.find(".nav-menu .nav-active").removeClass("nav-active");
-					$(this).addClass("nav-active");
+					_showActive(jq, $(this).parent().attr("menuid"));
 					opt.onClickMenu.call(jq, item, index);
 				});
-
-				if (opt.selectedId && opt.selectedId == item[opt.idField]) {
-					subA.addClass("nav-active");
-				}
 			});
-			
-			if (opt.expandId && node[opt.idField] == opt.expandId) {
-				//展开
-				_expandMenu(jq, li);
-			}
+
 		}
+
+		//显示菜单为选中状态
+		_showActive(jq, opt.selectedId);
+
+		//展开
+		_expandMenu(jq, opt.expandId);
 
 		return ul;
 	}
@@ -206,8 +214,8 @@
 		}
 		for (let i = 0; i < dataList.length; i++) {
 			if (dataList[i][opt.pidField] == id) {
-				arr.push(dataList.splice(i, 1)[0]);
-				i--;
+				arr.push(dataList[i]);
+				//i--;
 			}
 		}
 		return arr;
@@ -249,9 +257,13 @@
 	/**
 	 * 展开菜单
 	 * @param {*} jq 
-	 * @param {*} item (li 对象)
+	 * @param {*} obj
 	 */
-	function _expandMenu(jq, item) {
+	function _expandMenu(jq, obj) {
+		let item = _getLiByObject(jq, obj);
+		if (!item || item.length == 0) {
+			return;
+		}
 		item.parent().find('ul').slideUp(300);
 		item.find('ul').slideDown(300);
 		item.addClass('nav-show').siblings('li').removeClass('nav-show');
@@ -260,9 +272,13 @@
 	/**
 	 * 收起菜单
 	 * @param {*} jq 
-	 * @param {*} item  (li 对象)
+	 * @param {*} obj
 	 */
-	function _collapseMenu(jq, item) {
+	function _collapseMenu(jq, obj) {
+		let item = _getLiByObject(jq, obj);
+		if (!item || item.length == 0) {
+			return;
+		}
 		item.find('ul').slideUp(300);
 		item.removeClass("nav-show");
 	}
@@ -295,17 +311,119 @@
 		_setWidth(jq, "220px");
 	}
 	
-	
+	/**
+	 * 设置宽度
+	 * @param {*} jq 
+	 * @param {*} width 
+	 */
 	function _setWidth(jq, width) {
 		jq.css({
 			width : width,
 			"max-width" : width
 		});
 	}
-	
+
+	/**
+	 * 根据对象，获取li对象
+	 * @param {*} jq 
+	 * @param {*} obj 
+	 */
+	function _getLiByObject(jq, obj) {
+		let opt = jq.data(pluginName);
+		let ul = jq.find("ul.nav-menu");
+		let li = null;
+		if ($.type(obj) == "number") {
+			li = ul.find(">li.nav-item[menuid='"+ obj +"']");
+		} else if ($.type(obj) == "string") {
+			let lis = ul.find(">li");
+			if (!lis || lis.length == 0) {
+				return;
+			}
+			for (let i = 0; i < lis.length; i++) {
+				let d = lis[i].data("menu-data");
+				if (d[opt.textField] == obj) {
+					li = lis[i];
+					break;
+				}
+			}
+		} else if ($.type(obj) == "object") {
+			li = obj;
+		}
+		return li;
+	}
+
+	/**
+	 * 选择一个菜单
+	 * @param {*} jq 
+	 * @param {*} menuId
+	 */
+	function _select(jq, menuId) {
+		let opt = jq.data(pluginName);
+		
+		let subLi = jq.find(".nav-menu .nav-item li.nav-sub-menu-item[menuid='"+ menuId +"']");
+		if (!subLi || subLi.length == 0) {
+			return;
+		}
+		
+		//选中自己
+		_showActive(jq, menuId);
+
+		//展开父节点
+		_expandMenu(jq, subLi.parent().parent());
+	}
+
+	/**
+	 * 显示菜单为选中状态
+	 * @param {*} jq 
+	 * @param {*} menuId 
+	 */
+	function _showActive(jq, menuId) {
+		if (menuId == null || menuId === "" || menuId === undefined) {
+			return;
+		}
+		jq.find(".nav-menu .nav-active").removeClass("nav-active");
+		let subA = jq.find(".nav-menu li.nav-sub-menu-item[menuid='"+ menuId +"'] a");
+		subA.addClass("nav-active");
+	}
+
 	//方法
 	$.fn[pluginName].methods = {
-
+		/**
+		 * 展开菜单
+		 * @param {*} obj 
+		 * obj为整形，则表示菜单id
+		 * obj为字符串，则表示菜单名称
+		 * obj为对象，则表示是li对象
+		 */
+		expand : function(obj) {
+			let jq = this;
+			return this.each(function() {
+				_expandMenu(jq, obj);
+			});
+		},
+		/**
+		 * 收起菜单
+		 * @param {*} obj 
+		 * obj为整形，则表示菜单id
+		 * obj为字符串，则表示菜单名称
+		 * obj为对象，则表示是li对象
+		 */
+		collapse : function(obj) {
+			let jq = this;
+			return this.each(function() {
+				_collapseMenu(jq, obj);
+			});
+		},
+		/**
+		 * 选择某一个节点
+		 * @param {*} menuId
+		 */
+		select : function(menuId) {
+			let jq = this;
+			return this.each(function() {
+				_select(jq, menuId);
+			});
+		}
 	};
 	
 	
@@ -315,35 +433,31 @@
 		 * 加载完成执行
 		 * @param data
 		 */
-		onLoadSuccess : function(data) {
-			
-		},
+		onLoadSuccess : function(data) {},
 		/**
 		 * 点击菜单执行
 		 * @param item
 		 * @param index
 		 */
-		onClickMenu : function(item, index) {
-			
-		}
+		onClickMenu : function(item, index) {}
 	};
 	
 	//属性
 	$.fn[pluginName].defaults = $.extend({}, $.fn[pluginName].events, {
 		expandId : null,							//展开的id
 		selectedId : null,							//选中的id
-		rootPid : 0,
-		idField : "id",
-		pidField : "pid",
-		textField : "text",
-		iconField : "icon",
-		ajaxParam : {
+		rootPid : 0,								//根节点的父id值
+		idField : "id",								//节点id字段
+		pidField : "pid",							//节点父id字段
+		textField : "text",							//显示文本字段
+		iconField : "icon",							//图标字段
+		ajaxParam : {								//ajax请求参数
 			dataType : "json"
 		},
-		dataList : [],
-		loadFilter : function(data) {
+		dataList : [],								//本地加载时，数据
+		loadFilter : function(data) {				//数据处理
 			return data;
 		},
-		contextPath : ""
+		contextPath : ""							//contextPath
 	});
 })(jQuery);

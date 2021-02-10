@@ -189,6 +189,7 @@ jQuery.messager = {
 	 * 一个滚动条
 	 * @param {*} param 
 	 * 	title			//标题
+	 * 	content			//内容
 	 * 	interval		//周期
 	 */
 	progress : function(param) {
@@ -239,5 +240,149 @@ jQuery.messager = {
 			});
 		}
 		
-	}
+	},
+	/**
+	 * 打开保存对话框
+	 * @param {*} obj 
+	 * 		size
+	 * 		width
+	 * 		height
+	 *		title
+	 * 		url
+	 * 		queryParams
+	 * 		showSaveBtn = true
+	 * 		showCloseBtn = true
+	 * 		saveBtn.text = '保存'
+	 * 		buttons		自定义按钮
+	 * 		handler		保存按钮的事件
+	 * 		
+	 */
+	saveDialog : function(obj) {
+		let div = $("<div>").appendTo($(window.top.document.body));
+		let buttons = obj.buttons || [];
+		if (obj.showSaveBtn !== false) {
+			if (!obj.saveBtn) {
+				obj.saveBtn = {};
+			}
+			buttons.push({
+				id : "saveBtn",
+				className : "primary",
+				text: (obj.saveBtn.text) ? obj.saveBtn.text : "保存",
+				onClick: function () {
+					if (!obj.handler) {
+						return;
+					}
+					obj.handler.dialogObject = window.top.$(div);
+					if (!obj.handler.formObject && obj.handler.formObjectId) {
+						obj.handler.formObject = window.top.$("#" + obj.handler.formObjectId);
+					}
+					$.messager.saveDialogHandler(obj.handler);
+				}
+			});
+		}
+		if (obj.showCloseBtn !== false) {
+			buttons.push({
+				text: "关闭",
+				className : "danger",
+				onClick: function () {
+					window.top.$(div).dialog("close");
+				}
+			});
+		}
+		
+		window.top.$(div).dialog({
+			size : obj.size,
+			width : obj.width,
+			height : obj.height,
+			title: obj.title,
+			url: obj.url,
+			content : obj.content,
+			queryParams: obj.queryParams,
+			buttons: buttons,
+			onAfterOpen : obj.onAfterOpen || $.noop,
+			onBeforeClose : obj.onBeforeClose || $.noop,
+			onAfterClose : obj.onAfterClose || $.noop,
+			onLoadSuccess : obj.onLoadSuccess || $.noop
+		});
+		return div;
+	},
+	/**
+	 * 保存对话框保存按钮事件
+	 * @param {*} obj 
+	 * 			dialogObject		对话框对象
+	 * 			formObject			form的对象
+	 * 			url					保存请求的url
+	 * 			onBeforeSubmit		提交之前执行
+	 * 			reloadTableObject	提交后，刷新的table对象
+	 * 			callback			提交完后回调函数（httpStatus=200，就一定执行）
+	 * 			onSuccess			提交成功后执行(httpStatus=200 && data.code=200)
+	 */
+	saveDialogHandler : function(obj) {
+		if (!obj.formObject) {
+			return;
+		}
+		if (!obj.url) {
+			return;
+		}
+		obj.formObject.form("submit", {
+			url : obj.url,
+			onBeforeSubmit : function(param) {
+				if (!obj.formObject.form("validate")) {
+					return false;
+				}
+				
+				if (obj.onBeforeSubmit) {
+					let re = obj.onBeforeSubmit(param);
+					if (re === false) {
+						return false;
+					}
+				}
+				
+				window.top.$.messager.progress({
+					title : "正在执行",
+					content : "正在执行，请稍后..."
+				});
+				return true;
+			},
+			success : function(data) {
+				window.top.$.messager.progress("close");
+				if (data) {
+					data = JSON.parse(data);
+					if (data.code == 200) {
+						if (obj.dialogObject) {
+							obj.dialogObject.dialog("close");
+						}
+						if (obj.reloadTableObject) {
+							obj.reloadTableObject.table("load");
+							obj.reloadTableObject.datagrid("unCheckAll");
+						}
+						
+						if (obj.onSuccess) {
+							obj.onSuccess(data);
+						}
+						
+						$.messager.toast({
+							title : "提示",
+							content : "保存成功！"
+						});
+					} else {
+						window.top.$.messager.alert({
+							title : "出错",
+							content : data.message,
+							icon : "error"
+						});
+					}
+					if (obj.callback) {
+						obj.callback(data);
+					}
+				} else {
+					window.top.$.messager.alert({
+						title : "出错",
+						content : data.message,
+						icon : "error"
+					});
+				}
+			}
+		});
+	},
 };

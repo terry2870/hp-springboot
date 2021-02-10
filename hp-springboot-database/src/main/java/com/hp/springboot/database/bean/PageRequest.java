@@ -24,11 +24,6 @@ public class PageRequest extends AbstractBean {
 	
 	/**
 	 * 每页条数
-	 */
-	private int rows = 10;
-	
-	/**
-	 * 每页条数
 	 * rows是用在easyui中的分页参数，其他情况下使用limit
 	 */
 	private int limit = 10;
@@ -52,7 +47,7 @@ public class PageRequest extends AbstractBean {
 	public PageModel toPageModel() {
 		PageModel model = new PageModel();
 		model.setCurrentPage(this.page);
-		model.setPageSize(this.rows);
+		model.setPageSize(this.limit);
 		if (StringUtils.isNotEmpty(this.sort)) {
 			model.addOrderBy(OrderBy.of(this.sort, this.order));
 		}
@@ -69,16 +64,7 @@ public class PageRequest extends AbstractBean {
 		} else {
 			this.page = page;
 		}
-		setStartIndex((this.page - 1) * this.rows);
-	}
-
-	public int getRows() {
-		return rows;
-	}
-
-	public void setRows(int rows) {
-		this.rows = rows;
-		setStartIndex((this.page - 1) * this.rows);
+		setStartIndex((this.page - 1) * this.limit);
 	}
 
 	public String getSort() {
@@ -114,6 +100,7 @@ public class PageRequest extends AbstractBean {
 
 	public void setLimit(int limit) {
 		this.limit = limit;
+		setStartIndex((this.page - 1) * this.limit);
 	}
 
 	

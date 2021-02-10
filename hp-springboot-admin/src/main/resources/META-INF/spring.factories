@@ -1,3 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.hp.springboot.admin.configuration.AdminAutoConfiguration,\
-com.hp.springboot.admin.configuration.AdminWebSecurityConfigurer
+com.hp.springboot.admin.security.AdminWebSecurityConfigurer

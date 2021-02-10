@@ -1,20 +1,18 @@
 package com.hp.springboot.admin.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MultiValuedMap;
-import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hp.springboot.admin.constant.AdminConstants;
-import com.hp.springboot.admin.dao.ISysUserRoleDAO;
-import com.hp.springboot.admin.dao.model.SysUserRole;
+import com.hp.springboot.admin.dal.ISysUserRoleDAO;
+import com.hp.springboot.admin.dal.model.SysUserRole;
 import com.hp.springboot.admin.service.ISysUserRoleService;
-import com.hp.springboot.database.bean.SQLBuilders;
+import com.hp.springboot.database.bean.SQLWhere;
 
 /**
  * 描述：用户与角色关系实现类
@@ -28,29 +26,26 @@ public class SysUserRoleServiceImpl implements ISysUserRoleService {
 	
 	@Autowired
 	private ISysUserRoleDAO sysUserRoleDAO;
-	
+
 	@Override
-	public synchronized MultiValuedMap<Integer, Integer> queryAllUserRole() {
-		log.info("start to call queryAllUserRole.");
+	public void insertUserRole(Integer userId, List<Integer> roleIdList) {
+		log.info("insertUserRole with userId={}, roleIdList={}", userId, roleIdList);
 		
-		if (AdminConstants.USER_ROLE_MAP != null) {
-			// 首先从缓存中获取
-			return AdminConstants.USER_ROLE_MAP;
+		//首先删除该用户关联的角色
+		sysUserRoleDAO.deleteByBuilder(SQLWhere.builder()
+				.eq("user_id", userId)
+				.build());
+		
+		if (CollectionUtils.isEmpty(roleIdList)) {
+			return;
+		}
+		List<SysUserRole> list = new ArrayList<>(roleIdList.size());
+		for (Integer roleId : roleIdList) {
+			list.add(new SysUserRole(userId, roleId));
 		}
 		
-		MultiValuedMap<Integer, Integer> resp = new ArrayListValuedHashMap<>();
-		
-		// 缓存没有，则查询数据库
-		List<SysUserRole> userRoleList = sysUserRoleDAO.selectList(SQLBuilders.create());
-		if (CollectionUtils.isNotEmpty(userRoleList)) {
-			for (SysUserRole sysUserRole : userRoleList) {
-				resp.put(sysUserRole.getUserId(), sysUserRole.getRoleId());
-			}
-		}
-		
-		// 写入缓存
-		AdminConstants.USER_ROLE_MAP = resp;
-		return resp;
+		// 批量插入
+		sysUserRoleDAO.insertBatch(list);
 	}
 
 }

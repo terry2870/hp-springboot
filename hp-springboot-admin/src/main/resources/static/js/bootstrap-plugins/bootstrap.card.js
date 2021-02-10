@@ -351,7 +351,7 @@
 		top : null,
 		width : "200",					//宽
 		height : "200",					//高
-		cardStyle : $.bootstrapClass.DEFAULT,					//面板的样式
+		cardStyle : $.bootstrapClass.PRIMARY,					//面板的样式
 		className : null,				//面板的class
 		header : null,
 		body : null,

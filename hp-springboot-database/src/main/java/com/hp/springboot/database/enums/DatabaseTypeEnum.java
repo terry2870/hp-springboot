@@ -5,9 +5,8 @@ package com.hp.springboot.database.enums;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
+import com.hp.springboot.common.bean.ValueTextBean;
 import com.hp.springboot.database.datasource.db.AbstDatabase;
 import com.hp.springboot.database.datasource.db.impl.MysqlDatabaseImpl;
 
@@ -30,14 +29,10 @@ public enum DatabaseTypeEnum {
 	 * 返回json格式的数据
 	 * @return 返回json格式的数据
 	 */
-	public static Collection<?> toJson() {
-		Collection<Map<String, String>> list = new ArrayList<>();
-		Map<String, String> map = null;
+	public static Collection<ValueTextBean> toJson() {
+		Collection<ValueTextBean> list = new ArrayList<>();
 		for (DatabaseTypeEnum e : values()) {
-			map = new HashMap<>();
-			map.put("value", e.getValue().toString());
-			map.put("text", e.toString());
-			list.add(map);
+			list.add(new ValueTextBean(e.getValue().toString(), e.toString()));
 		}
 		return list;
 	}

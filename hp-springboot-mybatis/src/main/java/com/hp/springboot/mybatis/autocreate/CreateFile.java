@@ -64,6 +64,7 @@ public class CreateFile {
 	private static final String BASE_PACKAGE_PARENT = "com.hp.springboot.";
 	
 	public static final String BASE_BEAN_PACKAGE = BASE_PACKAGE_PARENT + "common.bean.AbstractBean";
+	public static final String BASE_MODEL_PACKAGE = BASE_PACKAGE_PARENT + "admin.dal.model.BaseModel";
 	public static final String BASE_REQUEST_BO_PACKAGE = BASE_PACKAGE_PARENT + "common.bean.BaseRequestBO";
 	public static final String BASE_RESPONSE_BO_PACKAGE = BASE_PACKAGE_PARENT + "common.bean.BaseResponseBO";
 	public static final String BASE_MAPPER_PACKAGE = BASE_PACKAGE_PARENT + "mybatis.mapper.BaseMapper";
@@ -76,6 +77,12 @@ public class CreateFile {
 	public static final String SQLWHERE_PACKAGE = BASE_PACKAGE_PARENT + "database.bean.SQLWhere";
 	public static final String SQL_WHERE_BUILDER_PACKAGE = BASE_PACKAGE_PARENT + "database.bean.SQLWhere.SQLWhereBuilder";
 	public static final String SQLBUILDERS_PACKAGE = BASE_PACKAGE_PARENT + "database.bean.SQLBuilders";
+	public static final String STATUS_EMNU_PACKAGE = BASE_PACKAGE_PARENT + "common.enums.StatusEnum";
+	public static final String BASE_CONVERT_PACKAGE = BASE_PACKAGE_PARENT + "admin.convert.BaseConvert";
+	public static final String NUMBER_UTIL_PACKAGE = BASE_PACKAGE_PARENT + "common.util.NumberUtil";
+	public static final String DATE_UTIL_PACKAGE = BASE_PACKAGE_PARENT + "common.util.DateUtil";
+	
+	public static final String[] COMMON_COLUMN_NAME = {"status", "createTime", "updateTime", "createUserId"};
 	
 	public static final String DAO_MODEL_PACKAGE_NAME = "model";
 	public static final String SERVICE_PACKAGE = "service";
@@ -102,7 +109,7 @@ public class CreateFile {
 		CONTROLLER_MAVEN_MODULE = bean.getControllerMavenModule();
 		MAPPING_DIR = bean.getMappingDir();
 		WEB_MAVEN_MODULE_NAME = bean.getWebMavenModuleName();
-		DAO_MAVEN_MODULE = bean.getDaoMavenModule();
+		DAO_MAVEN_MODULE = bean.getDalMavenModule();
 		COMMON_MAVEN_MODULE = bean.getCommonMavenModule();
 		MODEL_MAVEN_MODULE = bean.getModelMavenModule();
 		
@@ -153,9 +160,9 @@ public class CreateFile {
 				}
 				
 				if (bean.isCreateFtl()) {
-					CreateFTL.createFTLList(table);
-					CreateFTL.createFTLEdit(table);
-					CreateFTL.createFTLSearch(table);
+					CreateFTL.createFTLList(table, map);
+					CreateFTL.createFTLEdit(table, map);
+					CreateFTL.createFTLSearch(table, map);
 				}
 			}
 		} catch(Exception e) {
@@ -192,35 +199,41 @@ public class CreateFile {
 	 */
 	private static Map<String, Object> getParamsMap(TableBean table) {
 		Map<String, Object> map = new HashMap<>();
-		String daoPackage = CreateFile.PROJECT_PACKAGE + "." + CreateFile.DAO_PACKAGE_NAME;
+		String daoPackage = PROJECT_PACKAGE + "." + DAO_PACKAGE_NAME;
 		map.put("daoPackage", daoPackage);
-		map.put("daoModelPackage", daoPackage + "." + CreateFile.DAO_MODEL_PACKAGE_NAME);
+		map.put("daoModelPackage", daoPackage + "." + DAO_MODEL_PACKAGE_NAME);
 		map.put("modelName", table.getModelName());
 		map.put("modelNameFirstLow", table.getModelNameFirstLow());
 		map.put("author", AUTHER_NAME);
-		map.put("responsePackage", CreateFile.RESPONSE_PACKAGE);
-		map.put("baseBeanPackage", CreateFile.BASE_BEAN_PACKAGE);
-		map.put("baseMapperPackage", CreateFile.BASE_MAPPER_PACKAGE);
-		map.put("baseRequestBOPackage", CreateFile.BASE_REQUEST_BO_PACKAGE);
-		map.put("baseResponseBOPackage", CreateFile.BASE_RESPONSE_BO_PACKAGE);
-		map.put("requestModelPackage", CreateFile.PROJECT_PACKAGE + "." + CreateFile.MODEL_PACKAGE_NAME + "." + CreateFile.REQUEST_PACKAGE_NAME);
-		map.put("responseModelPackage", CreateFile.PROJECT_PACKAGE + "." + CreateFile.MODEL_PACKAGE_NAME + "." + CreateFile.RESPONSE_PACKAGE_NAME);
-		map.put("pageModelPackage", CreateFile.BASE_PAGE_MODEL_PACKAGE);
-		map.put("pageRequestPackage", CreateFile.BASE_PAGE_REQUEST_PACKAGE);
-		map.put("pageResponsePackage", CreateFile.BASE_PAGE_RESPONSE_PACKAGE);
-		map.put("servicePackage", CreateFile.PROJECT_PACKAGE + "." + CreateFile.SERVICE_PACKAGE_NAME + "." + CreateFile.SERVICE_PACKAGE);
-		map.put("convertPackage", CreateFile.PROJECT_PACKAGE + "." + CreateFile.COMMON_PACKAGE_NAME + "." + CreateFile.CONVERT_PACKAGE_NAME);
-		map.put("freeMarkerUtilPackage", CreateFile.FREEMARKER_UTIL_PACKAGE);
+		map.put("responsePackage", RESPONSE_PACKAGE);
+		map.put("baseBeanPackage", BASE_BEAN_PACKAGE);
+		map.put("baseModelPackage", BASE_MODEL_PACKAGE);
+		map.put("baseMapperPackage", BASE_MAPPER_PACKAGE);
+		map.put("baseRequestBOPackage", BASE_REQUEST_BO_PACKAGE);
+		map.put("baseResponseBOPackage", BASE_RESPONSE_BO_PACKAGE);
+		map.put("requestModelPackage", PROJECT_PACKAGE + "." + MODEL_PACKAGE_NAME + "." + REQUEST_PACKAGE_NAME);
+		map.put("responseModelPackage", PROJECT_PACKAGE + "." + MODEL_PACKAGE_NAME + "." + RESPONSE_PACKAGE_NAME);
+		map.put("pageModelPackage", BASE_PAGE_MODEL_PACKAGE);
+		map.put("pageRequestPackage", BASE_PAGE_REQUEST_PACKAGE);
+		map.put("pageResponsePackage", BASE_PAGE_RESPONSE_PACKAGE);
+		map.put("servicePackage", PROJECT_PACKAGE + "." + SERVICE_PACKAGE_NAME + "." + SERVICE_PACKAGE);
+		map.put("convertPackage", PROJECT_PACKAGE + "." + COMMON_PACKAGE_NAME + "." + CONVERT_PACKAGE_NAME);
+		map.put("freeMarkerUtilPackage", FREEMARKER_UTIL_PACKAGE);
 		
-		map.put("SQLBuilderPackage", CreateFile.SQLBUILDER_PACKAGE);
-		map.put("SQLBuildersPackage", CreateFile.SQLBUILDERS_PACKAGE);
-		map.put("SQLWherePackage", CreateFile.SQLWHERE_PACKAGE);
-		map.put("SQLWhereBuilderPackage", CreateFile.SQL_WHERE_BUILDER_PACKAGE);
+		map.put("SQLBuilderPackage", SQLBUILDER_PACKAGE);
+		map.put("SQLBuildersPackage", SQLBUILDERS_PACKAGE);
+		map.put("SQLWherePackage", SQLWHERE_PACKAGE);
+		map.put("SQLWhereBuilderPackage", SQL_WHERE_BUILDER_PACKAGE);
 		
 		map.put("columnList", table.getColumnList());
 		map.put("modelName", table.getModelName());
 		map.put("primaryKey", table.getPrimaryKey());
 		map.put("tableComment", table.getTableComment());
+		map.put("statusEmunPackage", STATUS_EMNU_PACKAGE);
+		map.put("baseConvertPackage", BASE_CONVERT_PACKAGE);
+		map.put("numberUtilPackage", NUMBER_UTIL_PACKAGE);
+		map.put("dateUtilPackage", DATE_UTIL_PACKAGE);
+		map.put("commonColumnName", COMMON_COLUMN_NAME);
 		return map;
 	}
 

@@ -1,6 +1,7 @@
 package com.hp.springboot.common.configuration;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import com.hp.springboot.common.util.SpringContextUtil;
@@ -11,6 +12,7 @@ import com.hp.springboot.common.util.SpringContextUtil;
  * 时间：2020-12-30
  */
 @Configuration
+@ComponentScan("com.hp.springboot.common.controller")
 public class CommonAutoConfiguration {
 
 	/**

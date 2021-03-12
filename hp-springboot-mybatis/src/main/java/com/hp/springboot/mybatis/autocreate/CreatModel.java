@@ -42,6 +42,6 @@ public class CreatModel {
 		map.put("importPackage", importPackage);
 		map.put("baseExtendBeanName", baseExtendBeanName);
 		
-		FreeMarkerUtil.createFile("autocreate/model.ftl", filePath + "/" + fileName + ".java", map);
+		FreeMarkerUtil.createFile("autocreate/model.ftlh", filePath + "/" + fileName + ".java", map);
 	}
 }

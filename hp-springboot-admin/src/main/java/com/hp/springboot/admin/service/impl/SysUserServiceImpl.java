@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hp.springboot.admin.constant.AdminConstants;
 import com.hp.springboot.admin.convert.BaseConvert;
@@ -24,6 +25,7 @@ import com.hp.springboot.common.enums.StatusEnum;
 import com.hp.springboot.common.exception.CommonException;
 import com.hp.springboot.common.util.DateUtil;
 import com.hp.springboot.common.util.NumberUtil;
+import com.hp.springboot.database.annotation.UseDatabase;
 import com.hp.springboot.database.bean.PageModel;
 import com.hp.springboot.database.bean.PageRequest;
 import com.hp.springboot.database.bean.SQLBuilders;
@@ -45,7 +47,7 @@ public class SysUserServiceImpl implements ISysUserService {
 	private ISysUserRoleService sysUserRoleService;
 
 	private static Logger log = LoggerFactory.getLogger(SysUserServiceImpl.class);
-	
+
 	@Override
 	public void saveSysUser(SysUserRequestBO request) {
 		log.info("saveSysUser with request={}", request);
@@ -54,12 +56,12 @@ public class SysUserServiceImpl implements ISysUserService {
 		//检查唯一性
 		saveSysUserCheck(request);
 		
-		if (NumberUtil.isEmpty(request.getId())) {
+		if (NumberUtil.isNullOrZero(request.getId())) {
 			//新增
 			BaseConvert.convertModel(dal);
 			
 			//新增时，设置初始密码
-			dal.setLoginPwd(passwordEncoder.encode(AdminConstants.NORMAL_USER_DEFAULT_PASSWORD));
+			dal.setLoginPwd(AdminConstants.NORMAL_USER_DEFAULT_PASSWORD);
 			sysUserDAO.insertSelective(dal);
 		} else {
 			//修改
@@ -117,15 +119,27 @@ public class SysUserServiceImpl implements ISysUserService {
 	}
 
 	@Override
+	@UseDatabase("test")
+	@Transactional
 	public void deleteSysUser(Integer id) {
 		log.info("deleteSysUser with id={}", id);
 		
-		SysUser user = new SysUser();
-		user.setId(id);
-		user.setStatus(StatusEnum.INVALID.getValue());
-		sysUserDAO.updateByPrimaryKeySelective(user);
+		//首先删除用户与角色关联关系
+		sysUserRoleService.deleteByUserId(id);
 		
-		log.info("deleteSysUser success with id={}", id);
+		// 删除用户
+		sysUserDAO.deleteByPrimaryKey(id);
+	}
+	
+	@Override
+	public void changeUserStatus(Integer id, StatusEnum status) {
+		log.info("changeUserStatus with id={}, status={}", id, status);
+		
+		SysUser user = new SysUser();
+		user.setStatus(status.getIntegerValue());
+		user.setId(id);
+		user.setUpdateTime(DateUtil.getCurrentTimeSeconds());
+		sysUserDAO.updateByPrimaryKeySelective(user);
 	}
 
 	@Override
@@ -137,6 +151,35 @@ public class SysUserServiceImpl implements ISysUserService {
 			return null;
 		}
 		return SysUserConvert.dal2BOResponse(dal);
+	}
+	
+	@Override
+	public void modifyPwd(Integer userId, String oldPwd, String newPwd) {
+		log.info("enter modifyPwd with userId={}", userId);
+		
+		//根据userId查询用户信息
+		SysUser user = sysUserDAO.selectByPrimaryKey(userId);
+		if (user == null) {
+			log.warn("modifyPwd error. user is not exitst. with userId={}", userId);
+			throw new CommonException(500, "用户不存在");
+		}
+		if (!passwordEncoder.matches(oldPwd, user.getLoginPwd())) {
+			log.warn("modifyPwd error. with oldPwd error. with userId={}", userId);
+			throw new CommonException(500, "原密码错误");
+		}
+		user = new SysUser();
+		user.setId(userId);
+		user.setLoginPwd(passwordEncoder.encode(newPwd));
+		sysUserDAO.updateByPrimaryKeySelective(user);
+	}
+	
+	@Override
+	public void updateLastLoginTime(Integer userId) {
+		log.info("updateLastLoginTime with userId={}", userId);
+		SysUser user = new SysUser();
+		user.setId(userId);
+		user.setLastLoginTime(DateUtil.getCurrentTimeSeconds());
+		sysUserDAO.updateByPrimaryKeySelective(user);
 	}
 
 	/**
@@ -155,7 +198,7 @@ public class SysUserServiceImpl implements ISysUserService {
 		
 		SysUser user = sysUserDAO.selectOne(builders);
 		if (user != null) {
-			if (NumberUtil.isEmpty(request.getId())) {
+			if (NumberUtil.isNullOrZero(request.getId())) {
 				//新增
 				log.warn("saveSysUser error. loginName is exists. with request={}", request);
 				throw new CommonException(500, "登录名已经存在");
@@ -177,7 +220,7 @@ public class SysUserServiceImpl implements ISysUserService {
 				;
 		user = sysUserDAO.selectOne(builders);
 		if (user != null) {
-			if (NumberUtil.isEmpty(request.getId())) {
+			if (NumberUtil.isNullOrZero(request.getId())) {
 				//新增
 				log.warn("saveUser error. userName is exists. with request={}", request);
 				throw new CommonException(500, "用户名已经存在");

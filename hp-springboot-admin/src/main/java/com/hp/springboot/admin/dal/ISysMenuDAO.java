@@ -20,4 +20,12 @@ public interface ISysMenuDAO extends BaseMapper<SysMenu, Integer> {
 	 * @return
 	 */
 	List<Integer> selectByUserId(@Param("userId") Integer userId);
+	
+	/**
+	 * @Title: selectSysMenu
+	 * @Description: 根据叶子节点，向上递归，查询菜单
+	 * @param menuIds
+	 * @return
+	 */
+	List<SysMenu> selectSysMenuByLeafMenuIds(@Param("menuIds") String menuIds);
 }

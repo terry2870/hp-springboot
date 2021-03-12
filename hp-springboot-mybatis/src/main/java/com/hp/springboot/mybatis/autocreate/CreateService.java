@@ -25,7 +25,7 @@ public class CreateService {
 		String filePath = CreateFile.MAIN_PATH_DIR + "/" + CreateFile.SERVICE_MAVEN_MODULE +"/" + CreateFile.JAVA_DIR + "/" + packageUrl.replace(".", "/");
 		String fileName = "I" + table.getModelName() + "Service.java";
 		map.put("package", packageUrl);
-		FreeMarkerUtil.createFile("autocreate/service.ftl", filePath + "/" + fileName, map);
+		FreeMarkerUtil.createFile("autocreate/service.ftlh", filePath + "/" + fileName, map);
 	}
 	
 	/**
@@ -40,6 +40,6 @@ public class CreateService {
 		String filePath = CreateFile.MAIN_PATH_DIR + "/" + CreateFile.SERVICE_MAVEN_MODULE +"/" + CreateFile.JAVA_DIR + "/" + packageUrl.replace(".", "/");
 		String fileName = table.getModelName() + "ServiceImpl.java";
 		map.put("package", packageUrl);
-		FreeMarkerUtil.createFile("autocreate/serviceimpl.ftl", filePath + "/" + fileName, map);
+		FreeMarkerUtil.createFile("autocreate/serviceimpl.ftlh", filePath + "/" + fileName, map);
 	}
 }

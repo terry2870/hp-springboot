@@ -20,6 +20,7 @@ import com.hp.springboot.admin.enums.MenuTypeEnum;
 import com.hp.springboot.admin.model.response.SysMenuResponseBO;
 import com.hp.springboot.admin.model.response.SysUserResponseBO;
 import com.hp.springboot.admin.service.ISysMenuService;
+import com.hp.springboot.admin.service.ISysUserService;
 import com.hp.springboot.admin.util.SecuritySessionUtil;
 import com.hp.springboot.common.bean.Response;
 import com.hp.springboot.common.constant.ContentTypeConstant;
@@ -36,6 +37,8 @@ public class AdminAuthenticationSuccessHandler implements AuthenticationSuccessH
 	private ISysMenuService sysMenuService;
 	@Value("${project.name.cn}")
 	private String projectName;
+	@Autowired
+	private ISysUserService sysUserService;
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -49,6 +52,11 @@ public class AdminAuthenticationSuccessHandler implements AuthenticationSuccessH
 		
 		//查询用户的菜单和按钮
 		setUserMenu(session);
+		
+		SysUserResponseBO user = SecuritySessionUtil.getSessionData();
+		
+		// 更新最近登录时间
+		sysUserService.updateLastLoginTime(user.getId());
 		
 		//项目名称
 		session.setAttribute("projectName", projectName);
@@ -96,10 +104,14 @@ public class AdminAuthenticationSuccessHandler implements AuthenticationSuccessH
 		//放入session
 		session.setAttribute(AdminConstants.USER_MENU_INCLUDE_BUTTON, menuIncludeButtonList);
 		
+		// 按钮
+		List<String> buttonIdList = new ArrayList<>();
+		
 		// 排除按钮
 		List<SysMenuResponseBO> menuExcludeButtonList = new ArrayList<>();
 		for (SysMenuResponseBO menu : menuIncludeButtonList) {
 			if (MenuTypeEnum.BUTTON.getIntegerValue().equals(menu.getMenuType())) {
+				buttonIdList.add(menu.getButtonId());
 				continue;
 			}
 			menuExcludeButtonList.add(menu);
@@ -107,5 +119,6 @@ public class AdminAuthenticationSuccessHandler implements AuthenticationSuccessH
 		
 		//放入session
 		session.setAttribute(AdminConstants.USER_MENU_EXCLUDE_BUTTON, menuExcludeButtonList);
+		session.setAttribute(AdminConstants.USER_MENU_ONLY_BUTTON, buttonIdList);
 	}
 }

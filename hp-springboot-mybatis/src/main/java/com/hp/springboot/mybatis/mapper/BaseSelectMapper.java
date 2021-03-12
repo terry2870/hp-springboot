@@ -160,7 +160,7 @@ public interface BaseSelectMapper<MODEL, PK> extends IBaseSelectDAO<MODEL, PK> {
 	 * @return
 	 */
 	@SelectProvider(type = BaseSelectProvider.class, method = "selectList")
-	public <T> List<T> selectListForTargetClass(@Param(SQLProviderConstant.SQL_BUILDS_ALIAS) SQLBuilders sqlBuilders, Class<T> clazz);
+	public <T> List<T> selectAnyList(@Param(SQLProviderConstant.SQL_BUILDS_ALIAS) SQLBuilders sqlBuilders, Class<T> clazz);
 	
 	/**
 	 * 根据传入的sqlbuild，查询一个

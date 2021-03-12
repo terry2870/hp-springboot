@@ -3,6 +3,7 @@ package com.hp.springboot.admin.service;
 import com.hp.springboot.admin.model.request.SysUserRequestBO;
 import com.hp.springboot.admin.model.response.SysUserResponseBO;
 import com.hp.springboot.common.bean.PageResponse;
+import com.hp.springboot.common.enums.StatusEnum;
 import com.hp.springboot.database.bean.PageRequest;
 
 /**
@@ -34,6 +35,14 @@ public interface ISysUserService {
 	 * @param id
 	 */
 	void deleteSysUser(Integer id);
+	
+	/**
+	 * @Title: changeUserStatus
+	 * @Description: 修改用户状态
+	 * @param id
+	 * @param status
+	 */
+	void changeUserStatus(Integer id, StatusEnum status);
 
 	/**
 	 * @Title: querySysUserById
@@ -42,4 +51,20 @@ public interface ISysUserService {
 	 * @return
 	 */
 	SysUserResponseBO querySysUserById(Integer id);
+	
+	/**
+	 * @Title: modifyPwd
+	 * @Description: 修改密码
+	 * @param userId
+	 * @param oldPwd
+	 * @param newPwd
+	 */
+	void modifyPwd(Integer userId, String oldPwd, String newPwd);
+	
+	/**
+	 * @Title: updateLastLoginTime
+	 * @Description: 更新最新登录时间
+	 * @param userId
+	 */
+	void updateLastLoginTime(Integer userId);
 }

@@ -85,7 +85,8 @@ public class SysUserResponseBO extends BaseResponseBO implements UserDetails {
 	
 	public SysUserResponseBO() {}
 	
-	public SysUserResponseBO(String loginName, String loginPwd, String nickName, GrantedAuthority... authorities) {
+	public SysUserResponseBO(Integer id, String loginName, String loginPwd, String nickName, GrantedAuthority... authorities) {
+		this.id = id;
 		this.loginName = loginName;
 		this.loginPwd = loginPwd;
 		this.nickName = nickName;

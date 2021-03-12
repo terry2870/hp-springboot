@@ -46,7 +46,7 @@ public class AdminAccessDeniedHandler implements AccessDeniedHandler {
 		} else {
 			// 非ajax请求
 			response.setContentType(ContentTypeConstant.TEXT_HTML_UTF8);
-			response.sendRedirect(request.getContextPath() + AdminConstants.ACCESS_DENIED_URL);
+			response.sendRedirect(request.getContextPath() + AdminConstants.ACCESS_DENIED_URL + "?redirectUrl=" + request.getRequestURI());
 		}
 	}
 

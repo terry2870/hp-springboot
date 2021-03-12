@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,7 +30,7 @@ import com.hp.springboot.common.configuration.CommonWebMvcConfigurer;
  * 时间：2021年1月11日
  */
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true) //全局
+@EnableGlobalMethodSecurity(prePostEnabled = true) //全局
 public class AdminWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
@@ -60,6 +61,8 @@ public class AdminWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 		
 		// 第一层免过滤列表
 		List<String> noFilterList = new ArrayList<>();
+		noFilterList.add(AdminConstants.ACCESS_DENIED_URL);
+		noFilterList.add(AdminConstants.VERIFY_CODE_URL);
 		noFilterList.addAll(commonWebMvcConfigurer.getMergeFirstNoFilterList());
 		
 		// 静态资源

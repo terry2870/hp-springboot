@@ -26,6 +26,6 @@ public class CreateController {
 				+ "/" + table.getModelName() + "Controller.java";
 		
 		map.put("package", packageUrl);
-		FreeMarkerUtil.createFile("autocreate/controller.ftl", fileName, map);
+		FreeMarkerUtil.createFile("autocreate/controller.ftlh", fileName, map);
 	}
 }

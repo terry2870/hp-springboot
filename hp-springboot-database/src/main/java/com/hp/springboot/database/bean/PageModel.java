@@ -78,17 +78,12 @@ public class PageModel extends AbstractBean {
 
 	public PageModel setPageSize(int pageSize) {
 		this.pageSize = pageSize;
-		setStartIndex((this.currentPage - 1) * this.pageSize);
+		this.startIndex = (this.currentPage - 1) * this.pageSize;
 		return this;
 	}
 
 	public int getStartIndex() {
 		return startIndex;
-	}
-
-	public PageModel setStartIndex(int startIndex) {
-		this.startIndex = startIndex;
-		return this;
 	}
 
 	public int getCurrentPage() {
@@ -101,7 +96,7 @@ public class PageModel extends AbstractBean {
 		} else {
 			this.currentPage = currentPage;
 		}
-		setStartIndex((this.currentPage - 1) * this.pageSize);
+		this.startIndex = (this.currentPage - 1) * this.pageSize;
 		return this;
 	}
 

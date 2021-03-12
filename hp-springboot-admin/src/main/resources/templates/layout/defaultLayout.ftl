@@ -8,11 +8,12 @@
 	<title>${Session["projectName"]}</title>
 	<link rel="stylesheet" href="${request.contextPath}/layui/css/layui.css">
 	<link rel="stylesheet" href="${request.contextPath}/css/main-body.css">
-	<link rel="stylesheet" href="${request.contextPath}/css/layui-card.css">
+	<link rel="stylesheet" href="${request.contextPath}/css/layui-skin.css">
 	<script src="${request.contextPath}/js/jquery.min.js"></script>
 	<script src="${request.contextPath}/js/global.js"></script>
 	<script src="${request.contextPath}/js/layui-plugins/layui.nav.js"></script>
 	<script src="${request.contextPath}/js/layui-plugins/layui.tree.js"></script>
+	<script src="${request.contextPath}/js/layui-plugins/layui.extends.js"></script>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -32,7 +33,7 @@
 <script src="${request.contextPath}/layui/layui.all.js"></script>
 <script>
 //JavaScript代码区域
-layui.use('element', function() {
+layui.use(["element"], function() {
 	var element = layui.element;
 	
 });

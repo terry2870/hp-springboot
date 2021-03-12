@@ -25,6 +25,6 @@ public class CreateDaoModel {
 		String packageUrl = CreateFile.PROJECT_PACKAGE + "." + CreateFile.DAO_PACKAGE_NAME + "." + CreateFile.DAO_MODEL_PACKAGE_NAME;
 		String fileName = CreateFile.MAIN_PATH_DIR + "/" + CreateFile.DAO_MAVEN_MODULE + "/" +CreateFile.JAVA_DIR + "/" + packageUrl.replace(".", "/") + "/"+ table.getModelName() +".java";
 		map.put("package", packageUrl);
-		FreeMarkerUtil.createFile("autocreate/daomodel.ftl", fileName, map);
+		FreeMarkerUtil.createFile("autocreate/daomodel.ftlh", fileName, map);
 	}
 }

@@ -60,29 +60,9 @@ public class SysUserRequestBO extends BaseRequestBO {
 	private String email;
 
 	/**
-	 * 用户状态（1-正常；2-已删除；3-无效）
-	 */
-	private Integer status;
-
-	/**
-	 * 创建者ID
-	 */
-	private Integer createUserId;
-
-	/**
 	 * 最后一次登录时间
 	 */
 	private Integer lastLoginTime;
-
-	/**
-	 * 创建时间
-	 */
-	private Integer createTime;
-
-	/**
-	 * 更新时间
-	 */
-	private Integer updateTime;
 
 	/**
 	 * 用户身份（1-超级管理员；2-店长；3-店员）
@@ -149,44 +129,12 @@ public class SysUserRequestBO extends BaseRequestBO {
 		this.email = email;
 	}
 
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-	public Integer getCreateUserId() {
-		return createUserId;
-	}
-
-	public void setCreateUserId(Integer createUserId) {
-		this.createUserId = createUserId;
-	}
-
 	public Integer getLastLoginTime() {
 		return lastLoginTime;
 	}
 
 	public void setLastLoginTime(Integer lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
-	}
-
-	public Integer getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Integer createTime) {
-		this.createTime = createTime;
-	}
-
-	public Integer getUpdateTime() {
-		return updateTime;
-	}
-
-	public void setUpdateTime(Integer updateTime) {
-		this.updateTime = updateTime;
 	}
 
 	public Integer getIdentity() {

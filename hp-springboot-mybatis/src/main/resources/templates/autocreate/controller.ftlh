@@ -10,18 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import ${responsePackage};
-import ${pageRequestPackage};
-import ${pageResponsePackage};
-import ${freeMarkerUtilPackage};
 import ${requestModelPackage}.${modelName}RequestBO;
 import ${responseModelPackage}.${modelName}ResponseBO;
 import ${servicePackage}.I${modelName}Service;
+import ${pageResponsePackage};
+import ${responsePackage};
+import ${statusEmunPackage};
+import ${pageRequestPackage};
+import ${freeMarkerUtilPackage};
 
 /**
- * 控制器
- * @author ${author}
- * ${.now?string["yyyy-MM-dd"]}
+ * 描述：${tableComment}控制器
+ * 作者：${author}
+ * 时间：${.now?string["yyyy-MM-dd"]}
  */
 @RestController
 @RequestMapping("/${modelName}Controller")
@@ -33,36 +34,35 @@ public class ${modelName}Controller {
 	private I${modelName}Service ${modelNameFirstLow}Service;
 
 	/**
-	 * 进入${tableComment}页面
-	 * @param request
+	 * @Title: ${modelNameFirstLow}List
+	 * @Description: 打开${tableComment}页面
 	 * @return
 	 */
 	@RequestMapping("/${modelNameFirstLow}List")
-	public ModelAndView ${modelNameFirstLow}List(Integer menuId, String iframeId) {
+	public ModelAndView ${modelNameFirstLow}List() {
 		Map<String, Object> map = new HashMap<>();
 		FreeMarkerUtil.addStaticTemplate(map);
-		return new ModelAndView("other/${modelNameFirstLow}List", map);
+		map.put("showPage", "other/${modelNameFirstLow}List");
+		return new ModelAndView("/default", map);
 	}
 	
 	/**
-	 * 查询列表
+	 * @Title: query${modelName}PageList
+	 * @Description: 查询${tableComment}列表
 	 * @param request
 	 * @param pageRequest
 	 * @return
 	 */
-	@RequestMapping("/queryAll${modelName}")
-	public Response<PageResponse<${modelName}ResponseBO>> queryAll${modelName}(${modelName}RequestBO request, PageRequest pageRequest) {
-		log.info("enter queryAll${modelName} with request={}, page={}", request, pageRequest);
+	@RequestMapping("/query${modelName}PageList")
+	public Response<PageResponse<${modelName}ResponseBO>> query${modelName}PageList(${modelName}RequestBO request, PageRequest pageRequest) {
+		log.info("enter query${modelName}PageList with request={}, page={}", request, pageRequest);
 		PageResponse<${modelName}ResponseBO> list = ${modelNameFirstLow}Service.query${modelName}PageList(request, pageRequest);
-		log.info("queryAll${modelName} success. with request={}, page={}", request, pageRequest);
-		if (list == null) {
-			return new Response<>(new PageResponse<>());
-		}
-		return new Response<>(list);
+		return Response.success(list);
 	}
 
 	/**
-	 * 保存
+	 * @Title: save${modelName}
+	 * @Description: 保存${tableComment}
 	 * @param request
 	 * @return
 	 */
@@ -70,12 +70,12 @@ public class ${modelName}Controller {
 	public Response<Object> save${modelName}(${modelName}RequestBO request) {
 		log.info("enter save${modelName} with request={}", request);
 		${modelNameFirstLow}Service.save${modelName}(request);
-		log.info("save${modelName} success. with request={}", request);
-		return new Response<>();
+		return Response.success();
 	}
 
 	/**
-	 * 删除
+	 * @Title: delete${modelName}
+	 * @Description: 删除${tableComment}
 	 * @param id
 	 * @return
 	 */
@@ -83,12 +83,12 @@ public class ${modelName}Controller {
 	public Response<Object> delete${modelName}(Integer id) {
 		log.info("enter delete${modelName} with id={}", id);
 		${modelNameFirstLow}Service.delete${modelName}(id);
-		log.info("delete${modelName} success. with id={}", id);
-		return new Response<>();
+		return Response.success();
 	}
 
 	/**
-	 * 根据id，查询
+	 * @Title: query${modelName}ById
+	 * @Description: 根据id，查询${tableComment}详情
 	 * @param id
 	 * @return
 	 */
@@ -96,7 +96,20 @@ public class ${modelName}Controller {
 	public Response<${modelName}ResponseBO> query${modelName}ById(Integer id) {
 		log.info("enter query${modelName}ById with id={}", id);
 		${modelName}ResponseBO bo = ${modelNameFirstLow}Service.query${modelName}ById(id);
-		log.info("query${modelName}ById success. with id={}", id);
-		return new Response<>(bo);
+		return Response.success(bo);
+	}
+	
+	/**
+	 * @Title: change${modelName}Status
+	 * @Description: 修改状态
+	 * @param id
+	 * @param status
+	 * @return
+	 */
+	@RequestMapping("/change${modelName}Status")
+	public Response<Object> change${modelName}Status(Integer id, Integer status) {
+		log.info("enter change${modelName}Status with id={}", id);
+		${modelNameFirstLow}Service.change${modelName}Status(id, StatusEnum.getEnumByValue(status));
+		return Response.success();
 	}
 }

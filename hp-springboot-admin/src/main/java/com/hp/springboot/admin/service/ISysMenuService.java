@@ -32,6 +32,7 @@ public interface ISysMenuService {
 	 * @Title: deleteSysMenu
 	 * @Description: 删除系统菜单表
 	 * @param id
+	 * @param force
 	 */
-	void deleteSysMenu(Integer id);
+	void deleteSysMenu(Integer id, boolean force);
 }

@@ -14,6 +14,9 @@ public class BaseRequestBO extends AbstractBean {
 	
 	private String queryStartDate;
 	private String queryEndDate;
+	
+	private Integer status;
+	
 	public String getQueryStartDate() {
 		return queryStartDate;
 	}
@@ -25,5 +28,11 @@ public class BaseRequestBO extends AbstractBean {
 	}
 	public void setQueryEndDate(String queryEndDate) {
 		this.queryEndDate = queryEndDate;
+	}
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 }

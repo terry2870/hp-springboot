@@ -1,5 +1,8 @@
 package com.hp.springboot.common.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.hp.springboot.common.enums.CodeEnum;
 
 /**
@@ -44,6 +47,10 @@ public class Response<T> extends AbstractBean {
 	
 	public static Response<Object> error(int code, String message) {
 		return new Response<>(code, message);
+	}
+	
+	public static <T> Response<List<T>> emptyList() {
+		return Response.success(new ArrayList<>());
 	}
 	
 	public Response() {}

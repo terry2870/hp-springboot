@@ -18,7 +18,7 @@ public @interface UseDatabase {
 
 	/**
 	* @Title: value  
-	* @Description: 数据名称
+	* @Description: 数据库名称
 	* @return
 	 */
 	String value() ;

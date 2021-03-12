@@ -27,7 +27,6 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		String url = request.getRequestURI();
-		System.out.println("ValidateCodeFilter with url= " + url);
 		if (!StringUtils.equalsIgnoreCase(url, request.getContextPath() + AdminConstants.LOGIN_PROCESSING_URL)) {
 			// 不是登录接口，不要校验
 			filterChain.doFilter(request, response);
@@ -35,7 +34,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 		}
 		
 		try {
-			//validate(request);
+			validate(request);
 		} catch (AuthenticationException e) {
 			AdminAuthenticationFailureHandler adminAuthenticationFailureHandler = SpringContextUtil.getBean(AdminAuthenticationFailureHandler.class);
 			adminAuthenticationFailureHandler.onAuthenticationFailure(request, response, e);
@@ -62,6 +61,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 		String sessionValidateCode = (String) request.getSession().getAttribute(AdminConstants.VALIDATE_CODE_KEY);
 		
 		if (!StringUtils.equalsIgnoreCase(inputValidateCode, sessionValidateCode)) {
+			//清空旧的验证码
+			request.getSession().removeAttribute(AdminConstants.VALIDATE_CODE_KEY);
 			throw new ValidateCodeException();
 		}
 		

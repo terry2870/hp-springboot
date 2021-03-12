@@ -23,6 +23,6 @@ public class CreateDAO {
 		String packageUrl = CreateFile.PROJECT_PACKAGE + "." + CreateFile.DAO_PACKAGE_NAME;
 		String fileName = CreateFile.MAIN_PATH_DIR + "/"+ CreateFile.DAO_MAVEN_MODULE +"/" +CreateFile.JAVA_DIR + "/" + packageUrl.replace(".", "/") + "/I"+ table.getModelName() +"DAO.java";
 		map.put("package", packageUrl);
-		FreeMarkerUtil.createFile("autocreate/dao.ftl", fileName, map);
+		FreeMarkerUtil.createFile("autocreate/dao.ftlh", fileName, map);
 	}
 }

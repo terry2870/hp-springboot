@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hp.springboot.admin.dal.ISysUserRoleDAO">
+	<resultMap id="BaseResultMap" type="com.hp.springboot.admin.dal.model.SysUserRole">
+	</resultMap>
+	
+	<!-- 查询该用户的菜单（非超级管理员） -->
+	<select id="selectUserRoleByUserId" resultType="com.hp.springboot.common.bean.ValueTextBean">
+		SELECT role.id value, role.role_name text, (CASE WHEN userRole.id &gt; 0 THEN 'checked' ELSE '' END) extraParams
+			FROM sys_role role
+			LEFT JOIN sys_user_role userRole ON role.id=userRole.role_id AND userRole.user_id=${userId}
+			WHERE role.status=1 
+	</select>
+</mapper>

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.hp.springboot.admin.dal.ISysUserRoleDAO;
 import com.hp.springboot.admin.dal.model.SysUserRole;
 import com.hp.springboot.admin.service.ISysUserRoleService;
+import com.hp.springboot.common.bean.ValueTextBean;
+import com.hp.springboot.database.bean.SQLBuilders;
 import com.hp.springboot.database.bean.SQLWhere;
 
 /**
@@ -46,6 +48,31 @@ public class SysUserRoleServiceImpl implements ISysUserRoleService {
 		
 		// 批量插入
 		sysUserRoleDAO.insertBatch(list);
+	}
+
+	@Override
+	public List<Integer> selectUserIdByRoleId(Integer roleId) {
+		log.info("selectUserIdByRoleId with roleId={}", roleId);
+		return sysUserRoleDAO.selectAnyList(SQLBuilders.create()
+				.withSelect("user_id")
+				.withWhere(SQLWhere.builder()
+						.eq("role_id", roleId)
+						.build())
+				, Integer.class);
+	}
+
+	@Override
+	public List<ValueTextBean> queryUserRoleByUserId(Integer userId) {
+		log.info("queryUserRoleByUserId with userId={}", userId);
+		return sysUserRoleDAO.selectUserRoleByUserId(userId);
+	}
+
+	@Override
+	public void deleteByUserId(Integer userId) {
+		log.info("deleteByUserId with userId={}", userId);
+		sysUserRoleDAO.deleteByBuilder(SQLWhere.builder()
+				.eq("user_id", userId)
+				.build());
 	}
 
 }

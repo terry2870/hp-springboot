@@ -111,7 +111,8 @@
 				title : node[opt.textField],
 				children : childredData,
 				checked : node[opt.checkedField],
-				attribute : node
+				attribute : node,
+				isLeaf : !childredData || childredData.length == 0
 			};
 			data.push(obj);
 		}
@@ -140,11 +141,57 @@
 
 	/**
 	 * 获取选中的checkbox节点
+	 * isLeaf=true，则只返回叶子节点
 	 * @param {*} jq 
 	 */
-	function _getChecked(jq) {
+	function _getCheckedData(jq, isLeaf) {
 		let opt = jq.data(pluginName);
-		return layui.tree.getChecked(opt.id);
+		let data = layui.tree.getChecked(opt.id);
+
+		let arr = [];
+		_recursionGetCheckedData(data, isLeaf, arr);
+		return arr;
+	}
+
+	/**
+	 * 递归，平铺数据
+	 * @param {*} data 
+	 * @param {*} isLeaf 
+	 * @param {*} arr 
+	 */
+	function _recursionGetCheckedData(data, isLeaf, arr) {
+		if (!data || data.length == 0) {
+			return;
+		}
+		for (let i = 0; i < data.length; i++) {
+			if (isLeaf === true) {
+				if (data[i].isLeaf == true) {
+					arr.push(data[i].attribute);
+				}
+			} else {
+				arr.push(data[i].attribute);
+			}
+			_recursionGetCheckedData(data[i].children, isLeaf, arr);
+		}
+	}
+
+	/**
+	 * 获取选中的id
+	 * @param {*} jq 
+	 * @param {*} isLeaf 
+	 */
+	function _getCheckedId(jq, isLeaf) {
+		let dataArr = _getCheckedData(jq, isLeaf);
+		if (!dataArr || dataArr.length ==0) {
+			return [];
+		}
+
+		let opt = jq.data(pluginName);
+		let arr = [];
+		for (let i = 0; i < dataArr.length; i++) {
+			arr.push(dataArr[i][opt.idField]);
+		}
+		return arr;
 	}
 
 	/**
@@ -167,14 +214,39 @@
 		layui.tree.reload(opt.id, data);
 	}
 
+	/**
+	 * 全部展开
+	 * @param {*} jq 
+	 */
+	function _expandAll(jq) {
+		jq.find(".layui-icon-addition").click();
+	}
+
+	/**
+	 * 全部折叠
+	 * @param {*} jq 
+	 */
+	function _collapseAll(jq) {
+		jq.find(".layui-icon-subtraction").click();
+	}
+
 	//方法
 	$.fn[pluginName].methods = {
 		/**
 		 * 获取选中的checkbox节点
+		 * @param {为true，则只返回叶子节点} isLeaf 
 		 */
-		getChecked : function() {
+		getCheckedData : function(isLeaf) {
 			let jq = $(this);
-			return _getChecked(jq);
+			return _getCheckedData(jq, isLeaf);
+		},
+		/**
+		 * 获取选中的checkbox节点（只返回id）
+		 * @param {为true，则只返回叶子节点} isLeaf 
+		 */
+		getCheckedId : function(isLeaf) {
+			let jq = $(this);
+			return _getCheckedId(jq, isLeaf);
 		},
 		/**
 		 * 设置选中状态
@@ -194,6 +266,24 @@
 			let jq = $(this);
 			return jq.each(function() {
 				_reload(jq, data);
+			});
+		},
+		/**
+		 * 全部展开
+		 */
+		expandAll : function() {
+			let jq = $(this);
+			return jq.each(function() {
+				_expandAll(jq);
+			});
+		},
+		/**
+		 * 全部折叠
+		 */
+		collapseAll : function() {
+			let jq = $(this);
+			return jq.each(function() {
+				_collapseAll(jq);
 			});
 		}
 	};

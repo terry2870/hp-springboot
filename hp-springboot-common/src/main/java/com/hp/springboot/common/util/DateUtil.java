@@ -115,7 +115,7 @@ public class DateUtil {
 	 * @return
 	 */
 	public static Date intToDate(Integer time) {
-		if (NumberUtil.isEmpty(time)) {
+		if (NumberUtil.isNullOrZero(time)) {
 			return null;
 		}
 		return new Date((long) time * 1000);
@@ -129,7 +129,7 @@ public class DateUtil {
 	 * @return
 	 */
 	public static String intToString(Integer time, String...format) {
-		if (NumberUtil.isEmpty(time)) {
+		if (NumberUtil.isNullOrZero(time)) {
 			return StringUtils.EMPTY;
 		}
 		return longToString(time.longValue() * 1000, format);
@@ -143,7 +143,7 @@ public class DateUtil {
 	 * @return
 	 */
 	public static String longToString(Long time, String...format) {
-		if (NumberUtil.isEmpty(time)) {
+		if (NumberUtil.isNullOrZero(time)) {
 			return StringUtils.EMPTY;
 		}
 		

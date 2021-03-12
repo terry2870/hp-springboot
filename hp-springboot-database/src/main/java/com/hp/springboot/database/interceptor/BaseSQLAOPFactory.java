@@ -62,6 +62,7 @@ public class BaseSQLAOPFactory {
 	 * @return
 	 */
 	public static DynamicEntityBean getEntity() {
+		//获取线程变量
 		DAOInterfaceInfoBean info = DAOMethodInterceptorHandle.getRouteDAOInfo();
 		
 		//获取泛型对象

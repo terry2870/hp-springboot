@@ -35,7 +35,7 @@ public class DatabaseConfigProperties {
 	/**
 	 * 连接池类型
 	 */
-	private String poolName = ConnectionPoolFactoryEnum.DBCP.name();
+	private String poolName = ConnectionPoolFactoryEnum.DRUID.name();
 	
 	public static class DatabaseConfig {
 		

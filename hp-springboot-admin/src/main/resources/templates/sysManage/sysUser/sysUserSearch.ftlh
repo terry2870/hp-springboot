@@ -9,25 +9,35 @@
 		<input id="nickName" placeholder="昵称" autocomplete="off" class="layui-input">
 	</div>
 	<div class="layui-input-inline">
-		<button type="button" class="layui-btn layui-btn-normal" id="searchUser">
+		<button type="button" class="layui-btn layui-btn-normal" id="searchBtn">
 			<i class="layui-icon layui-icon-search"></i>搜索
 		</button>
-		<button type="button" class="layui-btn" id="addUser">
-			<i class="layui-icon layui-icon-add-circle"></i>添加
+		<#if SecuritySessionUtil.checkButtonEnabled('addSysUserBtn') == true>
+		<button type="button" class="layui-btn layui-btn-success" id="addBtn">
+			<i class="layui-icon layui-icon-add-circle"></i>新增
 		</button>
+		</#if>
 	</div>
 </div>
 <script>
 	$(function() {
 		//搜索
-		$("#sysUserSearchDiv #searchUser").click(function() {
+		$("#sysUserSearchDiv #searchBtn").click(function() {
 			layui.table.reload("sysUserListTable", {
 				where : {
 					id : $("#sysUserSearchDiv #id").val(),
 					loginName : $("#sysUserSearchDiv #loginName").val(),
 					nickName : $("#sysUserSearchDiv #nickName").val()
+				},
+				page : {
+					curr : 1
 				}
 			});
+		});
+		
+		//新增
+		$("#sysUserSearchDiv #addBtn").click(function() {
+			editSysUser(0);
 		});
 	});
 </script>

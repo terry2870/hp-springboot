@@ -11,30 +11,65 @@ import org.apache.commons.lang3.math.NumberUtils;
  */
 public class NumberUtil {
 
+	/**
+	 * @Title: isNull
+	 * @Description: 判断是否是null
+	 * @param value
+	 * @return
+	 */
+	public static boolean isNull(Number value) {
+		return value == null;
+	}
 	
 	/**
-	* @Title: isEmpty  
-	* @Description: 为空或为0
-	* @param value
-	* @return
+	 * @Title: isNotNull
+	 * @Description: 判断不是null
+	 * @param value
+	 * @return
 	 */
-	public static boolean isEmpty(Number value) {
-		if (value == null) {
-			return true;
-		}
-		
+	public static boolean isNotNull(Number value) {
+		return !isNull(value);
+	}
+	
+	/**
+	 * @Title: isZero
+	 * @Description: 判断是0
+	 * @param value
+	 * @return
+	 */
+	public static boolean isZero(Number value) {
 		BigDecimal b = new BigDecimal(value.toString());
 		return b.compareTo(BigDecimal.ZERO) == 0;
 	}
 	
 	/**
-	* @Title: isNotEmpty  
-	* @Description: 不为空，且不为0
-	* @param value
-	* @return
+	 * @Title: isNotZero
+	 * @Description: 判断不是0
+	 * @param value
+	 * @return
 	 */
-	public static boolean isNotEmpty(Integer value) {
-		return !isEmpty(value);
+	public static boolean isNotZero(Number value) {
+		return !isZero(value);
+	}
+	
+	/**
+	 * @Title: isNullOrZero
+	 * @Description: 判断是null 或者 是0
+	 * @param value
+	 * @return
+	 */
+	public static boolean isNullOrZero(Number value) {
+		return isNull(value) || isZero(value);
+	}
+	
+	/**
+	 * @Title: isNotNullAndNotZero
+	 * @Description: 判断既不是null，又不是0
+	 * @param value
+	 * @return
+	 */
+	public static boolean isNotNullAndNotZero(Number value) {
+		return !isNullOrZero(value);
 	}
 	
 	/**

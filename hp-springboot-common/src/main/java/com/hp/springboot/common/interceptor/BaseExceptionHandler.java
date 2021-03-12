@@ -1,5 +1,7 @@
 package com.hp.springboot.common.interceptor;
 
+import java.nio.charset.StandardCharsets;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hp.springboot.common.bean.Response;
+import com.hp.springboot.common.constant.ContentTypeConstant;
 import com.hp.springboot.common.exception.CommonException;
 
 /**
@@ -44,10 +47,13 @@ public abstract class BaseExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
 	public Response<Object> resolveException(HttpServletRequest request, HttpServletResponse response, Exception exception) {
+		response.setContentType(ContentTypeConstant.APPLICATION_JSON_UTF8);
+		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		String url = request.getRequestURI();
 		if (exception instanceof CommonException) {
 			log.warn("enter requestUrl={}. with exception message is: {}", url, exception.getMessage());
 			CommonException ex = (CommonException) exception;
+			response.setStatus(ex.getCode());
 			return new Response<>(ex.getCode(), ex.getMessage());
 		}
 		

@@ -10,4 +10,10 @@
 		and exists (select 1 from sys_menu t3 where t1.menu_id=t3.id and t3.status=1)
 	</select>
 
+	<!-- 查询菜单，向上递归 -->
+	<select id="selectSysMenuByLeafMenuIds" resultMap="BaseResultMap">
+		SELECT DISTINCT menu.* from sys_menu menu where menu.status=1
+		AND FIND_IN_SET(id, getParentsMenuIdByMenuId(#{menuIds})) &gt; 0
+		ORDER BY menu.sort_number
+	</select>
 </mapper>

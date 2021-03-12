@@ -1,6 +1,7 @@
 package com.hp.springboot.admin.util;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -96,5 +97,26 @@ public class SecuritySessionUtil {
 	 */
 	public static boolean isAjax(HttpServletRequest request) {
 		return StringUtils.equalsIgnoreCase(request.getHeader("X-Requested-With"), "XMLHttpRequest");
+	}
+	
+	/**
+	 * @Title: checkButtonEnabled
+	 * @Description: 检查是否有按钮权限
+	 * @param buttonId
+	 * @return
+	 */
+	public static boolean checkButtonEnabled(String buttonId) {
+		if (StringUtils.isEmpty(buttonId)) {
+			return false;
+		}
+		
+		//获取所有button权限
+		@SuppressWarnings("unchecked")
+		List<String> buttonIdList = (List<String>) ServletUtil.getSession().getAttribute(AdminConstants.USER_MENU_ONLY_BUTTON);
+		if (CollectionUtils.isEmpty(buttonIdList)) {
+			return false;
+		}
+		
+		return CollectionUtils.containsAny(buttonIdList, buttonId);
 	}
 }

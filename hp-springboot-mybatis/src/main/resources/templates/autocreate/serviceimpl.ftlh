@@ -9,23 +9,26 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ${baseConvertPackage};
 import ${convertPackage}.${modelName}Convert;
 import ${daoPackage}.I${modelName}DAO;
 import ${daoModelPackage}.${modelName};
 import ${requestModelPackage}.${modelName}RequestBO;
 import ${responseModelPackage}.${modelName}ResponseBO;
 import ${servicePackage}.I${modelName}Service;
+import ${pageResponsePackage};
+import ${statusEmunPackage};
+import ${dateUtilPackage};
+import ${numberUtilPackage};
 import ${pageModelPackage};
 import ${pageRequestPackage};
-import ${SQLWherePackage};
-import ${SQLWhereBuilderPackage};
 import ${SQLBuildersPackage};
-import ${pageResponsePackage};
+import ${SQLWherePackage};
 
 /**
- * ${tableComment}业务操作接口实现
- * @author ${author}
- * ${.now?string["yyyy-MM-dd"]}
+ * 描述：${tableComment}业务操作接口实现
+ * 作者：${author}
+ * 时间：${.now?string["yyyy-MM-dd"]}
  */
 @Service
 public class ${modelName}ServiceImpl implements I${modelName}Service {
@@ -39,26 +42,26 @@ public class ${modelName}ServiceImpl implements I${modelName}Service {
 	public void save${modelName}(${modelName}RequestBO request) {
 		log.info("save${modelName} with request={}", request);
 		${modelName} dal = ${modelName}Convert.boRequest2Dal(request);
-		if (request.getId() == null || request.getId().intValue() == 0) {
+		if (NumberUtil.isNullOrZero(request.getId())) {
 			// 新增
+			BaseConvert.convertModel(dal);
 			${modelNameFirstLow}DAO.insertSelective(dal);
 		} else {
 			// 修改
+			dal.setUpdateTime(DateUtil.getCurrentTimeSeconds());
 			${modelNameFirstLow}DAO.updateByPrimaryKeySelective(dal);
 		}
-		log.info("save${modelName} success with request={}", request);
 	}
 
 	@Override
 	public PageResponse<${modelName}ResponseBO> query${modelName}PageList(${modelName}RequestBO request, PageRequest pageRequest) {
 		log.info("query${modelName}PageList with request={}", request);
 		PageModel page = pageRequest.toPageModel();
-
-		SQLWhereBuilder builder = SQLWhere.builder();
 		
-		// TODO 这里添加查询条件
-		
-		List<SQLWhere> whereList = builder.build();
+		List<SQLWhere> whereList = SQLWhere.builder()
+				// TODO 这里添加查询条件
+				.build()
+				;
 		
 		// 查询总数
 		int total = ${modelNameFirstLow}DAO.selectCount(whereList);
@@ -68,7 +71,7 @@ public class ${modelName}ServiceImpl implements I${modelName}Service {
 		}
 		PageResponse<${modelName}ResponseBO> resp = new PageResponse<>();
 		resp.setCurrentPage(pageRequest.getPage());
-		resp.setPageSize(pageRequest.getRows());
+		resp.setPageSize(pageRequest.getLimit());
 		resp.setTotal(total);
 
 		SQLBuilders builders = SQLBuilders.create()
@@ -82,20 +85,18 @@ public class ${modelName}ServiceImpl implements I${modelName}Service {
 			return resp;
 		}
 
-		List<${modelName}ResponseBO> respList = new ArrayList<>();
+		List<${modelName}ResponseBO> respList = new ArrayList<>(list.size());
 		for (${modelName} a : list) {
 			respList.add(${modelName}Convert.dal2BOResponse(a));
 		}
 		log.info("query${modelName}PageList success. with request={}", request);
-		resp.setRows(respList);
-		return resp;
+		return new PageResponse<>(total, respList, page.getCurrentPage(), page.getPageSize());
 	}
 
 	@Override
 	public void delete${modelName}(Integer id) {
 		log.info("delete${modelName} with id={}", id);
 		${modelNameFirstLow}DAO.deleteByPrimaryKey(id);
-		log.info("delete${modelName} success with id={}", id);
 	}
 
 	@Override
@@ -107,5 +108,16 @@ public class ${modelName}ServiceImpl implements I${modelName}Service {
 			return null;
 		}
 		return ${modelName}Convert.dal2BOResponse(dal);
+	}
+	
+	@Override
+	public void change${modelName}Status(Integer id, StatusEnum status) {
+		log.info("change${modelName}Status with id={}, status={}", id, status);
+		
+		${modelName} dal = new ${modelName}();
+		dal.setStatus(status.getIntegerValue());
+		dal.setId(id);
+		dal.setUpdateTime(DateUtil.getCurrentTimeSeconds());
+		${modelNameFirstLow}DAO.updateByPrimaryKeySelective(dal);
 	}
 }

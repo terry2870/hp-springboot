@@ -1,0 +1,83 @@
+.layui-card-style-default {
+	border: 1px solid #009688;
+}
+
+.layui-card-style-default .layui-card-header {
+	background-color: #009688;
+	color: white;
+}
+
+.layui-card-style-info {
+	border: 1px solid #17a2b8;
+}
+
+.layui-card-style-info .layui-card-header {
+	background-color: #17a2b8;
+	color: white;
+}
+
+.layui-card-style-normal {
+	border: 1px solid #1E9FFF;
+}
+
+.layui-card-style-normal .layui-card-header {
+	background-color: #1E9FFF;
+	color: white;
+}
+
+.layui-card-style-success {
+	border: 1px solid #28a745;
+}
+
+.layui-card-style-success .layui-card-header {
+	background-color: #28a745;
+	color: white;
+}
+
+.layui-btn-info {
+	background-color: #17a2b8;
+}
+
+.layui-btn-success {
+	background-color: #28a745;
+}
+
+
+/* dialog */
+body .layui-layer-editform .layui-layer-content {
+    padding: 20px;
+}
+
+body .layui-layer-visible .layui-layer-content {
+    overflow: visible;
+}
+
+body .layui-layer-info .layui-layer-title {
+	background-color: #17a2b8;
+	color: #fff;
+	border: none;
+}
+body .layui-layer-info .layui-layer-btn a {
+	border-color: #009f95;
+}
+body .layui-layer-info .layui-layer-btn .layui-layer-btn0 {
+	background-color: #17a2b8
+}
+body .layui-layer-info .layui-layer-btn .layui-layer-btn1 {
+	background-color: #92B8B1
+}
+
+body .layui-layer-success .layui-layer-title {
+	background-color: #28a745;
+	color: #fff;
+	border: none;
+}
+body .layui-layer-success .layui-layer-btn a {
+	border-color: #28a745;
+}
+body .layui-layer-success .layui-layer-btn .layui-layer-btn0 {
+	background-color: #28a745
+}
+body .layui-layer-success .layui-layer-btn .layui-layer-btn1 {
+	background-color: #92B8B1
+}

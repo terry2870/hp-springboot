@@ -17,8 +17,11 @@ import com.hp.springboot.admin.model.request.SysMenuRequestBO;
 import com.hp.springboot.admin.model.response.SysMenuResponseBO;
 import com.hp.springboot.admin.model.response.SysUserResponseBO;
 import com.hp.springboot.admin.service.ISysMenuService;
+import com.hp.springboot.admin.service.ISysRoleMenuService;
 import com.hp.springboot.admin.util.SecuritySessionUtil;
+import com.hp.springboot.common.constant.GoogleContant;
 import com.hp.springboot.common.enums.StatusEnum;
+import com.hp.springboot.common.exception.CommonException;
 import com.hp.springboot.common.util.DateUtil;
 import com.hp.springboot.common.util.NumberUtil;
 import com.hp.springboot.database.bean.OrderBy;
@@ -37,6 +40,8 @@ public class SysMenuServiceImpl implements ISysMenuService {
 	
 	@Autowired
 	private ISysMenuDAO sysMenuDAO;
+	@Autowired
+	private ISysRoleMenuService sysRoleMenuService;
 
 	@Override
 	public List<SysMenuResponseBO> queryUserSysMenu(StatusEnum status) {
@@ -55,13 +60,14 @@ public class SysMenuServiceImpl implements ISysMenuService {
 		} else {
 			SysUserResponseBO user = SecuritySessionUtil.getSessionData();
 			// 其他用户
+			// 查询该用户分配的角色所对应的菜单id
 			List<Integer> menuIdList = sysMenuDAO.selectByUserId(user.getId());
 			if (CollectionUtils.isEmpty(menuIdList)) {
 				return null;
 			}
 			
-			// 根据id，批量查询菜单信息
-			menuList = sysMenuDAO.selectByPrimaryKeys(menuIdList);
+			// 向上递归
+			menuList = sysMenuDAO.selectSysMenuByLeafMenuIds(GoogleContant.COMMA_JOINER.join(menuIdList));
 		}
 		
 		if (CollectionUtils.isEmpty(menuList)) {
@@ -79,7 +85,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
 	public void saveSysMenu(SysMenuRequestBO request) {
 		log.info("saveSysMenu with request={}", request);
 		SysMenu dal = SysMenuConvert.boRequest2Dal(request);
-		if (NumberUtil.isEmpty(request.getId())) {
+		if (NumberUtil.isNullOrZero(request.getId())) {
 			//新增
 			BaseConvert.convertModel(dal);
 			sysMenuDAO.insertSelective(dal);
@@ -88,19 +94,40 @@ public class SysMenuServiceImpl implements ISysMenuService {
 			dal.setUpdateTime(DateUtil.getCurrentTimeSeconds());
 			sysMenuDAO.updateByPrimaryKeySelective(dal);
 		}
-		log.info("saveSysMenu success with request={}", request);
 	}
 
 	@Override
-	public void deleteSysMenu(Integer id) {
-		log.info("deleteSysMenu with id={}", id);
-		// 使用逻辑删除
-		SysMenu menu = new SysMenu();
-		menu.setId(id);
-		menu.setStatus(StatusEnum.VALID.getValue());
-		menu.setUpdateTime(DateUtil.getCurrentTimeSeconds());
-		sysMenuDAO.updateByPrimaryKeySelective(menu);
-		log.info("deleteSysMenu success with id={}", id);
+	public void deleteSysMenu(Integer id, boolean force) {
+		log.info("deleteSysMenu with id={}, force={}", id, force);
+		
+		// 检查是否有子节点
+		int childCount = sysMenuDAO.selectCount(SQLWhere.builder()
+				.eq("parent_menu_id", id)
+				.build()
+				);
+		if (childCount > 0) {
+			log.warn("deleteSysMenu error. with child find bind. with menuId={}, force={}", id, force);
+			throw new CommonException(500, "该菜单下有子菜单，不能删除。请先删除子菜单，再删除该菜单。");
+		}
+		
+		// 检查该菜单有没有角色在用
+		List<Integer> roleIdList = sysRoleMenuService.queryRoleIdFromMenuId(id);
+		if (CollectionUtils.isNotEmpty(roleIdList)) {
+			log.warn("deleteSysMenu error. with role bind. with menuId={}, force={}", id, force);
+			throw new CommonException(500, "该菜单有角色关联，不能删除。请先解除角色与菜单关联关系，再删除该菜单。");
+		}
+		
+		if (force) {
+			//物理删除
+			sysMenuDAO.deleteByPrimaryKey(id);
+		} else {
+			// 逻辑删除
+			SysMenu menu = new SysMenu();
+			menu.setId(id);
+			menu.setStatus(StatusEnum.INVALID.getValue());
+			menu.setUpdateTime(DateUtil.getCurrentTimeSeconds());
+			sysMenuDAO.updateByPrimaryKeySelective(menu);
+		}
 	}
 
 }

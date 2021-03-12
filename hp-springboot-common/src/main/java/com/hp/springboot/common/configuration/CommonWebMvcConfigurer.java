@@ -45,7 +45,7 @@ public class CommonWebMvcConfigurer implements WebMvcConfigurer {
 	/**
 	 * 默认的第一免过滤
 	 */
-	private static final List<String> DEFAULT_FIRST_NO_FILTER_LIST = Lists.newArrayList("/actuator", "/health", "/refeshCheckCode", "/error");
+	private static final List<String> DEFAULT_FIRST_NO_FILTER_LIST = Lists.newArrayList("/", "/actuator", "/health", "/error", "/druid");
 	
 	/**
 	 * 一级免过滤列表（不管有没有session都可以访问）

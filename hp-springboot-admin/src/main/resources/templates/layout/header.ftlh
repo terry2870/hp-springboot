@@ -8,7 +8,7 @@
 			${Session[javaClass["com.hp.springboot.admin.constant.AdminConstants"].SESSION_USER_KEY].nickName}
 		</a>
 		<dl class="layui-nav-child">
-			<dd><a href="#">基本资料</a></dd>
+			<dd><a id="userInfoBtn" href="#">基本资料</a></dd>
 			<dd><a id="logout" href="#">退出</a></dd>
 		</dl>
 	</li>
@@ -22,6 +22,10 @@
 				layer.close(index);
 				window.location.href = "${request.contextPath}${Session["logoutUrl"]}";
 			});
+		});
+		
+		$("#userInfoBtn").click(function() {
+			
 		});
 	});
 </script>

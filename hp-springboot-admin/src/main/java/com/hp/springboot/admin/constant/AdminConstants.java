@@ -72,14 +72,19 @@ public class AdminConstants {
 	public static final String ACCESS_DENIED_URL = "/accessDenied";
 	
 	/**
+	 * 获取验证码地址
+	 */
+	public static final String VERIFY_CODE_URL = "/verifyCode";
+	
+	/**
 	 * 匿名用户
 	 */
-	public static final SysUserResponseBO ANONYMOUS_USER = new SysUserResponseBO("none", "none", "匿名用户", new SimpleGrantedAuthority(ANONYMOUS_ROLE_NAME));
+	public static final SysUserResponseBO ANONYMOUS_USER = new SysUserResponseBO(-2, "none", "none", "匿名用户", new SimpleGrantedAuthority(ANONYMOUS_ROLE_NAME));
 	
 	/**
 	 * admin用户
 	 */
-	public static final SysUserResponseBO ADMIN_USER = new SysUserResponseBO("admin", ADMIN_USER_DEFAULT_PASSWORD, "艾德敏", new SimpleGrantedAuthority(ADMIN_ROLE_NAME));
+	public static final SysUserResponseBO ADMIN_USER = new SysUserResponseBO(-1, "admin", ADMIN_USER_DEFAULT_PASSWORD, "艾德敏", new SimpleGrantedAuthority(ADMIN_ROLE_NAME));
 	
 	/**
 	 * 用户菜单色session key（包含按钮）
@@ -92,6 +97,11 @@ public class AdminConstants {
 	public static final String USER_MENU_EXCLUDE_BUTTON = "userMenuExcludeButton";
 	
 	/**
+	 * 用户所见的按钮
+	 */
+	public static final String USER_MENU_ONLY_BUTTON = "userMenuOnlyButton";
+	
+	/**
 	 * 验证码的key
 	 */
 	public static final String VALIDATE_CODE_KEY = "VALIDATE_CODE";
@@ -100,4 +110,5 @@ public class AdminConstants {
 	 * 用户的session  key
 	 */
 	public static final String SESSION_USER_KEY = "SESSION_USER";
+
 }

@@ -26,6 +26,6 @@ public class CreateConvert {
 		String fileName = filePath + "/" + table.getModelName() + "Convert.java";
 		map.put("package", packageUrl);
 		
-		FreeMarkerUtil.createFile("autocreate/convert.ftl", fileName, map);
+		FreeMarkerUtil.createFile("autocreate/convert.ftlh", fileName, map);
 	}
 }

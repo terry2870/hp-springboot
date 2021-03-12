@@ -99,7 +99,7 @@ public interface IBaseSelectDAO<MODEL, PK> {
 	 * @param clazz
 	 * @return
 	 */
-	public <T> List<T> selectListForTargetClass(SQLBuilders sqlBuilders, Class<T> clazz);
+	public <T> List<T> selectAnyList(SQLBuilders sqlBuilders, Class<T> clazz);
 	
 	/**
 	 * 根据传入的sqlbuild，查询一个

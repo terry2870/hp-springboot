@@ -5,8 +5,8 @@ package com.hp.springboot.admin.enums;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+
+import com.hp.springboot.common.bean.ValueTextBean;
 
 /**
  * @author huangping
@@ -77,14 +77,10 @@ public enum IdentityEnum {
 	 * @Description: 返回json格式的数据
 	 * @return
 	 */
-	public static Collection<?> toJson() {
-		Collection<Map<String, String>> list = new ArrayList<>();
-		Map<String, String> map = null;
+	public static Collection<ValueTextBean> toJson() {
+		Collection<ValueTextBean> list = new ArrayList<>();
 		for (IdentityEnum e : values()) {
-			map = new HashMap<>();
-			map.put("value", String.valueOf(e.getValue()));
-			map.put("text", e.toString());
-			list.add(map);
+			list.add(new ValueTextBean(String.valueOf(e.getValue()), e.getName()));
 		}
 		return list;
 	}

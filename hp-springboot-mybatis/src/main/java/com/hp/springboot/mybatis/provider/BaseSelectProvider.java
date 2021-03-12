@@ -71,6 +71,7 @@ public class BaseSelectProvider {
 	 * @return
 	 */
 	public static String selectList(Map<String, Object> target) {
+		//从当前线程变量中，获取需要执行的表，字段等信息
 		DynamicEntityBean entity = BaseSQLAOPFactory.getEntity();
 		SQLBuilders builders = (SQLBuilders) target.get(SQLProviderConstant.SQL_BUILDS_ALIAS);
 		String sql = getSQL(builders, entity);

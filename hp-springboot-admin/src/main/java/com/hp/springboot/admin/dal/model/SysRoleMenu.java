@@ -29,6 +29,13 @@ public class SysRoleMenu extends AbstractBean {
 	 */
 	private Integer menuId;
 
+	public SysRoleMenu() {}
+	
+	public SysRoleMenu(Integer roleId, Integer menuId) {
+		this.roleId = roleId;
+		this.menuId = menuId;
+	}
+
 	public Integer getId() {
 		return id;
 	}

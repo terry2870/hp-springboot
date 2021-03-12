@@ -6,8 +6,7 @@ $.ajaxSetup({
 		let status = XMLHttpRequest.status;
 		if (status == 200) {
 			return;
-		}
-		if (status == 900) {
+		} else if (status == 900) {
 			//数据库超时
 			layer.alert("查询超时了", {icon: 2});
 		} else if (status == 901) {

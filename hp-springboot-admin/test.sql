@@ -45,6 +45,29 @@ BEGIN
   END//
 DELIMITER ;
 
+-- 导出  表 test.sys_config 结构
+CREATE TABLE IF NOT EXISTS `sys_config` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `config_name` varchar(100) NOT NULL DEFAULT '' COMMENT '配置名称',
+  `config_desc` varchar(500) NOT NULL DEFAULT '' COMMENT '配置描述',
+  `config_key` varchar(100) NOT NULL DEFAULT '' COMMENT '配置的key',
+  `config_value` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '配置的值',
+  `config_value_type` tinyint NOT NULL DEFAULT '1' COMMENT '配置数据类型（1-字符串；2-数字；3-日期时间；4-富文本）',
+  `config_value_type_desc` varchar(128) NOT NULL DEFAULT '' COMMENT '配置数据类型的详细信息',
+  `status` tinyint NOT NULL DEFAULT '1' COMMENT '状态（1-正常；0-无效）',
+  `create_user_id` int NOT NULL DEFAULT '0' COMMENT '创建者ID',
+  `create_time` int NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `config_key` (`config_key`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统配置表';
+
+-- 正在导出表  test.sys_config 的数据：~0 rows (大约)
+/*!40000 ALTER TABLE `sys_config` DISABLE KEYS */;
+INSERT INTO `sys_config` (`id`, `config_name`, `config_desc`, `config_key`, `config_value`, `config_value_type`, `config_value_type_desc`, `status`, `create_user_id`, `create_time`, `update_time`) VALUES
+	(1, '测试配置数据', 'asdasdasd2', 'test_key', '34411', 2, '', 1, 2, 1614254340, 1614332867);
+/*!40000 ALTER TABLE `sys_config` ENABLE KEYS */;
+
 -- 导出  表 test.sys_menu 结构
 CREATE TABLE IF NOT EXISTS `sys_menu` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
@@ -62,39 +85,42 @@ CREATE TABLE IF NOT EXISTS `sys_menu` (
   `update_time` int NOT NULL DEFAULT '0' COMMENT '更新时间',
   `create_user_id` int NOT NULL DEFAULT '0' COMMENT '创建者',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='系统菜单表';
 
--- 正在导出表  test.sys_menu 的数据：~20 rows (大约)
+-- 正在导出表  test.sys_menu 的数据：~23 rows (大约)
 /*!40000 ALTER TABLE `sys_menu` DISABLE KEYS */;
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_url`, `parent_menu_id`, `sort_number`, `status`, `menu_type`, `button_id`, `icon_name`, `target`, `extra_url`, `create_time`, `update_time`, `create_user_id`) VALUES
-	(1, '系统管理', '', 0, 2, 1, 1, '', '', '', '', 0, 0, 0),
-	(2, '用户管理', '/SysUserController/sysUserList', 1, 1, 1, 2, '', 'person-fill', '', 'queryAllSysUser', 0, 1473785365, 0),
-	(3, '角色管理', '/SysRoleController/sysRoleList', 1, 2, 1, 2, '', 'star-fill', '', 'queryAllSysRole', 0, 0, 0),
-	(4, '菜单管理', '/SysMenuController/sysMenuList', 1, 3, 1, 2, '', 'list', '', '', 0, 0, 0),
-	(5, '查询角色列表', '', 3, 1, 1, 3, '', '', '', 'queryAllSysRole', 0, 1473870231, 0),
-	(6, '新增角色', '', 3, 2, 1, 3, 'sysRoleAddBtn', '', '', 'querySysRoleById', 0, 1473870264, 0),
-	(9, '修改角色', '', 3, 3, 1, 3, 'sysRoleEditBtn', '', '', 'querySysRoleById', 0, 1473783724, 0),
-	(10, '保存角色', '', 3, 4, 1, 3, 'sysRoleSaveBtn', '', '', 'saveSysRole', 0, 1473443318, 0),
-	(11, '删除角色', '', 3, 5, 1, 3, 'sysRoleDelBtn', '', '', 'deleteSysRole', 0, 1473443347, 0),
-	(12, '查询角色权限', '', 3, 6, 1, 3, 'sysRoleMenuViewBtn', '', '', 'queryAllSysMenu,selectMenuByRoleId', 0, 1473608555, 0),
-	(13, '保存角色权限', '', 3, 7, 1, 3, 'sysRoleMenuSaveBtn', '', '', 'saveSysRoleMenu', 0, 1473608585, 0),
-	(14, '查询用户列表', '', 2, 1, 1, 3, '', '', '', '/SysUserController/querySysUserPageList', 0, 1473787183, 0),
-	(15, '新增用户', '', 2, 2, 1, 3, 'sysUserAddBtn', '', '', 'queryAllSysRole,selectRoleByUserId,querySysUserById', 0, 1473784520, 0),
-	(16, '修改用户', '', 2, 3, 1, 3, 'sysUserEditBtn', '', '', 'queryAllSysRole,selectRoleByUserId,querySysUserById', 0, 1473442993, 0),
-	(17, '保存用户', '', 2, 4, 1, 3, 'sysUserSaveBtn', '', '', 'saveSysUser', 0, 1473917939, 0),
-	(18, '删除用户', '', 2, 5, 1, 3, 'sysUserDelBtn', '', '', 'deleteSysUser', 0, 1534822291, 0),
-	(43, '修改密码', '/SysUserController/modifyPwdPage', 1, 5, 1, 2, '', '', '', 'modifyPwd', 0, 1534755226, 0),
-	(54, '查看用户详情', '', 2, 6, 1, 3, 'sysUserViewBtn', '', '', 'queryAllSysRole,selectRoleByUserId,querySysUserById', 0, 1473785237, 0),
-	(55, '查看角色详情', '', 3, 8, 1, 3, 'sysRoleViewBtn', '', '', 'querySysRoleById', 0, 1473911016, 0),
-	(106, '区域管理1', '/jsp/sysManage/sysRegion/sysRegionList.jsp', 1, 5, 1, 2, '', '', '', 'sysRegionList.jsp,sysRegionRight.jsp,queryAllRegion.do,deleteSysregion.do,saveSysRegion.do', 1477573845, 1477573906, 1),
-	(107, 'test', '', 0, 2, 1, 1, '', '', '', '', 0, 0, 0),
-	(108, '测试菜单', '', 107, 1, 1, 2, '', '', '', '', 0, 0, 0);
+	(1, '系统管理', '', 0, 1, 1, 1, '', '', '', '', 0, 1613974095, 0),
+	(2, '用户管理', '/SysUserController/sysUserList', 1, 1, 1, 2, '', 'person-fill', '', '/SysUserController/querySysUserPageList', 0, 1613965645, 0),
+	(3, '角色管理', '/SysRoleController/sysRoleList', 1, 2, 1, 2, '', 'star-fill', '', '/SysRoleController/querySysRolePageList', 0, 0, 0),
+	(4, '菜单管理', '/SysMenuController/sysMenuList', 1, 3, 1, 2, '', 'list', '', '', 0, 1613785994, 0),
+	(5, '查看用户详情', '', 2, 6, 1, 3, 'viewSysUserBtn', '', '', '/SysUserController/sysUserEdit,/SysUserController/querySysUserById', 0, 1473785237, 0),
+	(6, '新增用户', '', 2, 2, 1, 3, 'addSysUserBtn', '', '', '/SysUserController/sysUserEdit,/SysUserController/saveSysUser', 0, 1614246462, 0),
+	(7, '修改用户', '', 2, 3, 1, 3, 'editSysUserBtn', '', '', '/SysUserController/sysUserEdit,/SysUserController/querySysUserById,/SysUserController/saveSysUser', 0, 1614246473, 0),
+	(9, '删除用户', '', 2, 5, 1, 3, 'delSysUserBtn', '', '', '/SysUserController/deleteSysUser', 0, 1534822291, 0),
+	(10, '查看角色详情', '', 3, 8, 1, 3, 'sysRoleViewBtn', '', '', '', 0, 1473911016, 0),
+	(11, '新增角色', '', 3, 2, 1, 3, 'addSysRoleBtn', '', '', '/SysRoleController/saveSysRole', 0, 1614246559, 0),
+	(12, '修改角色', '', 3, 3, 1, 3, 'editSysRoleBtn', '', '', '/SysRoleController/querySysRoleById,/SysRoleController/saveSysRole', 0, 1614246567, 0),
+	(14, '删除角色', '', 3, 5, 1, 3, 'delSysRoleBtn', '', '', '/SysRoleController/deleteSysRole', 0, 1473443347, 0),
+	(15, '修改角色权限', '', 3, 6, 1, 3, 'viewSysRoleMenuBtn', '', '', '/SysMenuController/queryAllSysMenu,/SysRoleController/queryMenuByRoleId,/SysRoleController/saveSysRoleMenu', 0, 1614246694, 0),
+	(17, '修改密码', '/SysUserController/modifyPwdPage', 1, 5, 1, 2, '', '', '', '/SysUserController/modifyPwd', 0, 1534755226, 0),
+	(18, '修改用户状态', '', 2, 7, 1, 3, 'changeSysUserStatusBtn', '', '', '/SysUserController/changeUserStatus', 1614065126, 1614065140, -1),
+	(19, '系统配置管理', '/SysConfigController/sysConfigList', 1, 4, 1, 2, '', '', '', '/SysConfigController/querySysConfigPageList', 1614246199, 1614246199, -1),
+	(20, '查看系统配置详情', '', 19, 1, 1, 3, 'viewSysConfigBtn', '', '', '/SysConfigController/querySysConfigById', 1614246251, 1614246251, -1),
+	(21, '新增系统配置', '', 19, 2, 1, 3, 'addSysConfigBtn', '', '', '/SysConfigController/saveSysConfig', 1614246322, 1614246322, -1),
+	(22, '修改系统配置', '', 19, 3, 1, 3, 'editSysConfigBtn', '', '', '/SysConfigController/saveSysConfig,/SysConfigController/querySysConfigById', 1614246365, 1614246365, -1),
+	(23, '删除系统配置', '', 19, 4, 1, 3, 'delSysConfigBtn', '', '', '/SysConfigController/deleteSysConfig', 1614246405, 1614246405, -1),
+	(24, '修改系统配置状态', '', 19, 5, 1, 3, 'changeSysConfigStatusBtn', '', '', '/SysConfigController/changeSysConfigStatus', 1614246439, 1614246439, -1),
+	(25, '查看用户列表', '', 2, 1, 1, 3, 'xx', '', '', '/SysUserController/querySysUserPageList', 1614326839, 1614326839, -1),
+	(26, '查看角色列表', '', 3, 1, 1, 3, 'xx', '', '', '/SysRoleController/querySysRolePageList', 1614326869, 1614326869, -1),
+	(27, '查看配置列表', '', 19, 1, 1, 3, 'xx', '', '', '/SysConfigController/querySysConfigPageList', 1614326886, 1614326886, -1),
+	(28, '测试表', '/TestTableController/testTableList', 1, 6, 1, 2, '', '', '', '/TestTableController/queryTestTablePageList,/TestTableController/saveTestTable,/TestTableController/deleteTestTable,/TestTableController/queryTestTableById,/TestTableController/changeTestTableStatus', 1614589451, 1614589451, -1);
 /*!40000 ALTER TABLE `sys_menu` ENABLE KEYS */;
 
 -- 导出  表 test.sys_role 结构
 CREATE TABLE IF NOT EXISTS `sys_role` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '角色ID',
-  `role_name` varchar(50) NOT NULL COMMENT '角色名称',
+  `role_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '角色名称',
   `role_info` varchar(400) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '角色描述',
   `status` tinyint NOT NULL DEFAULT '1' COMMENT '角色状态',
   `create_user_id` int NOT NULL DEFAULT '0' COMMENT '创建者ID',
@@ -102,15 +128,16 @@ CREATE TABLE IF NOT EXISTS `sys_role` (
   `update_time` int NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `role_name` (`role_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='系统角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='系统角色表';
 
--- 正在导出表  test.sys_role 的数据：~4 rows (大约)
+-- 正在导出表  test.sys_role 的数据：~5 rows (大约)
 /*!40000 ALTER TABLE `sys_role` DISABLE KEYS */;
 INSERT INTO `sys_role` (`id`, `role_name`, `role_info`, `status`, `create_user_id`, `create_time`, `update_time`) VALUES
-	(1, '用户角色', '角色13333adasda', 1, 0, 0, 1534496511),
-	(3, '角色2', '', 1, 0, 0, 1534491593),
-	(4, '角色3', 'asdasdasd', 1, 1, 1534491605, 1534491625),
-	(5, 'hah ddd', 'asdasd', 1, 2, 1534502304, 1534502318);
+	(1, '用户角色', '角色13333adasda', 1, 0, 0, 1614325100),
+	(3, '初始用户角色', '只提供最基本的菜单，如（修改密码）', 1, 0, 0, 1614073310),
+	(4, '角色3', 'asd12345dd', 1, 1, 1534491605, 1613980974),
+	(6, '123', 'sdfsdf', 1, 2, 1614045488, 1614045488),
+	(7, '啊实打实', 'sss', 1, 2, 1614069632, 1614325149);
 /*!40000 ALTER TABLE `sys_role` ENABLE KEYS */;
 
 -- 导出  表 test.sys_role_menu 结构
@@ -120,17 +147,29 @@ CREATE TABLE IF NOT EXISTS `sys_role_menu` (
   `menu_id` int NOT NULL DEFAULT '0' COMMENT '菜单ID',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK` (`role_id`,`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='系统角色菜单关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8 COMMENT='系统角色菜单关联表';
 
--- 正在导出表  test.sys_role_menu 的数据：~6 rows (大约)
+-- 正在导出表  test.sys_role_menu 的数据：~18 rows (大约)
 /*!40000 ALTER TABLE `sys_role_menu` DISABLE KEYS */;
 INSERT INTO `sys_role_menu` (`id`, `role_id`, `menu_id`) VALUES
-	(27, 1, 0),
-	(26, 1, 1),
-	(16, 1, 2),
-	(15, 1, 3),
-	(28, 1, 14),
-	(25, 5, 106);
+	(188, 1, 5),
+	(185, 1, 6),
+	(186, 1, 7),
+	(187, 1, 9),
+	(194, 1, 10),
+	(190, 1, 11),
+	(191, 1, 12),
+	(192, 1, 14),
+	(193, 1, 15),
+	(189, 1, 18),
+	(195, 1, 20),
+	(196, 1, 21),
+	(197, 1, 22),
+	(198, 1, 23),
+	(199, 1, 24),
+	(200, 1, 28),
+	(183, 3, 17),
+	(184, 4, 25);
 /*!40000 ALTER TABLE `sys_role_menu` ENABLE KEYS */;
 
 -- 导出  表 test.sys_user 结构
@@ -144,7 +183,7 @@ CREATE TABLE IF NOT EXISTS `sys_user` (
   `head_icon` varchar(100) NOT NULL DEFAULT '' COMMENT '用户头像',
   `address` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '用户地址',
   `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'email',
-  `status` tinyint NOT NULL DEFAULT '1' COMMENT '用户状态（1-正常；2-已删除；3-无效）',
+  `status` tinyint NOT NULL DEFAULT '1' COMMENT '用户状态（1-正常；0-无效）',
   `create_user_id` int NOT NULL DEFAULT '0' COMMENT '创建者ID',
   `last_login_time` int NOT NULL DEFAULT '0' COMMENT '最后一次登录时间',
   `create_time` int NOT NULL DEFAULT '0' COMMENT '创建时间',
@@ -153,14 +192,14 @@ CREATE TABLE IF NOT EXISTS `sys_user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name` (`nick_name`) USING BTREE,
   UNIQUE KEY `login_name` (`login_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COMMENT='系统用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='系统用户表';
 
--- 正在导出表  test.sys_user 的数据：~25 rows (大约)
+-- 正在导出表  test.sys_user 的数据：~18 rows (大约)
 /*!40000 ALTER TABLE `sys_user` DISABLE KEYS */;
 INSERT INTO `sys_user` (`id`, `nick_name`, `login_name`, `login_pwd`, `mobile`, `phone_number`, `head_icon`, `address`, `email`, `status`, `create_user_id`, `last_login_time`, `create_time`, `update_time`, `identity`) VALUES
-	(2, '用户13333', 'user1', '$2a$10$4rYNtYlYIF5ZQ2oCbc51Q.GlUz.ttD.TiuO7APHi6hdp8D/gpBlNW', '13951882433', '025-84661234', 'http://t.cn/RCzsdCq', '江苏南京', 'terry@163.com', 1, 0, 1536507741, 1536507741, 1534496533, 2),
-	(3, '用户2', 'user2', '21232f297a57a5a743894a0e4a801fc3', '', '', '', '', '', 1, 0, 0, 1556507741, 1534495647, 3),
-	(4, '用户3', 'user3', '21232f297a57a5a743894a0e4a801fc3', '3', '', '', '', '', 1, 0, 0, 0, 0, 3),
+	(2, '用户1', 'user1', '$2a$10$iN2hulrxIDSJgM56TMtAi.C1OfB2fXpF1iBQaWylkjpT7OtCSxhte', '13951882433', '025-84661234', 'http://t.cn/RCzsdCq', '江苏南京123', 'terry@163.com', 1, 0, 1614598254, 1536507741, 1614331901, 2),
+	(3, '用户2', 'user2', '$2a$10$iN2hulrxIDSJgM56TMtAi.C1OfB2fXpF1iBQaWylkjpT7OtCSxhte', '1', '', '', '3', '2', 1, 0, 1614330268, 1556507741, 1614332952, 3),
+	(4, '用户3', 'user3', '21232f297a57a5a743894a0e4a801fc3', '3', '', '', '', '', 0, 0, 0, 0, 1614330074, 3),
 	(5, '用户4', 'user4', '21232f297a57a5a743894a0e4a801fc3', '', '', '', '', '', 1, 0, 0, 0, 0, 3),
 	(6, '用户5', 'user5', '21232f297a57a5a743894a0e4a801fc3', '', '', '', '', '', 1, 0, 0, 0, 0, 3),
 	(7, '用户6', 'user6', '21232f297a57a5a743894a0e4a801fc3', '', '', '', '', '', 1, 0, 0, 0, 0, 3),
@@ -175,14 +214,7 @@ INSERT INTO `sys_user` (`id`, `nick_name`, `login_name`, `login_pwd`, `mobile`, 
 	(16, '用户15', 'user15', '21232f297a57a5a743894a0e4a801fc3', '', '', '', '', '', 1, 0, 0, 0, 0, 3),
 	(17, '用户16', 'user16', '21232f297a57a5a743894a0e4a801fc3', '', '', '', '', '', 1, 0, 0, 0, 0, 3),
 	(18, '用户17', 'user17', '21232f297a57a5a743894a0e4a801fc3', '', '', '', '', '', 0, 0, 0, 0, 0, 3),
-	(19, '用户18', 'user18', '21232f297a57a5a743894a0e4a801fc3', '', '', '', '', '', 1, 0, 0, 0, 0, 3),
-	(20, '用户19', 'user19', '21232f297a57a5a743894a0e4a801fc3', '', '', '', '', '', 1, 0, 0, 0, 0, 3),
-	(21, '用户20', 'user20', '21232f297a57a5a743894a0e4a801fc3', '', '', '', '', '', 1, 0, 0, 0, 0, 3),
-	(22, '用户21', 'user21', '21232f297a57a5a743894a0e4a801fc3', '', '', '', '', '', 1, 0, 0, 0, 0, 3),
-	(23, '用户22', 'user22', '21232f297a57a5a743894a0e4a801fc3', '', '', '', '', '', 1, 0, 0, 0, 0, 3),
-	(24, '用户23', 'user23', '21232f297a57a5a743894a0e4a801fc3', '', '', '', '', '', 1, 0, 0, 0, 0, 3),
-	(26, '哈哈', 'hhhh', 'e10adc3949ba59abbe56e057f20f883e', '13951882344', '025-22323323', '', '阿克苏建档立卡教室里的空间爱丽丝', 'www@163.com', 1, 1, 0, 1534495933, 1534495933, 3),
-	(27, 'dasdasd', 'aaaa', 'e10adc3949ba59abbe56e057f20f883e', '13951882555', '', '', '', '', 0, 2, 0, 1534497864, 1534497891, 2);
+	(28, '2', '1', '$2a$10$x7/FWiiqlbIXQn51h7aa8et/MaI5h4.1mKHdwMteY1K5liKfn/1eq', '3', '', '', '5', '4', 1, 2, 0, 1614078234, 1614078234, 2);
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 
 -- 导出  表 test.sys_user_role 结构
@@ -192,58 +224,45 @@ CREATE TABLE IF NOT EXISTS `sys_user_role` (
   `role_id` int NOT NULL DEFAULT '0' COMMENT '角色id',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK` (`user_id`,`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='用户角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COMMENT='用户角色表';
 
--- 正在导出表  test.sys_user_role 的数据：~5 rows (大约)
+-- 正在导出表  test.sys_user_role 的数据：~6 rows (大约)
 /*!40000 ALTER TABLE `sys_user_role` DISABLE KEYS */;
 INSERT INTO `sys_user_role` (`id`, `user_id`, `role_id`) VALUES
-	(17, 2, 1),
-	(11, 3, 4),
-	(12, 25, 1),
-	(13, 26, 3),
-	(19, 27, 4);
+	(38, 2, 1),
+	(39, 2, 3),
+	(36, 3, 3),
+	(37, 3, 4),
+	(35, 4, 3),
+	(32, 28, 3);
 /*!40000 ALTER TABLE `sys_user_role` ENABLE KEYS */;
-
--- 导出  表 test.tbl_test 结构
-CREATE TABLE IF NOT EXISTS `tbl_test` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
-  `age` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `IDX_name` (`name`),
-  KEY `IDX_age` (`age`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='测试表';
-
--- 正在导出表  test.tbl_test 的数据：~2 rows (大约)
-/*!40000 ALTER TABLE `tbl_test` DISABLE KEYS */;
-INSERT INTO `tbl_test` (`id`, `name`, `age`) VALUES
-	(1, 'assdas', 3),
-	(2, 'assdas123', 3);
-/*!40000 ALTER TABLE `tbl_test` ENABLE KEYS */;
 
 -- 导出  表 test.test_table 结构
 CREATE TABLE IF NOT EXISTS `test_table` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `simplified` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `test_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `title` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '标题',
+  `simplified` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '简体',
+  `test_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '测试名称',
+  `status` tinyint NOT NULL DEFAULT '1' COMMENT '用户状态（1-正常；0-无效）',
+  `create_user_id` int NOT NULL DEFAULT '0' COMMENT '创建者ID',
+  `create_time` int NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='测试表';
 
--- 正在导出表  test.test_table 的数据：~13 rows (大约)
+-- 正在导出表  test.test_table 的数据：~11 rows (大约)
 /*!40000 ALTER TABLE `test_table` DISABLE KEYS */;
-INSERT INTO `test_table` (`id`, `title`, `simplified`, `test_name`) VALUES
-	(7, 'title6', 'simplified6', 'testName6'),
-	(8, 'title7', 'simplified7', 'testName7'),
-	(11, 'title10', 'simplified10', 'testName10'),
-	(12, 'title11', 'simplified11', 'testName11'),
-	(13, 'title12', 'simplified12', 'testName12'),
-	(14, 'title13', 'simplified13', 'testName13'),
-	(16, 'title15', 'simplified15', 'testName15'),
-	(17, 'title16', 'simplified16', 'testName16'),
-	(18, 'title17', 'simplified17', 'testName17'),
-	(19, 'title18', 'simplified18', 'testName18'),
-	(20, 'title19', 'simplified19', 'testName19');
+INSERT INTO `test_table` (`id`, `title`, `simplified`, `test_name`, `status`, `create_user_id`, `create_time`, `update_time`) VALUES
+	(8, 'title7', 'simplified7', 'testName7', 1, 0, 0, 1614597888),
+	(11, 'title10', 'simplified10', 'testName10', 0, 0, 0, 1614597885),
+	(12, 'title11', 'simplified11', 'testName11', 0, 0, 0, 1614598285),
+	(13, 'title12', 'simplified12', 'testName12', 0, 0, 0, 1614598287),
+	(14, 'title13', 'simplified13', 'testName13', 1, 0, 0, 0),
+	(16, 'title15', 'simplified15', 'testName15', 1, 0, 0, 0),
+	(17, 'title16', 'simplified16', 'testName16', 1, 0, 0, 0),
+	(18, 'title17', 'simplified17', 'testName17', 1, 0, 0, 0),
+	(19, 'title18', 'simplified18', 'testName18', 1, 0, 0, 0),
+	(20, 'title19', 'simplified19', 'testName19', 1, 0, 0, 0);
 /*!40000 ALTER TABLE `test_table` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

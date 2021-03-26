@@ -118,7 +118,20 @@ public class DateUtil {
 		if (NumberUtil.isNullOrZero(time)) {
 			return null;
 		}
-		return new Date((long) time * 1000);
+		return longToDate(time.longValue() * 1000);
+	}
+
+	/**
+	 * @Title: longToDate
+	 * @Description: long类型，转为date
+	 * @param time
+	 * @return
+	 */
+	public static Date longToDate(Long time) {
+		if (NumberUtil.isNullOrZero(time)) {
+			return null;
+		}
+		return new Date(time);
 	}
 	
 	/**

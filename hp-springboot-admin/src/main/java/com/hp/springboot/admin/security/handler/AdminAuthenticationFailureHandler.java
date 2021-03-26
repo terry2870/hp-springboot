@@ -47,6 +47,7 @@ public class AdminAuthenticationFailureHandler implements AuthenticationFailureH
 		} else if (exception instanceof DisabledException) {
 			message = "账户被禁用，请联系管理员!";
 		} else if (exception instanceof ValidateCodeException) {
+			// 图形验证码输入错误
 			message = exception.getMessage();
 		} else if (exception instanceof InsufficientAuthenticationException) {
 			message = exception.getMessage();
@@ -54,6 +55,7 @@ public class AdminAuthenticationFailureHandler implements AuthenticationFailureH
 			message = "登录失败!";
 		}
 		
+		// 返回json格式数据
 		Response<Object> resp = Response.error(message);
 		try (PrintWriter out = response.getWriter()) {
 			out.write(resp.toString());

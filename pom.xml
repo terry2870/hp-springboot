@@ -9,7 +9,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<hp.springboot.version>1.0.0-SNAPSHOT</hp.springboot.version>
-		<spring.boot.version>2.4.2</spring.boot.version>
+		<spring.boot.version>2.4.4</spring.boot.version>
 		<commons.collections4.version>4.4</commons.collections4.version>
 		<druid.spring.boot.starter.version>1.2.4</druid.spring.boot.starter.version>
 		<mybatis.spring.boot.starter.version>2.1.4</mybatis.spring.boot.starter.version>
@@ -58,6 +58,16 @@
 			<dependency>
 				<groupId>com.hp.springboot</groupId>
 				<artifactId>hp-springboot-admin</artifactId>
+				<version>${hp.springboot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.hp.springboot</groupId>
+				<artifactId>hp-springboot-queue</artifactId>
+				<version>${hp.springboot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.hp.springboot</groupId>
+				<artifactId>hp-springboot-schedule</artifactId>
 				<version>${hp.springboot.version}</version>
 			</dependency>
 			
@@ -111,5 +121,7 @@
 		<module>hp-springboot-threadprofile</module>
 		<module>hp-springboot-mybatis</module>
 		<module>hp-springboot-admin</module>
+		<module>hp-springboot-queue</module>
+		<module>hp-springboot-schedule</module>
 	</modules>
 </project>

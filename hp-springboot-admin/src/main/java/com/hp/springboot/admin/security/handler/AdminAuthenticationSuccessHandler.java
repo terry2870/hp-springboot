@@ -45,6 +45,7 @@ public class AdminAuthenticationSuccessHandler implements AuthenticationSuccessH
 			Authentication authentication) throws IOException, ServletException {
 		response.setContentType(ContentTypeConstant.APPLICATION_JSON_UTF8);
 		
+		// 获取session对象
 		HttpSession session = request.getSession();
 		
 		//设置登录用户session
@@ -53,6 +54,7 @@ public class AdminAuthenticationSuccessHandler implements AuthenticationSuccessH
 		//查询用户的菜单和按钮
 		setUserMenu(session);
 		
+		//session中获取当前登录的用户
 		SysUserResponseBO user = SecuritySessionUtil.getSessionData();
 		
 		// 更新最近登录时间
@@ -64,6 +66,7 @@ public class AdminAuthenticationSuccessHandler implements AuthenticationSuccessH
 		// 注销地址
 		session.setAttribute("logoutUrl", AdminConstants.LOGOUT_URL);
 		
+		// 返回json格式数据
 		Response<Object> resp = Response.success();
 		try (PrintWriter out = response.getWriter()) {
 			out.write(resp.toString());

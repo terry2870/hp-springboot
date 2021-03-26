@@ -47,6 +47,7 @@ public class AdminUserDetailsService implements UserDetailsService  {
 			throw new UsernameNotFoundException("用户不存在");
 		}
 		
+		// 对象装换，转换成SysUserResponseBO对象
 		SysUserResponseBO resp = SysUserConvert.dal2BOResponse(user);
 		return resp;
 	}

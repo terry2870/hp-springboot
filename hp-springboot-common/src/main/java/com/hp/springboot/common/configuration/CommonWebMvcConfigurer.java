@@ -73,7 +73,7 @@ public class CommonWebMvcConfigurer implements WebMvcConfigurer {
 	/**
 	 * 首页
 	 */
-	@Value("${hp.springboot.common.interceptor.welcome.file:}")
+	@Value("${hp.springboot.common.interceptor.welcome-file:}")
 	private String welcomeFile;
 	
 	@Override

@@ -1,4 +1,4 @@
-package com.hp.springboot.schedule.enums;
+package com.hp.springboot.scheduler.enums;
 
 /**
  * 描述：任务调度方式

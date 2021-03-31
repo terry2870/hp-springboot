@@ -1,4 +1,4 @@
-package com.hp.springboot.schedule;
+package com.hp.springboot.scheduler;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
 
-import com.hp.springboot.schedule.enums.SchedulerTypeEnum;
+import com.hp.springboot.scheduler.enums.SchedulerTypeEnum;
 
 /**
  * 描述：调度任务
@@ -146,16 +146,32 @@ public class SchedulerJob {
 		SchedulerTypeEnum schedulerType = oldJob.getScheduleType();
 		if (SchedulerTypeEnum.ONCE.equals(schedulerType)) {
 			// 一次性任务，判断开始时间是否变化
-			return oldJob.getStartTime().equals(newJob.getStartTime());
+			if (oldJob.getStartTime() == null) {
+				return newJob.getStartTime() == null;
+			} else {
+				return oldJob.getStartTime().equals(newJob.getStartTime());
+			}
 		} else if (SchedulerTypeEnum.CRON_TRIGGER.equals(schedulerType)) {
 			// cron 表达式
-			return oldJob.getTrigger().equals(newJob.getTrigger());
+			if (oldJob.getTrigger() == null) {
+				return newJob.getTrigger() == null;
+			} else {
+				return oldJob.getTrigger().equals(newJob.getTrigger());
+			}
 		} else if (SchedulerTypeEnum.FIXED_RATE.equals(schedulerType)) {
 			// 固定周期
-			return oldJob.getStartTime().equals(newJob.getStartTime()) && oldJob.getPeriod() == newJob.getPeriod();
+			if (oldJob.getStartTime() == null) {
+				return newJob.getStartTime() == null && oldJob.getPeriod() == newJob.getPeriod();
+			} else {
+				return oldJob.getStartTime().equals(newJob.getStartTime()) && oldJob.getPeriod() == newJob.getPeriod();
+			}
 		} else if (SchedulerTypeEnum.FIXED_DELAY.equals(schedulerType)) {
 			// 固定延迟
-			return oldJob.getStartTime().equals(newJob.getStartTime()) && oldJob.getDelay() == newJob.getDelay();
+			if (oldJob.getStartTime() == null) {
+				return newJob.getStartTime() == null && oldJob.getDelay() == newJob.getDelay();
+			} else {
+				return oldJob.getStartTime().equals(newJob.getStartTime()) && oldJob.getDelay() == newJob.getDelay();
+			}
 		}
 		return false;
 	}

@@ -1,4 +1,4 @@
-package com.hp.springboot.schedule;
+package com.hp.springboot.scheduler;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,7 +8,8 @@ import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.support.CronTrigger;
 
 import com.hp.springboot.common.util.DateUtil;
-import com.hp.springboot.schedule.enums.SchedulerTypeEnum;
+import com.hp.springboot.scheduler.enums.JobStatusEnum;
+import com.hp.springboot.scheduler.enums.SchedulerTypeEnum;
 
 /**
  * 
@@ -59,6 +60,11 @@ public class JobBean implements Serializable {
 	 * 定时任务返回对象
 	 */
 	private ScheduledFuture<?> scheduledFuture;
+	
+	/**
+	 * 任务状态
+	 */
+	private JobStatusEnum jobStatus;
 
 	private JobBean() {}
 	
@@ -280,6 +286,14 @@ public class JobBean implements Serializable {
 	public String toString() {
 		return "JobBean [jobName=" + jobName + ", scheduleType=" + scheduleType + ", trigger=" + trigger
 				+ ", startTime=" + startTime + ", period=" + period + ", delay=" + delay + ", task=" + task + "]";
+	}
+
+	public JobStatusEnum getJobStatus() {
+		return jobStatus;
+	}
+
+	public void setJobStatus(JobStatusEnum jobStatus) {
+		this.jobStatus = jobStatus;
 	}
 
 }

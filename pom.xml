@@ -67,7 +67,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.hp.springboot</groupId>
-				<artifactId>hp-springboot-schedule</artifactId>
+				<artifactId>hp-springboot-scheduler</artifactId>
 				<version>${hp.springboot.version}</version>
 			</dependency>
 			
@@ -122,6 +122,6 @@
 		<module>hp-springboot-mybatis</module>
 		<module>hp-springboot-admin</module>
 		<module>hp-springboot-queue</module>
-		<module>hp-springboot-schedule</module>
+		<module>hp-springboot-scheduler</module>
 	</modules>
 </project>

@@ -9,8 +9,8 @@
 		<artifactId>hp-springboot</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>hp-springboot-schedule</artifactId>
-	<name>hp-springboot-schedule</name>
+	<artifactId>hp-springboot-scheduler</artifactId>
+	<name>hp-springboot-scheduler</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
